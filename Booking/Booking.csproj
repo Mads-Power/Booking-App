@@ -25,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,15 +39,26 @@
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Models\" />
     <None Remove="Models\Domain\" />
-    <None Remove="DataAccess\" />
     <None Remove="Migrations\" />
+    <None Remove="Models\DTOs\" />
+    <None Remove="Profiles\" />
+    <None Remove="Context\" />
+    <None Remove="AutoMapper" />
+    <None Remove="Services\" />
+    <None Remove="Models\DTOs\User\" />
+    <None Remove="Models\DTOs\Office\" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Models\Domain\" />
-    <Folder Include="DataAccess\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Models\DTOs\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="Context\" />
+    <Folder Include="Services\" />
+    <Folder Include="Models\DTOs\User\" />
+    <Folder Include="Models\DTOs\Office\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
