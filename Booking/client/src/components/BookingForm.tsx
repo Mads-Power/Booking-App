@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from './button';
+import Button from './Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import listOfPeople from './../data/list-of-people.json';
 
