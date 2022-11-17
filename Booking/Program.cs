@@ -15,6 +15,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(UserService));
 builder.Services.AddScoped(typeof(OfficeService));
+builder.Services.AddScoped(typeof(RoomService));
+builder.Services.AddScoped(typeof(SeatService));
 
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();
