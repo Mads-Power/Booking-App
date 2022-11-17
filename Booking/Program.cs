@@ -19,7 +19,15 @@ builder.Services.AddScoped(typeof(OfficeService));
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Client Origin",
+                      builder => builder
+                      .WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_URL"))
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      );
+});
 
 var app = builder.Build();
 
@@ -47,7 +55,7 @@ app.UseSwaggerUI(options =>
 app.UseRouting();
 
 app.MapControllers();
-
+app.UseCors("Client Origin");
 app.UseAuthorization();
 
 
