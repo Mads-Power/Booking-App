@@ -1,14 +1,25 @@
 using Microsoft.EntityFrameworkCore;
 using Booking.Context;
+using Booking.Services;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Routing;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped(typeof(UserService));
+builder.Services.AddScoped(typeof(OfficeService));
+
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -19,14 +30,27 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
-app.UseStaticFiles();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;
+});
+
+////app.UseHttpsRedirection();
+//app.UseStaticFiles();
 app.UseRouting();
 
+app.MapControllers();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+app.UseAuthorization();
+
+
 
 app.MapFallbackToFile("index.html"); ;
 

@@ -12,8 +12,8 @@ using Booking.Services;
 
 namespace Booking.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class OfficeController : Controller
     {
         private readonly IMapper _mapper;
