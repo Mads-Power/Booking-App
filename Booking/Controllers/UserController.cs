@@ -21,12 +21,16 @@ namespace Booking.Controllers
         private readonly IMapper _mapper;
         private readonly OfficeService _officeService;
         private readonly UserService _userService;
+        private readonly RoomService _roomService;
+        private readonly SeatService _seatService;
 
-        public UserController(IMapper mapper, OfficeService officeService, UserService userService)
+        public UserController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService)
         {
             _mapper = mapper;
             _officeService = officeService;
             _userService = userService;
+            _roomService = roomService;
+            _seatService = seatService;
         }
 
         // HTTP requests
@@ -36,9 +40,9 @@ namespace Booking.Controllers
         /// </summary>
         /// <returns>A list of User DTOs </returns>
         [HttpGet]
-        public async Task<ActionResult<List<UserReadDTO>>> GetAllUsersFromOffice()
+        public async Task<ActionResult<List<UserReadDTO>>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsersFromOffice();
+            var users = await _userService.GetAllUsers();
 
             return _mapper.Map<List<UserReadDTO>>(users);
         }
@@ -66,7 +70,7 @@ namespace Booking.Controllers
         [HttpPut("SignIn/{userId}")]
         public async Task<IActionResult> SignInUser(int userId)
         {
-            if (_userService.GetUserAsync(userId) == null) return NotFound();
+            if (!_userService.UserExists(userId)) return NotFound();
 
             await _userService.SignIn(userId);
             
@@ -76,7 +80,7 @@ namespace Booking.Controllers
         [HttpPut("SignOut/{userId}")]
         public async Task<IActionResult> SignOutUser(int userId)
         {
-            if (_userService.GetUserAsync(userId) == null) return NotFound();
+            if (!_userService.UserExists(userId)) return NotFound();
 
             await _userService.SignOut(userId);
 

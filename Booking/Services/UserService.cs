@@ -15,7 +15,12 @@ namespace Booking.Services
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsersFromOffice()
+        public bool UserExists(int userId)
+        {
+            return _context.Users.Find(userId) != null;
+        }
+
+        public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
         }
@@ -23,9 +28,7 @@ namespace Booking.Services
 
         public async Task<User> GetUserAsync(int userId)
         {
-            var usersInOffice = await GetAllUsersFromOffice();
-            var user = usersInOffice.FirstOrDefault(u => u.Id == userId);
-            return user;
+            return await _context.Users.FindAsync(userId);
         }
 
         public async Task UpdateAsync(User user)
