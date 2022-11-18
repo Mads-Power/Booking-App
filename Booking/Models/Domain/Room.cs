@@ -17,7 +17,12 @@ namespace Booking.Models.Domain
         public string Name { get; set; }
         public int Capacity { get; set; }
 
+        // Foreign Key
+        public int OfficeId { get; set; }
+
         public ICollection<Seat> Seats { get; set; }
+
+        public Office Office { get; set; }
     }
 }
 

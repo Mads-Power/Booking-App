@@ -16,8 +16,11 @@ namespace Booking.Models.Domain
 		public string Name { get; set; }
 		public bool IsSignedIn { get; set; }
 
+		// Foreign Keys
 		public int OfficeId { get; set; }
+
 		public Office Office { get; set; }
+		public Seat? Seat { get; set; }
 
 	}
 }

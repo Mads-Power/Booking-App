@@ -7,5 +7,6 @@ namespace Booking.Models.DTOs
         public string Name { get; set; }
         public bool IsOccupied { get; set; }
         public int RoomId { get; set; }
+        public int? UserId { get; set; }
     }
 }

@@ -16,8 +16,12 @@ namespace Booking.Models.Domain
         public string Name { get; set; }
         public bool IsOccupied { get; set; }
 
+        // Foreign Keys
         public int RoomId { get; set; }
+        public int? UserId { get; set; }
+
         public Room Room { get; set; }
+        public User? User { get; set; }
     }
 }
 

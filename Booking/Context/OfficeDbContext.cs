@@ -16,6 +16,8 @@ namespace Booking.Context
 
 		public DbSet<User> Users { get; set; }
 		public DbSet<Office> Offices { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Seat> Seats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +26,27 @@ namespace Booking.Context
                 .HasOne<Office>(user => user.Office)
                 .WithMany(office => office.Users)
                 .HasForeignKey(user => user.OfficeId);
+
+            // Create one-to-many Office and Room relation by adding foreign key to Office
+            modelBuilder.Entity<Room>()
+                .HasOne<Office>(room => room.Office)
+                .WithMany(office => office.Rooms)
+                .HasForeignKey(room => room.OfficeId);
+
+            // Create one-to-many Room and Seat relation by adding foreign key to Room
+            modelBuilder.Entity<Seat>()
+                .HasOne<Room>(seat => seat.Room)
+                .WithMany(room => room.Seats)
+                .HasForeignKey(seat => seat.RoomId);
+
+            // Create one-to-one User and Seat relation by adding foreign key to User
+            modelBuilder.Entity<Seat>()
+                .HasOne<User>(seat => seat.User)
+                .WithOne(user => user.Seat); //does this work?
+
+            // one to one room -> user
+
+
 
             // Seed dummy data
             AddSeedingData(modelBuilder);
@@ -37,6 +60,146 @@ namespace Booking.Context
                 Id = 1,
                 Name = "Lille Grensen",
                 Capacity = 20
+            });
+
+            // Add Rooms
+            modelBuilder.Entity<Room>().HasData(new Room
+            {
+                Id = 1,
+                Name = "Storerommet",
+                Capacity = 10,
+                OfficeId = 1
+            });
+
+            modelBuilder.Entity<Room>().HasData(new Room
+            {
+                Id = 2,
+                Name = "Lillerommet",
+                Capacity = 5,
+                OfficeId = 1
+            });
+
+            // Add Seats
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 1,
+                Name = "01",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 2,
+                Name = "02",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 3,
+                Name = "03",
+                IsOccupied = true,
+                RoomId = 1,
+                UserId = 2
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 4,
+                Name = "04",
+                IsOccupied = true,
+                RoomId = 1,
+                UserId = 3
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 5,
+                Name = "05",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 6,
+                Name = "06",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 7,
+                Name = "07",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 8,
+                Name = "01",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 9,
+                Name = "01",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 10,
+                Name = "10",
+                IsOccupied = false,
+                RoomId = 1
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 11,
+                Name = "11",
+                IsOccupied = false,
+                RoomId = 2
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 12,
+                Name = "12",
+                IsOccupied = false,
+                RoomId = 2
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 13,
+                Name = "13",
+                IsOccupied = false,
+                RoomId = 2
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 14,
+                Name = "14",
+                IsOccupied = false,
+                RoomId = 2
+            });
+
+            modelBuilder.Entity<Seat>().HasData(new Seat
+            {
+                Id = 15,
+                Name = "15",
+                IsOccupied = false,
+                RoomId = 2
             });
 
             // Add Users
