@@ -51,6 +51,26 @@ namespace Booking.Services
             _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Seat>> GetSeatsInRoom(int roomId)
+        {
+            return await _context.Seats
+                .Where(seat => seat.RoomId == roomId)
+                .ToListAsync();
+        }
+
+        public async Task<List<User>> GetSignedInUsersInRoom(int roomId)
+        {
+            var users = (from room in _context.Rooms
+                          join seat in _context.Seats
+                         on room.Id equals seat.RoomId
+                          join user in _context.Users
+                          on seat.UserId equals user.Id
+                          where room.Id == roomId
+                          select user).ToListAsync();
+
+            return await users;
+        }
     }
 }
 

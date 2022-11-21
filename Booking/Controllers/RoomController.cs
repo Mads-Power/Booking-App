@@ -106,5 +106,37 @@ namespace Booking.Controllers
 
             return NoContent();
         }
+
+        // get all seats in the room
+        [HttpGet("{roomId}/Seats")]
+        public async Task<ActionResult<List<SeatReadDTO>>> GetSeatsInRoom(int roomId)
+        {
+            try
+            {
+                var seats = await _roomService.GetSeatsInRoom(roomId);
+
+                return _mapper.Map<List<SeatReadDTO>>(seats);
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
+        }
+
+        // get: sigend in users in room
+        [HttpGet("{roomId}/Users")]
+        public async Task<ActionResult<List<UserReadDTO>>> GetUsersInRoom(int roomId)
+        {
+            try
+            {
+                var users = await _roomService.GetSignedInUsersInRoom(roomId);
+
+                return _mapper.Map<List<UserReadDTO>>(users);
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
