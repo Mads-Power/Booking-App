@@ -1,15 +1,11 @@
 import { useState } from 'react';
-import Button from './components/Button';
-import BookingForm from './components/BookingForm';
-import CheckIn from './components/CheckIn';
-import List from './components/List';
+
+// TODO:
+// Provider
+// Routes
 
 function App() {
-  return (
-    <div className='App'>
-      <List />
-    </div>
-  );
+  return <div className='App'>App</div>;
 }
 
 export default App;
