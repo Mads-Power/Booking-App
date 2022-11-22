@@ -9,6 +9,7 @@ using Booking.Context;
 using Booking.Models.Domain;
 using Booking.Models.DTOs;
 using Booking.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Controllers
 {
@@ -64,6 +65,8 @@ namespace Booking.Controllers
         {
             // validate request and if not validated return BadRequest()?
 
+            // if room does not exist bad request?
+
             var domainSeat = _mapper.Map<Seat>(dtoSeat);
 
             await _seatService.AddAsync(domainSeat);
@@ -82,13 +85,25 @@ namespace Booking.Controllers
                 return BadRequest();
             }
 
-            if (!_seatService.SeatExists(seatId))
+            var domainSeat = await _seatService.GetSeatAsync(seatId);
+
+            if (domainSeat != null)
+            {
+                _mapper.Map<SeatEditDTO,Seat>(seatDto,domainSeat);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var domainSeat = _mapper.Map<Seat>(seatDto);
-            await _seatService.UpdateAsync(domainSeat);
+            try
+            {
+                await _seatService.UpdateAsync(domainSeat);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
 
             return NoContent();
         }

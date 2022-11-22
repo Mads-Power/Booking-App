@@ -9,6 +9,7 @@ using Booking.Context;
 using Booking.Models.Domain;
 using Booking.Models.DTOs;
 using Booking.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Controllers
 {
@@ -82,14 +83,26 @@ namespace Booking.Controllers
                 return BadRequest();
             }
 
-            if (!_officeService.OfficeExists(officeId))
+            var domainOffice = await _officeService.GetOfficeAsync(officeId);
+
+            if (domainOffice != null)
+            {
+                _mapper.Map<OfficeEditDTO,Office>(officeDto,domainOffice);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var domainOffice = _mapper.Map<Office>(officeDto);
-            await _officeService.UpdateAsync(domainOffice);
-
+            try
+            {
+                await _officeService.UpdateAsync(domainOffice);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            
             return NoContent();
         }
 

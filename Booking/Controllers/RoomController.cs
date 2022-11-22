@@ -9,6 +9,7 @@ using Booking.Context;
 using Booking.Models.Domain;
 using Booking.Models.DTOs;
 using Booking.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Controllers
 {
@@ -82,13 +83,25 @@ namespace Booking.Controllers
                 return BadRequest();
             }
 
-            if (!_roomService.RoomExists(roomId))
+            var domainRoom = await _roomService.GetRoomAsync(roomId);
+
+            if (domainRoom != null)
+            {
+                _mapper.Map<RoomEditDTO,Room>(roomDto,domainRoom);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var domainRoom = _mapper.Map<Room>(roomDto);
-            await _roomService.UpdateAsync(domainRoom);
+            try
+            {
+                await _roomService.UpdateAsync(domainRoom);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
 
             return NoContent();
         }

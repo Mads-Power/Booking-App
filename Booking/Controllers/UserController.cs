@@ -91,13 +91,25 @@ namespace Booking.Controllers
                 return BadRequest();
             }
 
-            if (!_userService.UserExists(userId))
+            var domainUser = await _userService.GetUserAsync(userId);
+
+            if (domainUser != null)
+            {
+                _mapper.Map<UserEditDTO,User>(userDto,domainUser);
+            }
+            else
             {
                 return NotFound();
             }
 
-            var domainUser = _mapper.Map<User>(userDto);
-            await _userService.UpdateAsync(domainUser);
+            try
+            {
+                await _userService.UpdateAsync(domainUser);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
 
             return NoContent();
         }
