@@ -33,6 +33,78 @@ namespace Booking.Controllers
 
         // HTTP requests
 
+        // get: all seats
+        [HttpGet]
+        public async Task<ActionResult<List<SeatReadDTO>>> GetAllSeats()
+        {
+            var seats = await _seatService.GetAllSeats();
 
+            return _mapper.Map<List<SeatReadDTO>>(seats);
+        }
+
+        // get: seat info
+        [HttpGet("{seatId}")]
+        public async Task<ActionResult<SeatReadDTO>> GetSeat(int seatId)
+        {
+            try
+            {
+                var seat = await _seatService.GetSeatAsync(seatId);
+
+                return _mapper.Map<SeatReadDTO>(seat);
+            }
+            catch (NullReferenceException)
+            {
+                return NotFound();
+            }
+        }
+
+        // post: add new seat
+        [HttpPost]
+        public async Task<ActionResult<SeatCreateDTO>> PostSeat(SeatCreateDTO dtoSeat)
+        {
+            // validate request and if not validated return BadRequest()?
+
+            var domainSeat = _mapper.Map<Seat>(dtoSeat);
+
+            await _seatService.AddAsync(domainSeat);
+
+            return CreatedAtAction("GetSeat",
+                new { seatId = domainSeat.Id },
+                _mapper.Map<SeatReadDTO>(domainSeat));
+        }
+
+        // put: ...
+        [HttpPut("seatId")]
+        public async Task<IActionResult> PutSeat(int seatId, SeatEditDTO seatDto)
+        {
+            if (seatId != seatDto.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!_seatService.SeatExists(seatId))
+            {
+                return NotFound();
+            }
+
+            var domainSeat = _mapper.Map<Seat>(seatDto);
+            await _seatService.UpdateAsync(domainSeat);
+
+            return NoContent();
+        }
+
+        // delete: delete seat
+        [HttpDelete("seatId")]
+        public async Task<IActionResult> DeleteSeat(int seatId)
+        {
+            if (!_seatService.SeatExists(seatId))
+            {
+                return NotFound();
+            }
+
+            await _seatService.DeleteAsync(seatId);
+
+            return NoContent();
+        }
     }
 }
