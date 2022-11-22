@@ -1,8 +1,8 @@
-import List from "./components/List";
 import Home from "./components/Home";
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/NavBar";
 import { Container } from "react-bootstrap";
+import OfficeLayout from "./components/Layout/OfficeLayout";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <Container className="mb-4">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/list" element={<List />} />
+          <Route path="/OfficeLayout" element={<OfficeLayout />} />
         </Routes>
       </Container>
     </div>
