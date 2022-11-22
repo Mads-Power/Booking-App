@@ -7,4 +7,5 @@ export const Container = styled.div`
   position: relative;
   min-height: 10rem;
   gap: 1em;
+  border-style: solid;
 `;
