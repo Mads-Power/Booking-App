@@ -13,12 +13,8 @@ namespace Booking.Profiles
         public SeatProfile()
         {
             CreateMap<Seat, SeatReadDTO>();
-            CreateMap<SeatCreateDTO, Seat>()
-                .ForMember(u => u.RoomId, opt => opt
-                .Ignore());
-            CreateMap<SeatEditDTO, Seat>()
-                .ForMember(u => u.RoomId, opt => opt
-                .Ignore());
+            CreateMap<SeatCreateDTO, Seat>();
+            CreateMap<SeatEditDTO, Seat>();
         }
     }
 }
