@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Container } from "../styles/GlobalStyles";
 
 const Seats = styled.button`
   padding: 10px;
@@ -15,16 +16,18 @@ const Seats = styled.button`
 const OfficeOslo = () => {
   return (
     <div>
-      <Seats>1</Seats>
-      <Seats>2</Seats>
-      <Seats>3</Seats>
-      <Seats>4</Seats>
-      <Seats>5</Seats>
-      <Seats>6</Seats>
-      <Seats>7</Seats>
-      <Seats>8</Seats>
-      <Seats>9</Seats>
-      <Seats>10</Seats>
+      <Container>
+        <Seats>1</Seats>
+        <Seats>2</Seats>
+        <Seats>3</Seats>
+        <Seats>4</Seats>
+        <Seats>5</Seats>
+        <Seats>6</Seats>
+        <Seats>7</Seats>
+        <Seats>8</Seats>
+        <Seats>9</Seats>
+        <Seats>10</Seats>
+      </Container>
     </div>
   );
 };

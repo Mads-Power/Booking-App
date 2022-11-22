@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Container } from "../../styles/GlobalStyles";
 Container;
+import { Link } from "react-router-dom";
 
 const ChooseOfficeButton = styled.button`
   padding: 10px;
@@ -19,7 +20,9 @@ const OfficeLayout = () => {
   return (
     <>
       <Container>
-        <ChooseOfficeButton>OSLO</ChooseOfficeButton>
+        <ChooseOfficeButton>
+          <Link to="/officeOslo">OSLO</Link>
+        </ChooseOfficeButton>
         <ChooseOfficeButton>DRAMMEN</ChooseOfficeButton>
       </Container>
     </>
