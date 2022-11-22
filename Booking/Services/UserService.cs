@@ -26,9 +26,16 @@ namespace Booking.Services
         }
 
 
-        public async Task<User> GetUserAsync(int userId)
+        public async Task<User?> GetUserAsync(int userId)
         {
             return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task<User> AddAsync(User newUser)
+        {
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+            return newUser;
         }
 
         public async Task UpdateAsync(User user)
@@ -37,18 +44,34 @@ namespace Booking.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task SignIn(int userId)
         {
             var user = GetUserAsync(userId).Result;
-            user.IsSignedIn = true;
-            await UpdateAsync(user);
+            if (user != null)
+            {
+                user.IsSignedIn = true;
+                await UpdateAsync(user);
+            }
         }
 
         public async Task SignOut(int userId)
         {
             var user = GetUserAsync(userId).Result;
-            user.IsSignedIn = false;
-            await UpdateAsync(user);
+            if (user != null)
+            {
+                user.IsSignedIn = false;
+                await UpdateAsync(user);
+            }
         }
     }
 }

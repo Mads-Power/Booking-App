@@ -67,6 +67,55 @@ namespace Booking.Controllers
             }
         }
 
+        // post: add new user
+        [HttpPost]
+        public async Task<ActionResult<UserCreateDTO>> PostUser(UserCreateDTO dtoUser)
+        {
+            // validate request and if not validated return BadRequest()?
+
+            var domainUser = _mapper.Map<User>(dtoUser);
+
+            await _userService.AddAsync(domainUser);
+
+            return CreatedAtAction("GetUser",
+                new { userId = domainUser.Id },
+                _mapper.Map<UserReadDTO>(domainUser));
+        }
+
+        // put: ...
+        [HttpPut("userId")]
+        public async Task<IActionResult> PutUser(int userId, UserEditDTO userDto)
+        {
+            if (userId != userDto.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!_userService.UserExists(userId))
+            {
+                return NotFound();
+            }
+
+            var domainUser = _mapper.Map<User>(userDto);
+            await _userService.UpdateAsync(domainUser);
+
+            return NoContent();
+        }
+
+        // delete: delete user
+        [HttpDelete("userId")]
+        public async Task<IActionResult> DeleteUser(int userId)
+        {
+            if (!_userService.UserExists(userId))
+            {
+                return NotFound();
+            }
+
+            await _userService.DeleteAsync(userId);
+
+            return NoContent();
+        }
+
         [HttpPut("SignIn/{userId}")]
         public async Task<IActionResult> SignInUser(int userId)
         {
