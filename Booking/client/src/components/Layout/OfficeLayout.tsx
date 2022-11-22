@@ -113,13 +113,16 @@ const OfficeLayout = () => {
   return (
     <>
       <ContainerMain>
-        <ChooseOfficeButton>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <Link to="/officeOslo">OSLO</Link>
-        </ChooseOfficeButton>
+        <Link to="/officeOslo">
+          <ChooseOfficeButton>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            OSLO
+          </ChooseOfficeButton>
+        </Link>
+
         <ChooseOfficeButton>
           <span></span>
           <span></span>
