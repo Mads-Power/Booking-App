@@ -24,12 +24,13 @@ namespace Booking.Services
 
         public async Task<List<Room>> GetAllRooms()
         {
-            return await _context.Rooms.ToListAsync();
+            return await _context.Rooms.Include(room => room.Seats).ToListAsync();
         }
 
         public async Task<Room?> GetRoomAsync(int roomId)
         {
-            return await _context.Rooms.FindAsync(roomId);
+            return await _context.Rooms.Include(room => room.Seats)
+                .Where(room => room.Id == roomId).FirstAsync();
         }
 
         public async Task<Room> AddAsync(Room newRoom)

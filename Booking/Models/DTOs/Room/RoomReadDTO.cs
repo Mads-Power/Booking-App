@@ -10,6 +10,6 @@ namespace Booking.Models.DTOs
         public string Name { get; set; }
         public int Capacity { get; set; }
         public int OfficeId { get; set; }
-        public ICollection<Seat> Seats { get; set; }
+        public ICollection<SeatReadDTO> Seats { get; set; }
     }
 }

@@ -24,12 +24,15 @@ namespace Booking.Services
 
         public async Task<List<Office>> GetAllOffices()
         {
-            return await _context.Offices.ToListAsync();
+            return await _context.Offices.Include(office => office.Rooms)
+                .Include(office => office.Users).ToListAsync();
         }
 
         public async Task<Office?> GetOfficeAsync(int officeId)
         {
-            return await _context.Offices.FindAsync(officeId);
+            return await _context.Offices.Include(office => office.Rooms)
+                .Include(office => office.Users)
+                .Where(office => office.Id == officeId).FirstAsync();
         }
 
         public async Task<Office> AddAsync(Office newOffice)

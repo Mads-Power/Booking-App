@@ -9,7 +9,8 @@ namespace Booking.Models.DTOs
         public int Id { get; set; }
         public string Name { get; set; }
         public int Capacity { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserReadDTO> Users { get; set; }
+        public ICollection<RoomReadDTO> Rooms { get; set; }
     }
 }
 
