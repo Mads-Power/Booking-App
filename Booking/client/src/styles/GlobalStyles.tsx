@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   position: relative;
   min-height: 10rem;
@@ -12,6 +13,7 @@ export const Container = styled.div`
 
 export const ContainerMain = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
