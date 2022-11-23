@@ -10,7 +10,6 @@ using Booking.Context;
 using Booking.Models.Domain;
 using Booking.Models.DTOs;
 using Booking.Services;
-using System.ComponentModel.DataAnnotations;
 
 namespace Booking.Controllers
 {
@@ -86,9 +85,11 @@ namespace Booking.Controllers
         [HttpPut("userId")]
         public async Task<IActionResult> PutUser(int userId, UserEditDTO userDto)
         {
-            if (userId != userDto.Id)
+            var validation = ValidateUpdateSeat(userDto, userId);
+
+            if (!validation.Result)
             {
-                return BadRequest();
+                return BadRequest(validation.RejectionReason);
             }
 
             var domainUser = await _userService.GetUserAsync(userId);
@@ -128,26 +129,62 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        [HttpPut("SignIn/{userId}")]
-        public async Task<IActionResult> SignInUser(int userId)
+        [HttpPut("{userId}/Book/{seatId}")]
+        public async Task<IActionResult> UserBookSeat(int userId, int seatId)
         {
-            if (!_userService.UserExists(userId)) return NotFound();
+            var domainUser = await _userService.GetUserAsync(userId);
+            var domainSeat = await _seatService.GetSeatAsync(seatId);
 
-            await _userService.SignIn(userId);
-            
+            if (domainUser == null || domainSeat == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _userService.BookSeat(domainUser, domainSeat);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
             return NoContent();
         }
 
-        [HttpPut("SignOut/{userId}")]
-        public async Task<IActionResult> SignOutUser(int userId)
+        [HttpPut("{userId}/Unbook/{seatId}")]
+        public async Task<IActionResult> UserUnbookSeat(int userId, int seatId)
         {
-            if (!_userService.UserExists(userId)) return NotFound();
+            var domainUser = await _userService.GetUserAsync(userId);
+            var domainSeat = await _seatService.GetSeatAsync(seatId);
 
-            await _userService.SignOut(userId);
+            if (domainUser == null || domainSeat == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _userService.UnbookSeat(domainUser, domainSeat);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
 
             return NoContent();
         }
 
-        // validationresult?
+        private static ValidationResult ValidateUpdateSeat(UserEditDTO userDto, int endpoint)
+        {
+            if (endpoint != userDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and user id must match");
+            }
+
+            // more validation
+
+            return new ValidationResult(true);
+        }
     }
 }

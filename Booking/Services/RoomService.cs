@@ -66,12 +66,14 @@ namespace Booking.Services
         public async Task<List<User>> GetSignedInUsersInRoom(int roomId)
         {
             var users = (from room in _context.Rooms
-                          join seat in _context.Seats
+                         join seat in _context.Seats
                          on room.Id equals seat.RoomId
-                          join user in _context.Users
-                          on seat.UserId equals user.Id
-                          where room.Id == roomId
-                          select user).ToListAsync();
+                         join su in _context.SeatUsers
+                         on seat.Id equals su.SeatId
+                         join user in _context.Users
+                         on su.UserId equals user.Id
+                         where room.Id == roomId
+                         select user).ToListAsync();
 
             return await users;
         }

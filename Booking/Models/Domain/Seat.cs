@@ -18,10 +18,9 @@ namespace Booking.Models.Domain
 
         // Foreign Keys
         public int RoomId { get; set; }
-        public int? UserId { get; set; }
 
         public Room Room { get; set; }
-        public User? User { get; set; }
+        public SeatUser SeatUser { get; set; }
     }
 }
 

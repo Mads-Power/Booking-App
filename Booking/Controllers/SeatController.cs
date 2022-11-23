@@ -80,9 +80,11 @@ namespace Booking.Controllers
         [HttpPut("seatId")]
         public async Task<IActionResult> PutSeat(int seatId, SeatEditDTO seatDto)
         {
-            if (seatId != seatDto.Id)
+            var validation = ValidateUpdateSeat(seatDto, seatId);
+
+            if (!validation.Result)
             {
-                return BadRequest();
+                return BadRequest(validation.RejectionReason);
             }
 
             var domainSeat = await _seatService.GetSeatAsync(seatId);
@@ -120,6 +122,27 @@ namespace Booking.Controllers
             await _seatService.DeleteAsync(seatId);
 
             return NoContent();
+        }
+
+        private static ValidationResult ValidateUpdateSeat(SeatEditDTO seatDto, int endpoint)
+        {
+            if (endpoint != seatDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and seat id must match");
+            }
+
+            // TODO: Improve validation with more checks, below is deprecated, find replacements
+            //if (seatDto.IsOccupied && seatDto.UserId == null)
+            //{
+            //    return new ValidationResult(false, "Cannot be occupied without a valid user");
+            //}
+
+            //if (seatDto.UserId != null && !seatDto.IsOccupied)
+            //{
+            //    return new ValidationResult(false, "Cannot have a user without being occupied");
+            //}
+
+            return new ValidationResult(true);
         }
     }
 }

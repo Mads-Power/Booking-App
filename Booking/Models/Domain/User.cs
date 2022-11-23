@@ -20,7 +20,7 @@ namespace Booking.Models.Domain
 		public int OfficeId { get; set; }
 
 		public Office Office { get; set; }
-		public Seat? Seat { get; set; }
+		public SeatUser SeatUser { get; set; }
 
 	}
 }

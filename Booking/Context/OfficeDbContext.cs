@@ -18,6 +18,8 @@ namespace Booking.Context
 		public DbSet<Office> Offices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
+        public DbSet<SeatUser> SeatUsers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,14 +41,11 @@ namespace Booking.Context
                 .WithMany(room => room.Seats)
                 .HasForeignKey(seat => seat.RoomId);
 
-            // Create one-to-one User and Seat relation by adding foreign key to User
-            modelBuilder.Entity<Seat>()
-                .HasOne<User>(seat => seat.User)
-                .WithOne(user => user.Seat); //does this work?
-
-            // one to one room -> user
-
-
+            // Create zero/one-to-zero/one User and Seat relation
+            var seatUserEtb = modelBuilder.Entity<SeatUser>();
+            seatUserEtb.HasKey(su => new { su.SeatId, su.UserId });
+            seatUserEtb.HasIndex(su => su.SeatId).IsUnique();
+            seatUserEtb.HasIndex(su => su.UserId).IsUnique();
 
             // Seed dummy data
             AddSeedingData(modelBuilder);
@@ -84,7 +83,7 @@ namespace Booking.Context
             {
                 Id = 1,
                 Name = "01",
-                IsOccupied = false,
+                IsOccupied = true,
                 RoomId = 1
             });
 
@@ -100,18 +99,16 @@ namespace Booking.Context
             {
                 Id = 3,
                 Name = "03",
-                IsOccupied = true,
-                RoomId = 1,
-                UserId = 2
+                IsOccupied = false,
+                RoomId = 1
             });
 
             modelBuilder.Entity<Seat>().HasData(new Seat
             {
                 Id = 4,
                 Name = "04",
-                IsOccupied = true,
-                RoomId = 1,
-                UserId = 3
+                IsOccupied = false,
+                RoomId = 1
             });
 
             modelBuilder.Entity<Seat>().HasData(new Seat
@@ -207,7 +204,7 @@ namespace Booking.Context
             {
                 Id = 1,
                 Name = "Ted Mosby",
-                IsSignedIn = false,
+                IsSignedIn = true,
                 OfficeId = 1
             });
 
@@ -215,7 +212,7 @@ namespace Booking.Context
             {
                 Id = 2,
                 Name = "Marshall Eriksen",
-                IsSignedIn = true,
+                IsSignedIn = false,
                 OfficeId = 1
             });
 
@@ -223,7 +220,7 @@ namespace Booking.Context
             {
                 Id = 3,
                 Name = "Lily Aldrin",
-                IsSignedIn = true,
+                IsSignedIn = false,
                 OfficeId = 1
             });
 
@@ -241,6 +238,13 @@ namespace Booking.Context
                 Name = "Robin Scherbatsky",
                 IsSignedIn = false,
                 OfficeId = 1
+            });
+
+            // Add SeatUsers
+            modelBuilder.Entity<SeatUser>().HasData(new SeatUser
+            {
+                SeatId = 1,
+                UserId = 1
             });
         }
     }

@@ -54,25 +54,33 @@ namespace Booking.Services
             }
         }
 
-        public async Task SignIn(int userId)
+        public async Task BookSeat(User user, Seat seat)
         {
-            var user = GetUserAsync(userId).Result;
-            if (user != null)
+            _context.Add(new SeatUser { Seat = seat, User = user });
+            user.IsSignedIn = true;
+            seat.IsOccupied = true;
+            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(seat).State = EntityState.Modified;
+            
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UnbookSeat(User user, Seat seat)
+        {
+            var su = await _context.SeatUsers.FindAsync(seat.Id,user.Id);
+            if (su != null)
             {
-                user.IsSignedIn = true;
-                await UpdateAsync(user);
+                _context.SeatUsers.Remove(su);
+                user.IsSignedIn = false;
+                seat.IsOccupied = false;
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(seat).State = EntityState.Modified;
+                
+                await _context.SaveChangesAsync();
             }
         }
 
-        public async Task SignOut(int userId)
-        {
-            var user = GetUserAsync(userId).Result;
-            if (user != null)
-            {
-                user.IsSignedIn = false;
-                await UpdateAsync(user);
-            }
-        }
+        // get booked seat for the user
     }
 }
 
