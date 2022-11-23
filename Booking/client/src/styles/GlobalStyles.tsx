@@ -8,7 +8,18 @@ export const Container = styled.div`
   position: relative;
   min-height: 10rem;
   gap: 1em;
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  border: 2px solid #cecece;
+
+  &:hover {
+    border: 2px solid #54a4d1;
+  }
+
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+    }
+  }
 `;
 
 export const ContainerMain = styled.div`

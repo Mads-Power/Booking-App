@@ -7,6 +7,12 @@ const Seats = styled.button`
   align-items: center;
   position: relative;
   gap: 1em;
+  height: 5em;
+  width: 5em;
+  border-radius: 5px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 `;
 
 const RoomOne = () => {
