@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Models.Domain
+namespace BookingApp.Models.Domain
 {
 	[Table("Office")]
 	public class Office
@@ -19,6 +19,7 @@ namespace Booking.Models.Domain
 		public int Capacity { get; set; }
 
 		public ICollection<User> Users { get; set; }
-	}
+        public ICollection<Room> Rooms { get; set; }
+    }
 }
 

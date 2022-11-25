@@ -6,13 +6,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Booking.Context;
-using Booking.Models.Domain;
-using Booking.Models.DTOs;
-using Booking.Services;
-using System.ComponentModel.DataAnnotations;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
+using BookingApp.Models.DTOs;
+using BookingApp.Services;
 
-namespace Booking.Controllers
+namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,12 +20,16 @@ namespace Booking.Controllers
         private readonly IMapper _mapper;
         private readonly OfficeService _officeService;
         private readonly UserService _userService;
+        private readonly RoomService _roomService;
+        private readonly SeatService _seatService;
 
-        public UserController(IMapper mapper, OfficeService officeService, UserService userService)
+        public UserController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService)
         {
             _mapper = mapper;
             _officeService = officeService;
             _userService = userService;
+            _roomService = roomService;
+            _seatService = seatService;
         }
 
         // HTTP requests
@@ -34,11 +37,11 @@ namespace Booking.Controllers
         /// <summary>
         /// Fetch all users from the database.
         /// </summary>
-        /// <returns>A list of User DTOs </returns>
+        /// <returns>A list of User read DTOs </returns>
         [HttpGet]
-        public async Task<ActionResult<List<UserReadDTO>>> GetAllUsersFromOffice()
+        public async Task<ActionResult<List<UserReadDTO>>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsersFromOffice();
+            var users = await _userService.GetAllUsers();
 
             return _mapper.Map<List<UserReadDTO>>(users);
         }
@@ -46,8 +49,8 @@ namespace Booking.Controllers
         /// <summary>
         /// Fetch a specific user from the database.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>A</returns>
+        /// <param name="userId">The id of the user.</param>
+        /// <returns>A user read DTO.</returns>
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserReadDTO>> GetUser(int userId)
         {
@@ -63,26 +66,169 @@ namespace Booking.Controllers
             }
         }
 
-        [HttpPut("SignIn/{userId}")]
-        public async Task<IActionResult> SignInUser(int userId)
+        /// <summary>
+        ///     Post a new user to the database.
+        /// </summary>
+        /// <param name="dtoUser">The create DTO for the user.</param>
+        /// <returns>
+        ///     A read DTO of the user that was created.
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult<UserCreateDTO>> PostUser(UserCreateDTO dtoUser)
         {
-            if (_userService.GetUserAsync(userId) == null) return NotFound();
+            // validate request and if not validated return BadRequest()?
 
-            await _userService.SignIn(userId);
-            
+            var domainUser = _mapper.Map<User>(dtoUser);
+
+            await _userService.AddAsync(domainUser);
+
+            return CreatedAtAction("GetUser",
+                new { userId = domainUser.Id },
+                _mapper.Map<UserReadDTO>(domainUser));
+        }
+
+        /// <summary>
+        ///     Edit an existing user in the database.
+        /// </summary>
+        /// <param name="userId">The id of the user.</param>
+        /// <param name="userDto">The edit DTO for the user.</param>
+        /// <returns>
+        ///     BadRequest if body is invalid.
+        ///     NotFound if id is invalid.
+        ///     NoContent if user was successfully updated. 
+        /// </returns>
+        [HttpPut("userId")]
+        public async Task<IActionResult> PutUser(int userId, UserEditDTO userDto)
+        {
+            var validation = ValidateUpdateUser(userDto, userId);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
+
+            var domainUser = await _userService.GetUserAsync(userId);
+
+            if (domainUser != null)
+            {
+                _mapper.Map<UserEditDTO,User>(userDto,domainUser);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _userService.UpdateAsync(domainUser);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
             return NoContent();
         }
 
-        [HttpPut("SignOut/{userId}")]
-        public async Task<IActionResult> SignOutUser(int userId)
+        /// <summary>
+        ///     Delete a user from the database.
+        /// </summary>
+        /// <param name="userId">Id of the user.</param>
+        /// <returns>
+        ///     NotFound if id does not match anything in db.
+        ///     NoContent if delete was successful.
+        /// </returns>
+        [HttpDelete("userId")]
+        public async Task<IActionResult> DeleteUser(int userId)
         {
-            if (_userService.GetUserAsync(userId) == null) return NotFound();
+            if (!_userService.UserExists(userId))
+            {
+                return NotFound();
+            }
 
-            await _userService.SignOut(userId);
+            await _userService.DeleteAsync(userId);
 
             return NoContent();
         }
 
-        // validationresult?
+        /// <summary>
+        ///     Book a seat for the user.
+        /// </summary>
+        /// <param name="userId">Id of the user.</param>
+        /// <param name="seatId">Id of the seat.</param>
+        /// <returns>
+        ///     NotFound if the ids don't match.
+        ///     NoContent if seat was successfully booked.
+        /// </returns>
+        [HttpPut("{userId}/Book/{seatId}")]
+        public async Task<IActionResult> UserBookSeat(int userId, int seatId)
+        {
+            // validate book seat (fail if seat already booked)
+
+            var domainUser = await _userService.GetUserAsync(userId);
+            var domainSeat = await _seatService.GetSeatAsync(seatId);
+
+            if (domainUser == null || domainSeat == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _userService.BookSeat(domainUser, domainSeat);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        ///     Unbook a seat for the user.
+        /// </summary>
+        /// <param name="userId">Id of the user.</param>
+        /// <param name="seatId">Id of the seat.</param>
+        /// <returns>
+        ///     NotFound if the ids don't match.
+        ///     NoContent if seat was successfully unbooked.
+        /// </returns>
+        [HttpPut("{userId}/Unbook/{seatId}")]
+        public async Task<IActionResult> UserUnbookSeat(int userId, int seatId)
+        {
+            // validate unbook seat (fail if seat already unbooked)
+
+            var domainUser = await _userService.GetUserAsync(userId);
+            var domainSeat = await _seatService.GetSeatAsync(seatId);
+
+            if (domainUser == null || domainSeat == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _userService.UnbookSeat(domainUser, domainSeat);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)
+        {
+            if (endpoint != userDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and user id must match");
+            }
+
+            // more validation
+
+            return new ValidationResult(true);
+        }
     }
 }

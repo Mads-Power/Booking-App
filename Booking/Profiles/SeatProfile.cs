@@ -8,14 +8,14 @@ using AutoMapper;
 
 namespace BookingApp.Profiles
 {
-	public class OfficeProfile : Profile
-	{
-		public OfficeProfile()
-		{
-			CreateMap<Office, OfficeReadDTO>();
-			CreateMap<OfficeCreateDTO, Office>();
-			CreateMap<OfficeEditDTO, Office>();
+    public class SeatProfile : Profile
+    {
+        public SeatProfile()
+        {
+            CreateMap<Seat, SeatReadDTO>();
+            CreateMap<SeatCreateDTO, Seat>();
+            CreateMap<SeatEditDTO, Seat>();
         }
-	}
+    }
 }
 

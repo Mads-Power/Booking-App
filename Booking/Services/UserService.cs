@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Booking.Context;
-using Booking.Models.Domain;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Services
+namespace BookingApp.Services
 {
 	public class UserService
 	{
@@ -15,17 +15,27 @@ namespace Booking.Services
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsersFromOffice()
+        public bool UserExists(int userId)
+        {
+            return _context.Users.Find(userId) != null;
+        }
+
+        public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
 
-        public async Task<User> GetUserAsync(int userId)
+        public async Task<User?> GetUserAsync(int userId)
         {
-            var usersInOffice = await GetAllUsersFromOffice();
-            var user = usersInOffice.FirstOrDefault(u => u.Id == userId);
-            return user;
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task<User> AddAsync(User newUser)
+        {
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+            return newUser;
         }
 
         public async Task UpdateAsync(User user)
@@ -34,19 +44,43 @@ namespace Booking.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task SignIn(int userId)
+        public async Task DeleteAsync(int userId)
         {
-            var user = GetUserAsync(userId).Result;
-            user.IsSignedIn = true;
-            await UpdateAsync(user);
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task SignOut(int userId)
+        public async Task BookSeat(User user, Seat seat)
         {
-            var user = GetUserAsync(userId).Result;
-            user.IsSignedIn = false;
-            await UpdateAsync(user);
+            _context.Add(new Booking { Seat = seat, User = user });
+            user.IsSignedIn = true;
+            seat.IsOccupied = true;
+            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(seat).State = EntityState.Modified;
+            
+            await _context.SaveChangesAsync();
         }
+
+        public async Task UnbookSeat(User user, Seat seat)
+        {
+            var su = await _context.SeatUsers.FindAsync(seat.Id,user.Id);
+            if (su != null)
+            {
+                _context.SeatUsers.Remove(su);
+                user.IsSignedIn = false;
+                seat.IsOccupied = false;
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(seat).State = EntityState.Modified;
+                
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        // get booked seat for the user
     }
 }
 

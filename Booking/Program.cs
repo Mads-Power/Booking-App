@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Booking.Context;
-using Booking.Services;
+using BookingApp.Context;
+using BookingApp.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Routing;
-
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +15,27 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(UserService));
 builder.Services.AddScoped(typeof(OfficeService));
+builder.Services.AddScoped(typeof(RoomService));
+builder.Services.AddScoped(typeof(SeatService));
 
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Client Origin",
+                      builder => builder
+                      .WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_URL"))
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      );
+});
 
 var app = builder.Build();
 
@@ -47,7 +63,7 @@ app.UseSwaggerUI(options =>
 app.UseRouting();
 
 app.MapControllers();
-
+app.UseCors("Client Origin");
 app.UseAuthorization();
 
 

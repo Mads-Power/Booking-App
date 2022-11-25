@@ -11,6 +11,8 @@
     <SpaProxyServerUrl>https://localhost:44457</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Booking</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,7 +37,6 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
@@ -55,6 +56,8 @@
     <None Remove="Swashbuckle.AspNetCore.SwaggerGen" />
     <None Remove="Swashbuckle.AspNetCore.SwaggerUI" />
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Models\DTOs\Seat\" />
+    <None Remove="Models\DTOs\Room\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +70,8 @@
     <Folder Include="Services\" />
     <Folder Include="Models\DTOs\User\" />
     <Folder Include="Models\DTOs\Office\" />
+    <Folder Include="Models\DTOs\Seat\" />
+    <Folder Include="Models\DTOs\Room\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
