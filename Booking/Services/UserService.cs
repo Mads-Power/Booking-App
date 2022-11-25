@@ -67,10 +67,10 @@ namespace BookingApp.Services
 
         public async Task UnbookSeat(User user, Seat seat)
         {
-            var su = await _context.SeatUsers.FindAsync(seat.Id,user.Id);
+            var su = await _context.Bookings.FindAsync(seat.Id,user.Id);
             if (su != null)
             {
-                _context.SeatUsers.Remove(su);
+                _context.Bookings.Remove(su);
                 user.IsSignedIn = false;
                 seat.IsOccupied = false;
                 _context.Entry(user).State = EntityState.Modified;

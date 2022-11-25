@@ -68,7 +68,7 @@ namespace BookingApp.Services
             var users = (from room in _context.Rooms
                          join seat in _context.Seats
                          on room.Id equals seat.RoomId
-                         join su in _context.SeatUsers
+                         join su in _context.Bookings
                          on seat.Id equals su.SeatId
                          join user in _context.Users
                          on su.UserId equals user.Id
