@@ -78,9 +78,11 @@ namespace Booking.Controllers
         [HttpPut("roomId")]
         public async Task<IActionResult> PutRoom(int roomId, RoomEditDTO roomDto)
         {
-            if (roomId != roomDto.Id)
+            var validation = ValidateUpdateRoom(roomDto, roomId);
+
+            if (!validation.Result)
             {
-                return BadRequest();
+                return BadRequest(validation.RejectionReason);
             }
 
             var domainRoom = await _roomService.GetRoomAsync(roomId);
@@ -150,6 +152,20 @@ namespace Booking.Controllers
             {
                 return NotFound();
             }
+        }
+
+        private static ValidationResult ValidateCreateSe
+
+        private static ValidationResult ValidateUpdateRoom(RoomEditDTO roomDto, int endpoint)
+        {
+            if (endpoint != roomDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and room id must match");
+            }
+
+            // more validation
+
+            return new ValidationResult(true);
         }
     }
 }

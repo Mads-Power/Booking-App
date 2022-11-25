@@ -85,7 +85,7 @@ namespace Booking.Controllers
         [HttpPut("userId")]
         public async Task<IActionResult> PutUser(int userId, UserEditDTO userDto)
         {
-            var validation = ValidateUpdateSeat(userDto, userId);
+            var validation = ValidateUpdateUser(userDto, userId);
 
             if (!validation.Result)
             {
@@ -175,7 +175,7 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        private static ValidationResult ValidateUpdateSeat(UserEditDTO userDto, int endpoint)
+        private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)
         {
             if (endpoint != userDto.Id)
             {

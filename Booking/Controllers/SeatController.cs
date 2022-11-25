@@ -124,11 +124,16 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        private static ValidationResult ValidateUpdateSeat(SeatEditDTO seatDto, int endpoint)
+        private ValidationResult ValidateUpdateSeat(SeatEditDTO seatDto, int endpoint)
         {
             if (endpoint != seatDto.Id)
             {
                 return new ValidationResult(false, "API endpoint and seat id must match");
+            }
+
+            if (!_roomService.RoomExists(seatDto.RoomId))
+            {
+                return new ValidationResult(false, "Given room does not exist");
             }
 
             // TODO: Improve validation with more checks, below is deprecated, find replacements

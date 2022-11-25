@@ -78,9 +78,11 @@ namespace Booking.Controllers
         [HttpPut("officeId")]
         public async Task<IActionResult> PutOffice(int officeId, OfficeEditDTO officeDto)
         {
-            if (officeId != officeDto.Id)
+            var validation = ValidateUpdateUser(officeDto, officeId);
+
+            if (!validation.Result)
             {
-                return BadRequest();
+                return BadRequest(validation.RejectionReason);
             }
 
             var domainOffice = await _officeService.GetOfficeAsync(officeId);
@@ -118,6 +120,18 @@ namespace Booking.Controllers
             await _officeService.DeleteAsync(officeId);
 
             return NoContent();
+        }
+
+        private static ValidationResult ValidateUpdateUser(OfficeEditDTO officeDto, int endpoint)
+        {
+            if (endpoint != officeDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and user id must match");
+            }
+
+            // more validation
+
+            return new ValidationResult(true);
         }
     }
 }
