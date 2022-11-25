@@ -5,7 +5,6 @@ namespace BookingApp.Models.DTOs
 	{
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsSignedIn { get; set; }
         public int OfficeId { get; set; }
     }
 }
