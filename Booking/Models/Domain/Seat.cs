@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Models.Domain
+namespace BookingApp.Models.Domain
 {
     [Table("Seat")]
 	public class Seat
@@ -20,7 +20,7 @@ namespace Booking.Models.Domain
         public int RoomId { get; set; }
 
         public Room Room { get; set; }
-        public SeatUser SeatUser { get; set; }
+        public Booking SeatUser { get; set; }
     }
 }
 

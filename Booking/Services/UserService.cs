@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Booking.Context;
-using Booking.Models.Domain;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Services
+namespace BookingApp.Services
 {
 	public class UserService
 	{
@@ -56,7 +56,7 @@ namespace Booking.Services
 
         public async Task BookSeat(User user, Seat seat)
         {
-            _context.Add(new SeatUser { Seat = seat, User = user });
+            _context.Add(new Booking { Seat = seat, User = user });
             user.IsSignedIn = true;
             seat.IsOccupied = true;
             _context.Entry(user).State = EntityState.Modified;

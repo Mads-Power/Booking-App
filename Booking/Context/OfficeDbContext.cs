@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Booking.Models.Domain;
+using BookingApp.Models.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Context
+namespace BookingApp.Context
 {
 	public class OfficeDbContext : DbContext
 	{
@@ -18,7 +18,7 @@ namespace Booking.Context
 		public DbSet<Office> Offices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Seat> Seats { get; set; }
-        public DbSet<SeatUser> SeatUsers { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace Booking.Context
                 .HasForeignKey(seat => seat.RoomId);
 
             // Create zero/one-to-zero/one User and Seat relation
-            var seatUserEtb = modelBuilder.Entity<SeatUser>();
+            var seatUserEtb = modelBuilder.Entity<Booking>();
             seatUserEtb.HasKey(su => new { su.SeatId, su.UserId });
             seatUserEtb.HasIndex(su => su.SeatId).IsUnique();
             seatUserEtb.HasIndex(su => su.UserId).IsUnique();
@@ -241,7 +241,7 @@ namespace Booking.Context
             });
 
             // Add SeatUsers
-            modelBuilder.Entity<SeatUser>().HasData(new SeatUser
+            modelBuilder.Entity<Booking>().HasData(new Booking
             {
                 SeatId = 1,
                 UserId = 1

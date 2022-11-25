@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Models.Domain
+namespace BookingApp.Models.Domain
 {
 	[Table("User")]
 	public class User
@@ -16,12 +16,20 @@ namespace Booking.Models.Domain
 		public string Name { get; set; }
 		public bool IsSignedIn { get; set; }
 
-		// Foreign Keys
+		// Foreign Key
 		public int OfficeId { get; set; }
 
+		//public List<FavoriteSeat> FavoriteSeats { get; set; }
+
 		public Office Office { get; set; }
-		public SeatUser SeatUser { get; set; }
+		public Booking SeatUser { get; set; }
 
 	}
+
+	//public struct FavoriteSeat
+	//{
+	//	public Seat Seat { get; set; }
+	//	public int TimesBooked { get; set; }
+	//}
 }
 

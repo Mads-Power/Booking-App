@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Models.Domain
+namespace BookingApp.Models.Domain
 {
 	[Table("Office")]
 	public class Office

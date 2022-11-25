@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Booking.Migrations
+namespace BookingApp.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

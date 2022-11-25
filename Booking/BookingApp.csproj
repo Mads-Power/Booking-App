@@ -11,6 +11,8 @@
     <SpaProxyServerUrl>https://localhost:44457</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Booking</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

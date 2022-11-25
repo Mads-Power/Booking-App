@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Booking.Context;
-using Booking.Models.Domain;
-using Booking.Models.DTOs;
-using Booking.Services;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
+using BookingApp.Models.DTOs;
+using BookingApp.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Controllers
+namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,7 +34,10 @@ namespace Booking.Controllers
 
         // HTTP requests
 
-        // get: all seats
+        /// <summary>
+        ///     Fetch all seats from the database.
+        /// </summary>
+        /// <returns>A list of seat read DTOs.</returns>
         [HttpGet]
         public async Task<ActionResult<List<SeatReadDTO>>> GetAllSeats()
         {
@@ -43,7 +46,14 @@ namespace Booking.Controllers
             return _mapper.Map<List<SeatReadDTO>>(seats);
         }
 
-        // get: seat info
+        /// <summary>
+        ///     Fetch a seat from the database based on seat id.
+        /// </summary>
+        /// <param name="seatId">The id of the seat.</param>
+        /// <returns>
+        ///     A read DTO of the seat if it is found in the database.
+        ///     NotFound if it is not found.
+        /// </returns>
         [HttpGet("{seatId}")]
         public async Task<ActionResult<SeatReadDTO>> GetSeat(int seatId)
         {
@@ -59,7 +69,13 @@ namespace Booking.Controllers
             }
         }
 
-        // post: add new seat
+        /// <summary>
+        ///     Post a new seat to the database.
+        /// </summary>
+        /// <param name="dtoSeat">The create DTO for the seat.</param>
+        /// <returns>
+        ///     A read DTO of the seat which was created.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<SeatCreateDTO>> PostSeat(SeatCreateDTO dtoSeat)
         {
@@ -76,7 +92,16 @@ namespace Booking.Controllers
                 _mapper.Map<SeatReadDTO>(domainSeat));
         }
 
-        // put: ...
+        /// <summary>
+        ///     Edit an existing seat in the database.
+        /// </summary>
+        /// <param name="seatId">The id of the seat.</param>
+        /// <param name="seatDto">The edit DTO for the seat.</param>
+        /// <returns>
+        ///     BadRequest if body is invalid.
+        ///     NotFound if id is invalid.
+        ///     NoContent if seat was successfully updated. 
+        /// </returns>
         [HttpPut("seatId")]
         public async Task<IActionResult> PutSeat(int seatId, SeatEditDTO seatDto)
         {
@@ -110,7 +135,14 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        // delete: delete seat
+        /// <summary>
+        ///     Delete a seat from the database.
+        /// </summary>
+        /// <param name="seatId">Id of the seat.</param>
+        /// <returns>
+        ///     NotFound if id does not match anything in db.
+        ///     NoContent if delete was successful.
+        /// </returns>
         [HttpDelete("seatId")]
         public async Task<IActionResult> DeleteSeat(int seatId)
         {

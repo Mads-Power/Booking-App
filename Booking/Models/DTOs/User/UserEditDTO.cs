@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Booking.Models.DTOs
+namespace BookingApp.Models.DTOs
 {
 	public class UserEditDTO
 	{

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Booking.Models.Domain;
-using Booking.Models.DTOs;
+using BookingApp.Models.Domain;
+using BookingApp.Models.DTOs;
 using AutoMapper;
 
-namespace Booking.Profiles
+namespace BookingApp.Profiles
 {
 	public class OfficeProfile : Profile
 	{

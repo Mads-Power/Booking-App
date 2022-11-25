@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Booking.Context;
-using Booking.Models.Domain;
-using Booking.Models.DTOs;
-using Booking.Services;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
+using BookingApp.Models.DTOs;
+using BookingApp.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Controllers
+namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,7 +34,10 @@ namespace Booking.Controllers
 
         // HTTP requests
 
-        // get: all seats
+        /// <summary>
+        ///     Fetch all offices from the database.
+        /// </summary>
+        /// <returns>A list of office read DTOs.</returns>
         [HttpGet]
         public async Task<ActionResult<List<OfficeReadDTO>>> GetAllOffices()
         {
@@ -43,7 +46,14 @@ namespace Booking.Controllers
             return _mapper.Map<List<OfficeReadDTO>>(offices);
         }
 
-        // get: office info
+        /// <summary>
+        ///     Fetch an office from the database based on id.
+        /// </summary>
+        /// <param name="officeId">The id of the office.</param>
+        /// <returns>
+        ///     A read DTO of the office if it is found in the database.
+        ///     NotFound if it is not found.
+        /// </returns>
         [HttpGet("{officeId}")]
         public async Task<ActionResult<OfficeReadDTO>> GetOffice(int officeId)
         {
@@ -59,7 +69,13 @@ namespace Booking.Controllers
             }
         }
 
-        // post: add new office
+        /// <summary>
+        ///     Post a new office to the database.
+        /// </summary>
+        /// <param name="dtoOffice">The create DTO for the office.</param>
+        /// <returns>
+        ///     A read DTO of the office which was created.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<OfficeCreateDTO>> PostOffice(OfficeCreateDTO dtoOffice)
         {
@@ -74,7 +90,16 @@ namespace Booking.Controllers
                 _mapper.Map<OfficeReadDTO>(domainOffice));
         }
 
-        // put: ...
+        /// <summary>
+        ///     Edit an existing office in the database.
+        /// </summary>
+        /// <param name="officeId">The id of the office.</param>
+        /// <param name="officeDto">The edit DTO for the office.</param>
+        /// <returns>
+        ///     BadRequest if body is invalid.
+        ///     NotFound if id is invalid.
+        ///     NoContent if office was successfully updated. 
+        /// </returns>
         [HttpPut("officeId")]
         public async Task<IActionResult> PutOffice(int officeId, OfficeEditDTO officeDto)
         {
@@ -108,7 +133,14 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        // delete: delete office
+        /// <summary>
+        ///     Delete an office from the database.
+        /// </summary>
+        /// <param name="officeId">Id of the office.</param>
+        /// <returns>
+        ///     NotFound if id does not match anything in db.
+        ///     NoContent if delete was successful.
+        /// </returns>
         [HttpDelete("officeId")]
         public async Task<IActionResult> DeleteOffice(int officeId)
         {

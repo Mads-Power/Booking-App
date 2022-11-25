@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Booking.Context;
-using Booking.Models.Domain;
-using Booking.Models.DTOs;
-using Booking.Services;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
+using BookingApp.Models.DTOs;
+using BookingApp.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Booking.Controllers
+namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,7 +34,10 @@ namespace Booking.Controllers
 
         // HTTP requests
 
-        // get: all rooms
+        /// <summary>
+        ///     Fetch all rooms from the database.
+        /// </summary>
+        /// <returns>A list of room read DTOs.</returns>
         [HttpGet]
         public async Task<ActionResult<List<RoomReadDTO>>> GetAllRooms()
         {
@@ -43,7 +46,14 @@ namespace Booking.Controllers
             return _mapper.Map<List<RoomReadDTO>>(rooms);
         }
 
-        // get: room info
+        /// <summary>
+        ///     Fetch a room from the database based on room id.
+        /// </summary>
+        /// <param name="roomId">The id of the room.</param>
+        /// <returns>
+        ///     A read DTO of the room if it is found in the database.
+        ///     NotFound if it is not found.
+        /// </returns>
         [HttpGet("{roomId}")]
         public async Task<ActionResult<RoomReadDTO>> GetRoom(int roomId)
         {
@@ -59,7 +69,13 @@ namespace Booking.Controllers
             }
         }
 
-        // post: add new room
+        /// <summary>
+        ///     Post a new room to the database.
+        /// </summary>
+        /// <param name="dtoRoom">The create DTO for the room.</param>
+        /// <returns>
+        ///     A read DTO of the room which was created.
+        /// </returns>
         [HttpPost]
         public async Task<ActionResult<RoomCreateDTO>> PostRoom(RoomCreateDTO dtoRoom)
         {
@@ -74,7 +90,16 @@ namespace Booking.Controllers
                 _mapper.Map<RoomReadDTO>(domainRoom));
         }
 
-        // put: ...
+        /// <summary>
+        ///     Edit an existing room in the database.
+        /// </summary>
+        /// <param name="roomId">The id of the room.</param>
+        /// <param name="roomDto">The edit DTO for the room.</param>
+        /// <returns>
+        ///     BadRequest if body is invalid.
+        ///     NotFound if id is invalid.
+        ///     NoContent if room was successfully updated. 
+        /// </returns>
         [HttpPut("roomId")]
         public async Task<IActionResult> PutRoom(int roomId, RoomEditDTO roomDto)
         {
@@ -108,7 +133,14 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        // delete: delete room
+        /// <summary>
+        ///     Delete a room from the database.
+        /// </summary>
+        /// <param name="roomId">Id of the room.</param>
+        /// <returns>
+        ///     NotFound if id does not match anything in db.
+        ///     NoContent if delete was successful.
+        /// </returns>
         [HttpDelete("roomId")]
         public async Task<IActionResult> DeleteRoom(int roomId)
         {
@@ -122,7 +154,14 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        // get all seats in the room
+        /// <summary>
+        ///     Get all seats in a room.
+        /// </summary>
+        /// <param name="roomId">Id of the room.</param>
+        /// <returns>
+        ///     A list of seat read DTOs.
+        ///     NotFound if room id is invalid.
+        /// </returns>
         [HttpGet("{roomId}/Seats")]
         public async Task<ActionResult<List<SeatReadDTO>>> GetSeatsInRoom(int roomId)
         {
@@ -138,7 +177,14 @@ namespace Booking.Controllers
             }
         }
 
-        // get: sigend in users in room
+        /// <summary>
+        ///     Get all users with seats booked in the room.
+        /// </summary>
+        /// <param name="roomId">If of the room.</param>
+        /// <returns>
+        ///     List of user read DTOs.
+        ///     NotFound if room id is invalid.
+        /// </returns>
         [HttpGet("{roomId}/Users")]
         public async Task<ActionResult<List<UserReadDTO>>> GetUsersInRoom(int roomId)
         {
@@ -154,7 +200,18 @@ namespace Booking.Controllers
             }
         }
 
-        private static ValidationResult ValidateCreateSe
+        private ValidationResult ValidateCreateRoom(RoomCreateDTO roomDto)
+        {
+            // see if room with that id already exists
+            //if (_roomService.RoomExists(roomDto.Id) {
+            //    return new ValidationResult(false, "Please provide a unique Id")
+            //}
+
+            // see if officeId does not exist
+            //if (roomDto.)
+
+            return new ValidationResult(true);
+        }
 
         private static ValidationResult ValidateUpdateRoom(RoomEditDTO roomDto, int endpoint)
         {

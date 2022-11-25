@@ -1,12 +1,12 @@
 ﻿using System;
-using Booking.Context;
-using Booking.Models.Domain;
+using BookingApp.Context;
+using BookingApp.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Services
+namespace BookingApp.Services
 {
     public class SeatService
     {

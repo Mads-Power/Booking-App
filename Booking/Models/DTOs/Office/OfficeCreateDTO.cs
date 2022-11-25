@@ -1,8 +1,8 @@
 ﻿using System;
-using Booking.Models.Domain;
+using BookingApp.Models.Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace Booking.Models.DTOs
+namespace BookingApp.Models.DTOs
 {
 	public class OfficeCreateDTO
 	{

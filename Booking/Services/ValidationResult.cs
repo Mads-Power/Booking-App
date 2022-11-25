@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Booking.Services
+namespace BookingApp.Services
 {
     /// <summary> Simple validator with results and reasoning. </summary>
     public class ValidationResult

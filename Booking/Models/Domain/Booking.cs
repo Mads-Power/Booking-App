@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Booking.Models.Domain
+namespace BookingApp.Models.Domain
 {
-	[Table("SeatUser")]
-	public class SeatUser
+	[Table("Booking")]
+	public class Booking
 	{
+
 		public int SeatId { get; set; }
 		public int UserId { get; set; }
 		public virtual Seat Seat { get; set; }
