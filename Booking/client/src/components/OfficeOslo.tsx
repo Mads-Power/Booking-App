@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Seat } from "../features/seats/types";
 import { Container } from "../styles/GlobalStyles";
 
 const Seats = styled.button`
@@ -12,24 +14,42 @@ const Seats = styled.button`
   border-radius: 5px;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  color: white;
+  background-color: #54a4d1;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    border: 2px solid blue;
+  }
 `;
 
+// i hvert rom er det X antall seter
+// hvert sete har en id og om sete er opptatt eller ikke
+// hvis setet er opptatt skal knappen være oransje, hvis sete er ledig, blå
+// hvis sete klikkes på skal man kunne booke setet med en date picker
+
 const RoomOne = () => {
+  const [active, setActive] = useState(false);
+  const nSeats = [1, 2, 3, 4, 5];
+
+  const handleClick = () => {
+    setActive(!active);
+  };
+
   return (
     <>
       <h1>Room one</h1>
       <Container>
-        <Seats>1</Seats>
+        <Seats
+          onClick={handleClick}
+          style={{ backgroundColor: active ? " #54a4d1" : "#df8b0d" }}
+        >
+          1
+        </Seats>
         <Seats>2</Seats>
         <Seats>3</Seats>
         <Seats>4</Seats>
         <Seats>5</Seats>
-        <Seats>6</Seats>
-        <Seats>7</Seats>
-        <Seats>8</Seats>
-        <Seats>9</Seats>
-        <Seats>10</Seats>
       </Container>
     </>
   );
@@ -40,16 +60,16 @@ const RoomTwo = () => {
     <>
       <h1>Room Two</h1>
       <Container>
-        <Seats>1</Seats>
-        <Seats>2</Seats>
-        <Seats>3</Seats>
-        <Seats>4</Seats>
-        <Seats>5</Seats>
         <Seats>6</Seats>
         <Seats>7</Seats>
         <Seats>8</Seats>
         <Seats>9</Seats>
         <Seats>10</Seats>
+        <Seats>11</Seats>
+        <Seats>12</Seats>
+        <Seats>13</Seats>
+        <Seats>14</Seats>
+        <Seats>15</Seats>
       </Container>
     </>
   );

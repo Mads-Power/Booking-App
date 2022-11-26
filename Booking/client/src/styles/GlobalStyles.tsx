@@ -10,6 +10,7 @@ export const Container = styled.div`
   gap: 1em;
   border-radius: 5px;
   border: 2px solid #cecece;
+  background-color: #f9f9f9;
 
   &:hover {
     border: 2px solid #54a4d1;
@@ -18,6 +19,9 @@ export const Container = styled.div`
   @media screen and (max-width: 600px) {
     .column {
       width: 100%;
+    }
+    &:hover {
+      border: 2px solid #54a4d1;
     }
   }
 `;
