@@ -23,11 +23,6 @@ const Seats = styled.button`
   }
 `;
 
-// i hvert rom er det X antall seter
-// hvert sete har en id og om sete er opptatt eller ikke
-// hvis setet er opptatt skal knappen være oransje, hvis sete er ledig, blå
-// hvis sete klikkes på skal man kunne booke setet med en date picker
-
 const RoomOne = () => {
   const [active, setActive] = useState(false);
   const nSeats = [1, 2, 3, 4, 5];

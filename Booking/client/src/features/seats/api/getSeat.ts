@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
-const url = '';
+const url = "";
 export const getSeat = async () => {
   const res = await fetch(url);
   return res.json();
@@ -8,7 +8,7 @@ export const getSeat = async () => {
 
 export const useSeat = () => {
   return useQuery({
-    queryKey: ['seat'],
+    queryKey: ["seat"],
     queryFn: () => getSeat(),
   });
 };
