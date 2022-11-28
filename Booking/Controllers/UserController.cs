@@ -166,7 +166,12 @@ namespace BookingApp.Controllers
         [HttpPut("{userId}/Book/{seatId}")]
         public async Task<IActionResult> UserBookSeat(int userId, int seatId, [FromQuery] string date)
         {
-            // validate book seat (fail if seat already booked that day) //validate date input, convert to utc etc.
+            var validation = ValidateUserBookSeat(userId, seatId, date);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var dateTime = DateTime.Parse(date).ToUniversalTime();
 
@@ -194,30 +199,33 @@ namespace BookingApp.Controllers
         ///     Unbook a seat for the user.
         /// </summary>
         /// <param name="userId">Id of the user.</param>
-        /// <param name="seatId">Id of the seat.</param>
         /// <param name="date">Date of the booking.</param>
         /// <returns>
         ///     NotFound if the ids don't match.
         ///     NoContent if seat was successfully unbooked.
         /// </returns>
-        [HttpPut("{userId}/Unbook/{seatId}")]
-        public async Task<IActionResult> UserUnbookSeat(int userId, int seatId, [FromQuery] string date)
+        [HttpPut("{userId}/Unbook")]
+        public async Task<IActionResult> UserUnbookSeat(int userId, [FromQuery] string date)
         {
-            // validate unbook seat (fail if seat already unbooked)
+            var validation = ValidateUserUnbookSeat(userId, date);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var dateTime = DateTime.Parse(date).ToUniversalTime();
 
             var domainUser = await _userService.GetUserAsync(userId);
-            var domainSeat = await _seatService.GetSeatAsync(seatId);
 
-            if (domainUser == null || domainSeat == null)
+            if (domainUser == null)
             {
                 return NotFound();
             }
 
             try
             {
-                await _bookingService.UnbookSeat(domainUser, domainSeat, dateTime);
+                await _bookingService.UnbookSeat(domainUser, dateTime);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -235,6 +243,60 @@ namespace BookingApp.Controllers
             }
 
             // more validation
+
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidateUserBookSeat(int userId, int seatId, string date)
+        {
+            // validate date input
+            DateTime dateTime;
+
+            try
+            {
+                dateTime = DateTime.Parse(date).ToUniversalTime();
+            }
+            catch (Exception)
+            {
+                return new ValidationResult(false, "Given date is not recognized as valid");
+            }
+
+            // validate that date is not in the past
+            if (DateTime.Compare(dateTime.Date, DateTime.Today.Date) < 0)
+            {
+                return new ValidationResult(false, "Cannot book for past dates");
+            }
+
+
+            // validate if seat is taken that day
+            if (_bookingService.GetBookingByDateAndSeat(dateTime,seatId) != null)
+            {
+                return new ValidationResult(false, "Seat already booked that day");
+            }
+
+            return new ValidationResult(true);
+        }
+
+        // validate user unbook seat
+        private ValidationResult ValidateUserUnbookSeat(int userId, string date)
+        {
+            // validate date input
+            DateTime dateTime;
+
+            try
+            {
+                dateTime = DateTime.Parse(date).ToUniversalTime();
+            }
+            catch (Exception)
+            {
+                return new ValidationResult(false, "Given date is not recognized as valid");
+            }
+
+            // validate booking exists
+            if (_bookingService.GetBookingByDateAndUser(dateTime, userId) == null)
+            {
+                return new ValidationResult(false, "No booking found for the user on that day");
+            }
 
             return new ValidationResult(true);
         }
