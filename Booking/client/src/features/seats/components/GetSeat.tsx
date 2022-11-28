@@ -25,8 +25,10 @@ const Seats = styled.button`
 // interface ISeatsProps {
 //   getAllSeats: Seat[];
 // }
-
+export const url = "rooms.json";
 const GetSeat = ({ seatId, id, isTaken }: Seat) => {
+  const res = fetch(url);
+
   return (
     <>
       <Seats>
