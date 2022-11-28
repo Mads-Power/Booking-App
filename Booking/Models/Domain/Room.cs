@@ -10,10 +10,10 @@ namespace BookingApp.Models.Domain
 	[Table("Room")]
 	public class Room
 	{
-        // Primary key
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [MaxLength(255)]
         public string Name { get; set; }
         public int Capacity { get; set; }
 
@@ -21,7 +21,6 @@ namespace BookingApp.Models.Domain
         public int OfficeId { get; set; }
 
         public ICollection<Seat> Seats { get; set; }
-
         public Office Office { get; set; }
     }
 }

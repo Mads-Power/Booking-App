@@ -20,7 +20,6 @@ namespace BookingApp.Context
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Create one-to-many Office and User relation by adding foreign key to Office
@@ -41,11 +40,17 @@ namespace BookingApp.Context
                 .WithMany(room => room.Seats)
                 .HasForeignKey(seat => seat.RoomId);
 
-            // Create zero/one-to-zero/one User and Seat relation
-            var seatUserEtb = modelBuilder.Entity<Booking>();
-            seatUserEtb.HasKey(su => new { su.SeatId, su.UserId });
-            seatUserEtb.HasIndex(su => su.SeatId).IsUnique();
-            seatUserEtb.HasIndex(su => su.UserId).IsUnique();
+            // Create one-to-many User and Booking relation
+            modelBuilder.Entity<Booking>()
+                .HasOne<User>(booking => booking.User)
+                .WithMany(user => user.Bookings)
+                .HasForeignKey(booking => booking.UserId);
+
+            // Create one-to-many Seat and Booking relation
+            modelBuilder.Entity<Booking>()
+                .HasOne<Seat>(booking => booking.Seat)
+                .WithMany(seat => seat.Bookings)
+                .HasForeignKey(booking => booking.SeatId);
 
             // Seed dummy data
             AddSeedingData(modelBuilder);
@@ -83,7 +88,6 @@ namespace BookingApp.Context
             {
                 Id = 1,
                 Name = "01",
-                IsOccupied = true,
                 RoomId = 1
             });
 
@@ -91,7 +95,6 @@ namespace BookingApp.Context
             {
                 Id = 2,
                 Name = "02",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -99,7 +102,6 @@ namespace BookingApp.Context
             {
                 Id = 3,
                 Name = "03",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -107,7 +109,6 @@ namespace BookingApp.Context
             {
                 Id = 4,
                 Name = "04",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -115,7 +116,6 @@ namespace BookingApp.Context
             {
                 Id = 5,
                 Name = "05",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -123,7 +123,6 @@ namespace BookingApp.Context
             {
                 Id = 6,
                 Name = "06",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -131,7 +130,6 @@ namespace BookingApp.Context
             {
                 Id = 7,
                 Name = "07",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -139,7 +137,6 @@ namespace BookingApp.Context
             {
                 Id = 8,
                 Name = "01",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -147,7 +144,6 @@ namespace BookingApp.Context
             {
                 Id = 9,
                 Name = "01",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -155,7 +151,6 @@ namespace BookingApp.Context
             {
                 Id = 10,
                 Name = "10",
-                IsOccupied = false,
                 RoomId = 1
             });
 
@@ -163,7 +158,6 @@ namespace BookingApp.Context
             {
                 Id = 11,
                 Name = "11",
-                IsOccupied = false,
                 RoomId = 2
             });
 
@@ -171,7 +165,6 @@ namespace BookingApp.Context
             {
                 Id = 12,
                 Name = "12",
-                IsOccupied = false,
                 RoomId = 2
             });
 
@@ -179,7 +172,6 @@ namespace BookingApp.Context
             {
                 Id = 13,
                 Name = "13",
-                IsOccupied = false,
                 RoomId = 2
             });
 
@@ -187,7 +179,6 @@ namespace BookingApp.Context
             {
                 Id = 14,
                 Name = "14",
-                IsOccupied = false,
                 RoomId = 2
             });
 
@@ -195,7 +186,6 @@ namespace BookingApp.Context
             {
                 Id = 15,
                 Name = "15",
-                IsOccupied = false,
                 RoomId = 2
             });
 
@@ -204,7 +194,6 @@ namespace BookingApp.Context
             {
                 Id = 1,
                 Name = "Ted Mosby",
-                IsSignedIn = true,
                 OfficeId = 1
             });
 
@@ -212,7 +201,6 @@ namespace BookingApp.Context
             {
                 Id = 2,
                 Name = "Marshall Eriksen",
-                IsSignedIn = false,
                 OfficeId = 1
             });
 
@@ -220,7 +208,6 @@ namespace BookingApp.Context
             {
                 Id = 3,
                 Name = "Lily Aldrin",
-                IsSignedIn = false,
                 OfficeId = 1
             });
 
@@ -228,7 +215,6 @@ namespace BookingApp.Context
             {
                 Id = 4,
                 Name = "Barney Stinson",
-                IsSignedIn = false,
                 OfficeId = 1
             });
 
@@ -236,15 +222,16 @@ namespace BookingApp.Context
             {
                 Id = 5,
                 Name = "Robin Scherbatsky",
-                IsSignedIn = false,
                 OfficeId = 1
             });
 
-            // Add SeatUsers
+            // Add Bookings
             modelBuilder.Entity<Booking>().HasData(new Booking
             {
+                Id = 1,
                 SeatId = 1,
-                UserId = 1
+                UserId = 1,
+                Date = DateTime.Today.ToUniversalTime()
             });
         }
     }

@@ -4,11 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookingApp.Models.DTOs
 {
-	public class SeatReadDTO
+	public class BookingReadDTO
 	{
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int RoomId { get; set; }
-        public ICollection<BookingReadDTO> Bookings { get; set; }
+        public int SeatId { get; set; }
+        public int UserId { get; set; }
+        public DateTime Date { get; set; }
     }
 }
+

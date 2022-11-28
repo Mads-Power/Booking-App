@@ -58,6 +58,7 @@
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Models\DTOs\Seat\" />
     <None Remove="Models\DTOs\Room\" />
+    <None Remove="Models\DTOs\Booking\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +73,7 @@
     <Folder Include="Models\DTOs\Office\" />
     <Folder Include="Models\DTOs\Seat\" />
     <Folder Include="Models\DTOs\Room\" />
+    <Folder Include="Models\DTOs\Booking\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

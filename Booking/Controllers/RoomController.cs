@@ -22,14 +22,16 @@ namespace BookingApp.Controllers
         private readonly UserService _userService;
         private readonly RoomService _roomService;
         private readonly SeatService _seatService;
+        private readonly BookingService _bookingService;
 
-        public RoomController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService)
+        public RoomController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
         {
             _mapper = mapper;
             _officeService = officeService;
             _userService = userService;
             _roomService = roomService;
             _seatService = seatService;
+            _bookingService = bookingService;
         }
 
         // HTTP requests

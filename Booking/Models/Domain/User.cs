@@ -9,27 +9,18 @@ namespace BookingApp.Models.Domain
 	[Table("User")]
 	public class User
 	{
-		// Primary key
-		public int Id { get; set; }
-		[Required]
-		[MaxLength(255)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
 		public string Name { get; set; }
-		public bool IsSignedIn { get; set; }
 
 		// Foreign Key
 		public int OfficeId { get; set; }
 
-		//public List<FavoriteSeat> FavoriteSeats { get; set; }
-
 		public Office Office { get; set; }
-		public Booking SeatUser { get; set; }
+		public ICollection<Booking> Bookings { get; set; }
 
 	}
-
-	//public struct FavoriteSeat
-	//{
-	//	public Seat Seat { get; set; }
-	//	public int TimesBooked { get; set; }
-	//}
 }
 
