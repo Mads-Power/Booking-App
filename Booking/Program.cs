@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BookingApp.Context;
-using BookingApp.Services;
+using BookingApp.Repositories;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -13,11 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped(typeof(UserService));
-builder.Services.AddScoped(typeof(OfficeService));
-builder.Services.AddScoped(typeof(RoomService));
-builder.Services.AddScoped(typeof(SeatService));
-builder.Services.AddScoped(typeof(BookingService));
+builder.Services.AddScoped(typeof(UserRepository));
+builder.Services.AddScoped(typeof(OfficeRepository));
+builder.Services.AddScoped(typeof(RoomRepository));
+builder.Services.AddScoped(typeof(SeatRepository));
+builder.Services.AddScoped(typeof(BookingRepository));
 
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();

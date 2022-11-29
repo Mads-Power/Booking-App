@@ -49,7 +49,6 @@
     <None Remove="Profiles\" />
     <None Remove="Context\" />
     <None Remove="AutoMapper" />
-    <None Remove="Services\" />
     <None Remove="Models\DTOs\User\" />
     <None Remove="Models\DTOs\Office\" />
     <None Remove="Microsoft.OpenApi" />
@@ -68,12 +67,16 @@
     <Folder Include="Models\DTOs\" />
     <Folder Include="Profiles\" />
     <Folder Include="Context\" />
-    <Folder Include="Services\" />
     <Folder Include="Models\DTOs\User\" />
     <Folder Include="Models\DTOs\Office\" />
     <Folder Include="Models\DTOs\Seat\" />
     <Folder Include="Models\DTOs\Room\" />
     <Folder Include="Models\DTOs\Booking\" />
+    <Folder Include="Repositories\User\" />
+    <Folder Include="Repositories\Seat\" />
+    <Folder Include="Repositories\Office\" />
+    <Folder Include="Repositories\Room\" />
+    <Folder Include="Repositories\Booking\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

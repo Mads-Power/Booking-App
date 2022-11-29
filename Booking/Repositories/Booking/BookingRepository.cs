@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-namespace BookingApp.Services
+namespace BookingApp.Repositories
 {
-	public class BookingService
+	public class BookingRepository : IBookingRepository
 	{
         private readonly OfficeDbContext _context;
 
-        public BookingService(OfficeDbContext context)
+        public BookingRepository(OfficeDbContext context)
         {
             _context = context;
         }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
-using BookingApp.Services;
+using BookingApp.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers
@@ -18,20 +18,12 @@ namespace BookingApp.Controllers
     public class RoomController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly OfficeService _officeService;
-        private readonly UserService _userService;
-        private readonly RoomService _roomService;
-        private readonly SeatService _seatService;
-        private readonly BookingService _bookingService;
+        private readonly IRoomRepository _roomRepository;
 
-        public RoomController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
+        public RoomController(IMapper mapper, RoomRepository roomRepository)
         {
             _mapper = mapper;
-            _officeService = officeService;
-            _userService = userService;
-            _roomService = roomService;
-            _seatService = seatService;
-            _bookingService = bookingService;
+            _roomRepository = roomRepository;
         }
 
         // HTTP requests
@@ -43,7 +35,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<RoomReadDTO>>> GetAllRooms()
         {
-            var rooms = await _roomService.GetAllRooms();
+            var rooms = await _roomRepository.GetAllRooms();
 
             return _mapper.Map<List<RoomReadDTO>>(rooms);
         }
@@ -61,7 +53,7 @@ namespace BookingApp.Controllers
         {
             try
             {
-                var room = await _roomService.GetRoomAsync(roomId);
+                var room = await _roomRepository.GetRoomAsync(roomId);
 
                 return _mapper.Map<RoomReadDTO>(room);
             }
@@ -85,7 +77,7 @@ namespace BookingApp.Controllers
 
             var domainRoom = _mapper.Map<Room>(dtoRoom);
 
-            await _roomService.AddAsync(domainRoom);
+            await _roomRepository.AddAsync(domainRoom);
 
             return CreatedAtAction("GetRoom",
                 new { roomId = domainRoom.Id },
@@ -112,7 +104,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainRoom = await _roomService.GetRoomAsync(roomId);
+            var domainRoom = await _roomRepository.GetRoomAsync(roomId);
 
             if (domainRoom != null)
             {
@@ -125,7 +117,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _roomService.UpdateAsync(domainRoom);
+                await _roomRepository.UpdateAsync(domainRoom);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -146,12 +138,12 @@ namespace BookingApp.Controllers
         [HttpDelete("roomId")]
         public async Task<IActionResult> DeleteRoom(int roomId)
         {
-            if (!_roomService.RoomExists(roomId))
+            if (!_roomRepository.RoomExists(roomId))
             {
                 return NotFound();
             }
 
-            await _roomService.DeleteAsync(roomId);
+            await _roomRepository.DeleteAsync(roomId);
 
             return NoContent();
         }
@@ -169,7 +161,7 @@ namespace BookingApp.Controllers
         {
             try
             {
-                var seats = await _roomService.GetSeatsInRoom(roomId);
+                var seats = await _roomRepository.GetSeatsInRoom(roomId);
 
                 return _mapper.Map<List<SeatReadDTO>>(seats);
             }
@@ -192,7 +184,7 @@ namespace BookingApp.Controllers
         {
             try
             {
-                var users = await _roomService.GetSignedInUsersInRoom(roomId);
+                var users = await _roomRepository.GetSignedInUsersInRoom(roomId);
 
                 return _mapper.Map<List<UserReadDTO>>(users);
             }
@@ -205,7 +197,7 @@ namespace BookingApp.Controllers
         private ValidationResult ValidateCreateRoom(RoomCreateDTO roomDto)
         {
             // see if room with that id already exists
-            //if (_roomService.RoomExists(roomDto.Id) {
+            //if (_roomRepository.RoomExists(roomDto.Id) {
             //    return new ValidationResult(false, "Please provide a unique Id")
             //}
 

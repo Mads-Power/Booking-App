@@ -4,13 +4,13 @@ using BookingApp.Context;
 using BookingApp.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookingApp.Services
+namespace BookingApp.Repositories
 {
-	public class UserService
+	public class UserRepository : IUserRepository
 	{
         private readonly OfficeDbContext _context;
 
-        public UserService(OfficeDbContext context)
+        public UserRepository(OfficeDbContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace BookingApp.Services
             return _context.Users.Find(userId) != null;
         }
 
-        public async Task<List<User>> GetAllUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }

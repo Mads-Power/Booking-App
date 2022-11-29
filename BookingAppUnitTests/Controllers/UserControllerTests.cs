@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using BookingApp.Controllers;
-using BookingApp.Services;
+using BookingApp.Repositories;
 using Moq;
 
 namespace BookingAppUnitTests.Controllers
