@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { Seat } from "../types";
+import { Seat } from "../../../types";
 
 const Seats = styled.button`
   display: flex;
@@ -25,10 +25,8 @@ const Seats = styled.button`
 // interface ISeatsProps {
 //   getAllSeats: Seat[];
 // }
-export const url = "rooms.json";
-const GetSeat = ({ seatId, id, isTaken }: Seat) => {
-  const res = fetch(url);
 
+const GetSeat: FC<Seat> = ({ seatId, id, isTaken }: Seat) => {
   return (
     <>
       <Seats>

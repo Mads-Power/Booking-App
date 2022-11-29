@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import GetSeat from "../features/seats/components/GetSeat";
+import GetSeats from "../features/seats/components/GetSeats";
 import { Seat } from "../features/seats/types";
 import { Container } from "../styles/GlobalStyles";
 
@@ -25,7 +27,6 @@ const Seats = styled.button`
 
 const RoomOne = () => {
   const [active, setActive] = useState(false);
-  const nSeats = [1, 2, 3, 4, 5];
 
   const handleClick = () => {
     setActive(!active);
@@ -35,16 +36,13 @@ const RoomOne = () => {
     <>
       <h1>Room one</h1>
       <Container>
+        <GetSeats />
         <Seats
           onClick={handleClick}
           style={{ backgroundColor: active ? " #54a4d1" : "#df8b0d" }}
         >
-          1
+          background color change
         </Seats>
-        <Seats>2</Seats>
-        <Seats>3</Seats>
-        <Seats>4</Seats>
-        <Seats>5</Seats>
       </Container>
     </>
   );

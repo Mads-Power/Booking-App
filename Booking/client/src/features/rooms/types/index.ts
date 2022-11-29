@@ -1,6 +1,6 @@
-import { Seat } from '../../seats/types';
+import { Seat } from "../../seats/types";
 
 export type Room = {
   id: number;
-  seats: Seat[];
+  seats: Seat;
 };
