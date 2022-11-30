@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { Seat } from "../../../types";
 
@@ -22,14 +22,18 @@ const Seats = styled.button`
   }
 `;
 
-// interface ISeatsProps {
-//   getAllSeats: Seat[];
-// }
-
 const GetSeat: FC<Seat> = ({ seatId, id, isTaken }: Seat) => {
+  const [active, setActive] = useState(false);
+
+  const handleClick = () => {
+    setActive(!active);
+  };
   return (
     <>
-      <Seats>
+      <Seats
+        onClick={handleClick}
+        style={{ backgroundColor: active ? "#df8b0d" : "#54a4d1" }}
+      >
         {seatId} {id} {isTaken}
       </Seats>
     </>

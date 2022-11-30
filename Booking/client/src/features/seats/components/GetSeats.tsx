@@ -1,17 +1,13 @@
 import React, { FC, useEffect, useState } from "react";
-import { Room } from "../../../types";
 import GetSeat from "./GetSeat";
-import { roomOneOslo } from "../../../data/rooms";
 import { useQuery } from "@tanstack/react-query";
-import { fetchRoom } from "../api/getRooms.api";
+import { fetchRoomOne } from "../api/getRooms.api";
 
 const GetSeats = () => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["room"],
-    queryFn: fetchRoom,
+    queryFn: fetchRoomOne,
   });
-
-  // const [activeCountries, setActiveCountries] = useState<Country[]>([]);
 
   if (isLoading) return <div>Laster inn rooms</div>;
 
