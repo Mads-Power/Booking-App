@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from "react";
 import GetSeat from "./GetSeat";
 import { useQuery } from "@tanstack/react-query";
-import { fetchRoomOne } from "../api/getRooms.api";
+import { fetchRoomOne, fetchRoomTwo } from "../api/getRooms.api";
+import { TestContainer } from "../../../styles/GlobalStyles";
 
-const GetSeats = () => {
+export const GetSeats = () => {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["room"],
     queryFn: fetchRoomOne,
@@ -16,15 +17,8 @@ const GetSeats = () => {
   return (
     <div>
       {data.seats.map((item) => (
-        <GetSeat
-          key={item.id}
-          id={item.id}
-          seatId={item.seatId}
-          isTaken={item.isTaken}
-        />
+        <GetSeat key={item.id} {...item} />
       ))}
     </div>
   );
 };
-
-export default GetSeats;

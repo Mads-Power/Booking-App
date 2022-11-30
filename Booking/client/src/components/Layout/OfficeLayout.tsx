@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Container, ContainerMain } from "../../styles/GlobalStyles";
+import {
+  Container,
+  ContainerMain,
+  TestContainer,
+} from "../../styles/GlobalStyles";
 Container;
 import { Link } from "react-router-dom";
 
@@ -16,7 +20,7 @@ const ChooseOfficeButton = styled.button`
 const OfficeLayout = () => {
   return (
     <>
-      <ContainerMain>
+      <TestContainer>
         <Link to="/officeOslo">
           <ChooseOfficeButton>
             <span></span>
@@ -34,7 +38,7 @@ const OfficeLayout = () => {
           <span></span>
           DRAMMEN
         </ChooseOfficeButton>
-      </ContainerMain>
+      </TestContainer>
     </>
   );
 };

@@ -1,5 +1,5 @@
-import GetSeats from "../features/seats/components/GetSeats";
-import { Container } from "../styles/GlobalStyles";
+import { GetSeats } from "../features/seats/components/GetSeats";
+import { Container, TestContainer } from "../styles/GlobalStyles";
 
 const RoomOne = () => {
   return (
@@ -25,7 +25,6 @@ const OfficeOslo = () => {
   return (
     <div>
       <RoomOne />
-      <hr />
       <RoomTwo />
     </div>
   );
