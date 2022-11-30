@@ -51,16 +51,14 @@ namespace BookingApp.Controllers
         [HttpGet("{officeId}")]
         public async Task<ActionResult<OfficeReadDTO>> GetOffice(int officeId)
         {
-            try
-            {
-                var office = await _officeRepository.GetOfficeAsync(officeId);
+            var office = await _officeRepository.GetOfficeAsync(officeId);
 
-                return _mapper.Map<OfficeReadDTO>(office);
-            }
-            catch (NullReferenceException)
+            if (office == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<OfficeReadDTO>(office);
         }
 
         /// <summary>

@@ -13,11 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped(typeof(UserRepository));
-builder.Services.AddScoped(typeof(OfficeRepository));
-builder.Services.AddScoped(typeof(RoomRepository));
-builder.Services.AddScoped(typeof(SeatRepository));
-builder.Services.AddScoped(typeof(BookingRepository));
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<IOfficeRepository,OfficeRepository>();
+builder.Services.AddScoped<IRoomRepository,RoomRepository>();
+builder.Services.AddScoped<ISeatRepository,SeatRepository>();
+builder.Services.AddScoped<IBookingRepository,BookingRepository>();
 
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();

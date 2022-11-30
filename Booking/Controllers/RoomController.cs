@@ -51,16 +51,14 @@ namespace BookingApp.Controllers
         [HttpGet("{roomId}")]
         public async Task<ActionResult<RoomReadDTO>> GetRoom(int roomId)
         {
-            try
-            {
-                var room = await _roomRepository.GetRoomAsync(roomId);
+            var room = await _roomRepository.GetRoomAsync(roomId);
 
-                return _mapper.Map<RoomReadDTO>(room);
-            }
-            catch (NullReferenceException)
+            if (room == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<RoomReadDTO>(room);
         }
 
         /// <summary>

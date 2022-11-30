@@ -52,16 +52,14 @@ namespace BookingApp.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserReadDTO>> GetUser(int userId)
         {
-            try
-            {
-                var user = await _userRepository.GetUserAsync(userId);
+            var user = await _userRepository.GetUserAsync(userId);
 
-                return _mapper.Map<UserReadDTO>(user);
-            }
-            catch (NullReferenceException)
+            if (user == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<UserReadDTO>(user);
         }
 
         /// <summary>
