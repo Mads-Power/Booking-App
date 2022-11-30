@@ -37,12 +37,12 @@ const RoomOne = () => {
       <h1>Room one</h1>
       <Container>
         <GetSeats />
-        <Seats
+        {/* <Seats
           onClick={handleClick}
           style={{ backgroundColor: active ? " #54a4d1" : "#df8b0d" }}
         >
           background color change
-        </Seats>
+        </Seats> */}
       </Container>
     </>
   );

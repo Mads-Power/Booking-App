@@ -12,7 +12,7 @@ export interface Seat {
   isTaken: boolean;
 }
 
-// Måter å bruke type eller enum
+// Måter å bruke type eller enum, kan bruker for å velge kontor f.eks
 export type OfficeType = "Oslo" | "Drammen";
 export enum OfficeEnum {
   Oslo = "Oslo",
