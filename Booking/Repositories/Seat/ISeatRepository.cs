@@ -7,7 +7,7 @@ namespace BookingApp.Repositories
 	public interface ISeatRepository
 	{
         public bool SeatExists(int seatId);
-        public Task<List<Seat>> GetAllSeats();
+        public Task<List<Seat>> GetSeatsAsync();
         public Task<Seat?> GetSeatAsync(int seatId);
         public Task<Seat> AddAsync(Seat newSeat);
         public Task UpdateAsync(Seat updatedSeat);

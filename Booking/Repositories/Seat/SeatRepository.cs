@@ -22,7 +22,7 @@ namespace BookingApp.Repositories
             return _context.Seats.Find(seatId) != null;
         }
 
-        public async Task<List<Seat>> GetAllSeats()
+        public async Task<List<Seat>> GetSeatsAsync()
         {
             return await _context.Seats.ToListAsync();
         }

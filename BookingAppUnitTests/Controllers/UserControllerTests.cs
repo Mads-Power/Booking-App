@@ -187,7 +187,7 @@ namespace BookingAppUnitTests.Controllers
         }
 
         [Fact]
-        public async void PutUser_WhenExists_ReturnsNoContent()
+        public async void DeleteUser_WhenExists_ReturnsNoContent()
         {
             // Arrange
             var userId = 2;

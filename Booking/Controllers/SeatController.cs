@@ -38,7 +38,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SeatReadDTO>>> GetAllSeats()
         {
-            var seats = await _seatRepository.GetAllSeats();
+            var seats = await _seatRepository.GetSeatsAsync();
 
             return _mapper.Map<List<SeatReadDTO>>(seats);
         }
