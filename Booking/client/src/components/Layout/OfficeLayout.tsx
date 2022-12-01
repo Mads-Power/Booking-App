@@ -1,44 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import {
-  Container,
-  ContainerMain,
-  TestContainer,
-} from "../../styles/GlobalStyles";
-Container;
-import { Link } from "react-router-dom";
-
-const ChooseOfficeButton = styled.button`
-  padding: 30px 61px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-`;
+import { Button } from '@mui/material';
+import React from 'react';
 
 const OfficeLayout = () => {
   return (
     <>
-      <TestContainer>
-        <Link to="/officeOslo">
-          <ChooseOfficeButton>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            OSLO
-          </ChooseOfficeButton>
-        </Link>
-
-        <ChooseOfficeButton>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          DRAMMEN
-        </ChooseOfficeButton>
-      </TestContainer>
+      <Button variant='contained'>OSLO</Button>
+      <Button variant='contained'>DRAMMEN</Button>
     </>
   );
 };

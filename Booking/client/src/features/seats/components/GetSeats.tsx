@@ -1,13 +1,12 @@
-import React, { FC, useEffect, useState } from "react";
-import GetSeat from "./GetSeat";
-import { useQuery } from "@tanstack/react-query";
-import { fetchRoomOne, fetchRoomTwo } from "../api/getRooms.api";
-import { TestContainer } from "../../../styles/GlobalStyles";
+import React, { useEffect, useState } from 'react';
+import GetSeat from './GetSeat';
+import { useQuery } from '@tanstack/react-query';
+import { getSeats } from '../api/getSeats';
 
 export const GetSeats = () => {
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["room"],
-    queryFn: fetchRoomOne,
+    queryKey: ['room'],
+    queryFn: () => getSeats(),
   });
 
   if (isLoading) return <div>Laster inn rooms</div>;
@@ -16,7 +15,7 @@ export const GetSeats = () => {
 
   return (
     <div>
-      {data.seats.map((item) => (
+      {data.map((item: any) => (
         <GetSeat key={item.id} {...item} />
       ))}
     </div>

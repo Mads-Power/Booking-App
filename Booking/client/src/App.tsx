@@ -1,29 +1,13 @@
-import Home from "./components/Home";
-import { Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/NavBar";
-import { Container } from "react-bootstrap";
-import OfficeLayout from "./components/Layout/OfficeLayout";
-import OfficeOslo from "./components/OfficeOslo";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppProvider } from './components/Provider/app';
+import OfficeLayout from './components/Layout/OfficeLayout';
+import MainLayout from './components/Layout/MainLayout';
+import SeatLayout from './components/Layout/SeatLayout';
+import GetSeat from './features/seats/components/GetSeat';
+import Seat from './data/seats.json';
 
 function App() {
-  const queryClient = new QueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div>
-        <Navbar />
-        <Container className="mb-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/OfficeLayout" element={<OfficeLayout />} />
-            <Route path="/officeOslo" element={<OfficeOslo />} />
-          </Routes>
-        </Container>
-      </div>
-    </QueryClientProvider>
-  );
+  const { id, isTaken, seatId } = Seat.seat;
+  return <AppProvider children={<GetSeat id={id} isTaken={isTaken} seatId={seatId} />} />;
 }
 
 export default App;
