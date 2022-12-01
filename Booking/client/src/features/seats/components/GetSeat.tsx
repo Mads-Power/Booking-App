@@ -1,10 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Seat } from '../types';
 import Dialog from '@mui/material/Dialog';
 import { DialogActions, DialogContent } from '@mui/material';
 import Button from '@mui/material/Button';
 
-const GetSeat: FC<Seat> = ({ seatId }: Seat) => {
+const GetSeat = ({ seatId }: Seat) => {
   return (
     <>
       {/* <Dialog open={open} onClose={handleClose}>
