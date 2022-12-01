@@ -9,6 +9,7 @@ using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
+using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers

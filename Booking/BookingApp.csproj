@@ -58,6 +58,7 @@
     <None Remove="Models\DTOs\Seat\" />
     <None Remove="Models\DTOs\Room\" />
     <None Remove="Models\DTOs\Booking\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,6 +78,7 @@
     <Folder Include="Repositories\Office\" />
     <Folder Include="Repositories\Room\" />
     <Folder Include="Repositories\Booking\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

@@ -6,18 +6,22 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Routing;
 using System.Reflection;
+using BookingApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+// Add dependency injection containers
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IOfficeRepository,OfficeRepository>();
 builder.Services.AddScoped<IRoomRepository,RoomRepository>();
 builder.Services.AddScoped<ISeatRepository,SeatRepository>();
 builder.Services.AddScoped<IBookingRepository,BookingRepository>();
+builder.Services.AddScoped<IDateTimeProvider,DateTimeProvider>();
 
 builder.Services.AddDbContext<OfficeDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DevConnection")));
 builder.Services.AddEndpointsApiExplorer();

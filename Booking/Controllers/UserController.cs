@@ -10,6 +10,7 @@ using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
+using BookingApp.Helpers;
 
 namespace BookingApp.Controllers
 {
@@ -21,13 +22,15 @@ namespace BookingApp.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ISeatRepository _seatRepository;
         private readonly IBookingRepository _bookingRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public UserController(IMapper mapper, IUserRepository userRepository, ISeatRepository seatRepository, IBookingRepository bookingRepository)
+        public UserController(IMapper mapper, IUserRepository userRepository, ISeatRepository seatRepository, IBookingRepository bookingRepository, IDateTimeProvider dateTimeProvider)
         {
             _mapper = mapper;
             _userRepository = userRepository;
             _seatRepository = seatRepository;
             _bookingRepository = bookingRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         // HTTP requests
@@ -167,7 +170,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var dateTime = DateTime.Parse(date).ToUniversalTime();
+            var dateTime = _dateTimeProvider.Parse(date);
 
             var domainUser = await _userRepository.GetUserAsync(userId);
             var domainSeat = await _seatRepository.GetSeatAsync(seatId);
@@ -208,7 +211,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var dateTime = DateTime.Parse(date).ToUniversalTime();
+            var dateTime = _dateTimeProvider.Parse(date);
 
             var domainUser = await _userRepository.GetUserAsync(userId);
 
@@ -248,7 +251,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                dateTime = DateTime.Parse(date).ToUniversalTime();
+                dateTime = _dateTimeProvider.Parse(date);
             }
             catch (Exception)
             {
@@ -256,7 +259,7 @@ namespace BookingApp.Controllers
             }
 
             // validate that date is not in the past
-            if (DateTime.Compare(dateTime.Date, DateTime.Today.Date) < 0)
+            if (_dateTimeProvider.Compare(dateTime.Date, _dateTimeProvider.Today().Date) < 0)
             {
                 return new ValidationResult(false, "Cannot book for past dates");
             }
@@ -266,6 +269,12 @@ namespace BookingApp.Controllers
             if (_bookingRepository.GetBookingByDateAndSeat(dateTime,seatId) != null)
             {
                 return new ValidationResult(false, "Seat already booked that day");
+            }
+
+            // validate if user already booked a seat that day
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, userId) != null)
+            {
+                return new ValidationResult(false, "User already booked that day");
             }
 
             return new ValidationResult(true);
@@ -279,7 +288,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                dateTime = DateTime.Parse(date).ToUniversalTime();
+                dateTime = _dateTimeProvider.Parse(date);
             }
             catch (Exception)
             {

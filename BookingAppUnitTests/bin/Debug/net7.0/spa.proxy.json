@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:44457",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "/Users/emilonsoyen/Projects/Booking-App/Booking/client/",
+"MaxTimeoutInSeconds": "120"
+}
+}

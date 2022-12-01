@@ -9,6 +9,7 @@ using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
+using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers
@@ -61,7 +62,6 @@ namespace BookingApp.Controllers
             }
 
             return _mapper.Map<SeatReadDTO>(seat);
-            }
         }
 
         /// <summary>
