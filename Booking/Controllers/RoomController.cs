@@ -20,11 +20,13 @@ namespace BookingApp.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public RoomController(IMapper mapper, RoomRepository roomRepository)
+        public RoomController(IMapper mapper, IRoomRepository roomRepository, IDateTimeProvider dateTimeProvider)
         {
             _mapper = mapper;
             _roomRepository = roomRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         // HTTP requests
@@ -36,7 +38,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<RoomReadDTO>>> GetAllRooms()
         {
-            var rooms = await _roomRepository.GetAllRooms();
+            var rooms = await _roomRepository.GetRoomsAsync();
 
             return _mapper.Map<List<RoomReadDTO>>(rooms);
         }
@@ -158,39 +160,37 @@ namespace BookingApp.Controllers
         [HttpGet("{roomId}/Seats")]
         public async Task<ActionResult<List<SeatReadDTO>>> GetSeatsInRoom(int roomId)
         {
-            try
-            {
-                var seats = await _roomRepository.GetSeatsInRoom(roomId);
+            var seats = await _roomRepository.GetSeatsInRoom(roomId);
 
-                return _mapper.Map<List<SeatReadDTO>>(seats);
-            }
-            catch (NullReferenceException)
+            if (seats == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<List<SeatReadDTO>>(seats);
         }
 
         /// <summary>
-        ///     Get all users with seats booked in the room.
+        ///     Get all bookings in the room for the given date.
         /// </summary>
-        /// <param name="roomId">If of the room.</param>
+        /// <param name="roomId"> Id of the room.</param>
+        /// <param name="date"> Date for the bookings.</param>
         /// <returns>
-        ///     List of user read DTOs.
+        ///     List of booking read DTOs.
         ///     NotFound if room id is invalid.
         /// </returns>
-        [HttpGet("{roomId}/Users")]
-        public async Task<ActionResult<List<UserReadDTO>>> GetUsersInRoom(int roomId)
+        [HttpGet("{roomId}/Bookings")]
+        public async Task<ActionResult<List<BookingReadDTO>>> GetTodaysBookingsInRoom(int roomId, [FromQuery] string date)
         {
-            try
-            {
-                var users = await _roomRepository.GetSignedInUsersInRoom(roomId);
+            var dateTime = _dateTimeProvider.Parse(date);
+            var bookings = await _roomRepository.GetTodaysBookingsInRoom(roomId, dateTime);
 
-                return _mapper.Map<List<UserReadDTO>>(users);
-            }
-            catch (NullReferenceException)
+            if (bookings == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
 
         private ValidationResult ValidateCreateRoom(RoomCreateDTO roomDto)

@@ -22,7 +22,7 @@ namespace BookingApp.Repositories
             return _context.Rooms.Find(roomId) != null;
         }
 
-        public async Task<List<Room>> GetAllRooms()
+        public async Task<List<Room>> GetRoomsAsync()
         {
             return await _context.Rooms.Include(room => room.Seats).ToListAsync();
         }
@@ -63,19 +63,21 @@ namespace BookingApp.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<User>> GetSignedInUsersInRoom(int roomId)
+        public async Task<List<Booking>> GetTodaysBookingsInRoom(int roomId, DateTime date)
         {
-            var users = (from room in _context.Rooms
-                         join seat in _context.Seats
-                         on room.Id equals seat.RoomId
-                         join su in _context.Bookings
-                         on seat.Id equals su.SeatId
-                         join user in _context.Users
-                         on su.UserId equals user.Id
-                         where room.Id == roomId
-                         select user).ToListAsync();
+            // Note: Since dateProvider parses dates to UTC, we go to previous date at 23:00. Using date.Date will then
+            // give us the previous day. Therefore, adding one day to get input date correctly.
+            var bookings = (from room in _context.Rooms
+                            join seat in _context.Seats
+                            on room.Id equals seat.RoomId
+                            join booking in _context.Bookings
+                            on seat.Id equals booking.SeatId
+                            join user in _context.Users
+                            on booking.UserId equals user.Id
+                            where room.Id == roomId && booking.Date.Date == date.Date.AddDays(1) // Handle UTC+1
+                            select booking).ToListAsync();
 
-            return await users;
+            return await bookings;
         }
     }
 }
