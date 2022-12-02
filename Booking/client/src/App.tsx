@@ -1,20 +1,13 @@
-import { useState } from "react";
-import Button from "./components/Button";
-import BookingForm from "./components/BookingForm";
-import CheckIn from "./components/Home";
-import List from "./components/List";
-import Home from "./components/Home";
-import { Routes, Route } from "react-router-dom";
+import { AppProvider } from './components/Provider/app';
+import OfficeLayout from './components/Layout/OfficeLayout';
+import MainLayout from './components/Layout/MainLayout';
+import SeatLayout from './components/Layout/SeatLayout';
+import GetSeat from './features/seats/components/GetSeat';
+import Seat from './data/seats.json';
 
 function App() {
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/list" element={<List />} />
-      </Routes>
-    </div>
-  );
+  const { id, isTaken, seatId } = Seat.seat;
+  return <AppProvider children={<GetSeat id={id} isTaken={isTaken} seatId={seatId} />} />;
 }
 
 export default App;

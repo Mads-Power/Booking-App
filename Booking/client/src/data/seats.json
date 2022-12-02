@@ -1,0 +1,7 @@
+{
+  "seat": {
+    "id": 1,
+    "seatId": 1,
+    "isTaken": false
+  }
+}
