@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookingApp.Services
+namespace BookingApp.Repositories
 {
-	public class OfficeService
+	public class OfficeRepository : IOfficeRepository
 	{
 		private readonly OfficeDbContext _context;
 
-		public OfficeService(OfficeDbContext context)
+		public OfficeRepository(OfficeDbContext context)
 		{
 			_context = context;
 		}
@@ -22,7 +22,7 @@ namespace BookingApp.Services
             return _context.Offices.Find(officeId) != null;
         }
 
-        public async Task<List<Office>> GetAllOffices()
+        public async Task<List<Office>> GetOfficesAsync()
         {
             return await _context.Offices.Include(office => office.Rooms)
                 .Include(office => office.Users).ToListAsync();

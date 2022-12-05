@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
-using BookingApp.Services;
+using BookingApp.Repositories;
+using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers
@@ -18,20 +19,12 @@ namespace BookingApp.Controllers
     public class OfficeController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly OfficeService _officeService;
-        private readonly UserService _userService;
-        private readonly RoomService _roomService;
-        private readonly SeatService _seatService;
-        private readonly BookingService _bookingService;
+        private readonly IOfficeRepository _officeRepository;
 
-        public OfficeController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
+        public OfficeController(IMapper mapper, IOfficeRepository officeRepository)
         {
             _mapper = mapper;
-            _officeService = officeService;
-            _userService = userService;
-            _roomService = roomService;
-            _seatService = seatService;
-            _bookingService = bookingService;
+            _officeRepository = officeRepository;
         }
 
         // HTTP requests
@@ -43,7 +36,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OfficeReadDTO>>> GetAllOffices()
         {
-            var offices = await _officeService.GetAllOffices();
+            var offices = await _officeRepository.GetOfficesAsync();
 
             return _mapper.Map<List<OfficeReadDTO>>(offices);
         }
@@ -59,16 +52,14 @@ namespace BookingApp.Controllers
         [HttpGet("{officeId}")]
         public async Task<ActionResult<OfficeReadDTO>> GetOffice(int officeId)
         {
-            try
-            {
-                var office = await _officeService.GetOfficeAsync(officeId);
+            var office = await _officeRepository.GetOfficeAsync(officeId);
 
-                return _mapper.Map<OfficeReadDTO>(office);
-            }
-            catch (NullReferenceException)
+            if (office == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<OfficeReadDTO>(office);
         }
 
         /// <summary>
@@ -85,7 +76,7 @@ namespace BookingApp.Controllers
 
             var domainOffice = _mapper.Map<Office>(dtoOffice);
 
-            await _officeService.AddAsync(domainOffice);
+            await _officeRepository.AddAsync(domainOffice);
 
             return CreatedAtAction("GetOffice",
                 new { officeId = domainOffice.Id },
@@ -112,7 +103,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainOffice = await _officeService.GetOfficeAsync(officeId);
+            var domainOffice = await _officeRepository.GetOfficeAsync(officeId);
 
             if (domainOffice != null)
             {
@@ -125,7 +116,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _officeService.UpdateAsync(domainOffice);
+                await _officeRepository.UpdateAsync(domainOffice);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -146,12 +137,12 @@ namespace BookingApp.Controllers
         [HttpDelete("officeId")]
         public async Task<IActionResult> DeleteOffice(int officeId)
         {
-            if (!_officeService.OfficeExists(officeId))
+            if (!_officeRepository.OfficeExists(officeId))
             {
                 return NotFound();
             }
 
-            await _officeService.DeleteAsync(officeId);
+            await _officeRepository.DeleteAsync(officeId);
 
             return NoContent();
         }

@@ -28,7 +28,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.4.3" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.4.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
@@ -49,7 +49,6 @@
     <None Remove="Profiles\" />
     <None Remove="Context\" />
     <None Remove="AutoMapper" />
-    <None Remove="Services\" />
     <None Remove="Models\DTOs\User\" />
     <None Remove="Models\DTOs\Office\" />
     <None Remove="Microsoft.OpenApi" />
@@ -59,6 +58,7 @@
     <None Remove="Models\DTOs\Seat\" />
     <None Remove="Models\DTOs\Room\" />
     <None Remove="Models\DTOs\Booking\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,12 +68,17 @@
     <Folder Include="Models\DTOs\" />
     <Folder Include="Profiles\" />
     <Folder Include="Context\" />
-    <Folder Include="Services\" />
     <Folder Include="Models\DTOs\User\" />
     <Folder Include="Models\DTOs\Office\" />
     <Folder Include="Models\DTOs\Seat\" />
     <Folder Include="Models\DTOs\Room\" />
     <Folder Include="Models\DTOs\Booking\" />
+    <Folder Include="Repositories\User\" />
+    <Folder Include="Repositories\Seat\" />
+    <Folder Include="Repositories\Office\" />
+    <Folder Include="Repositories\Room\" />
+    <Folder Include="Repositories\Booking\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

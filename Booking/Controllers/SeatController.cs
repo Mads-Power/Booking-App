@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
-using BookingApp.Services;
+using BookingApp.Repositories;
+using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers
@@ -18,20 +19,14 @@ namespace BookingApp.Controllers
     public class SeatController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly OfficeService _officeService;
-        private readonly UserService _userService;
-        private readonly RoomService _roomService;
-        private readonly SeatService _seatService;
-        private readonly BookingService _bookingService;
+        private readonly IRoomRepository _roomRepository;
+        private readonly ISeatRepository _seatRepository;
 
-        public SeatController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
+        public SeatController(IMapper mapper, IRoomRepository roomRepository, ISeatRepository seatRepository)
         {
             _mapper = mapper;
-            _officeService = officeService;
-            _userService = userService;
-            _roomService = roomService;
-            _seatService = seatService;
-            _bookingService = bookingService;
+            _roomRepository = roomRepository;
+            _seatRepository = seatRepository;
         }
 
         // HTTP requests
@@ -43,7 +38,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<SeatReadDTO>>> GetAllSeats()
         {
-            var seats = await _seatService.GetAllSeats();
+            var seats = await _seatRepository.GetSeatsAsync();
 
             return _mapper.Map<List<SeatReadDTO>>(seats);
         }
@@ -59,16 +54,14 @@ namespace BookingApp.Controllers
         [HttpGet("{seatId}")]
         public async Task<ActionResult<SeatReadDTO>> GetSeat(int seatId)
         {
-            try
-            {
-                var seat = await _seatService.GetSeatAsync(seatId);
+            var seat = await _seatRepository.GetSeatAsync(seatId);
 
-                return _mapper.Map<SeatReadDTO>(seat);
-            }
-            catch (NullReferenceException)
+            if (seat == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<SeatReadDTO>(seat);
         }
 
         /// <summary>
@@ -87,7 +80,7 @@ namespace BookingApp.Controllers
 
             var domainSeat = _mapper.Map<Seat>(dtoSeat);
 
-            await _seatService.AddAsync(domainSeat);
+            await _seatRepository.AddAsync(domainSeat);
 
             return CreatedAtAction("GetSeat",
                 new { seatId = domainSeat.Id },
@@ -114,7 +107,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainSeat = await _seatService.GetSeatAsync(seatId);
+            var domainSeat = await _seatRepository.GetSeatAsync(seatId);
 
             if (domainSeat != null)
             {
@@ -127,7 +120,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _seatService.UpdateAsync(domainSeat);
+                await _seatRepository.UpdateAsync(domainSeat);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -148,12 +141,12 @@ namespace BookingApp.Controllers
         [HttpDelete("seatId")]
         public async Task<IActionResult> DeleteSeat(int seatId)
         {
-            if (!_seatService.SeatExists(seatId))
+            if (!_seatRepository.SeatExists(seatId))
             {
                 return NotFound();
             }
 
-            await _seatService.DeleteAsync(seatId);
+            await _seatRepository.DeleteAsync(seatId);
 
             return NoContent();
         }
@@ -165,7 +158,7 @@ namespace BookingApp.Controllers
                 return new ValidationResult(false, "API endpoint and seat id must match");
             }
 
-            if (!_roomService.RoomExists(seatDto.RoomId))
+            if (!_roomRepository.RoomExists(seatDto.RoomId))
             {
                 return new ValidationResult(false, "Given room does not exist");
             }

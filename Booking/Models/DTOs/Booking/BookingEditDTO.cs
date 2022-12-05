@@ -6,6 +6,7 @@ namespace BookingApp.Models.DTOs
 {
 	public class BookingEditDTO
 	{
+        public int Id { get; set; }
         public int SeatId { get; set; }
         public int UserId { get; set; }
         public DateTime Date { get; set; }

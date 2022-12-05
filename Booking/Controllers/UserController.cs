@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
-using BookingApp.Services;
+using BookingApp.Repositories;
+using BookingApp.Helpers;
 
 namespace BookingApp.Controllers
 {
@@ -18,20 +19,18 @@ namespace BookingApp.Controllers
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly OfficeService _officeService;
-        private readonly UserService _userService;
-        private readonly RoomService _roomService;
-        private readonly SeatService _seatService;
-        private readonly BookingService _bookingService;
+        private readonly IUserRepository _userRepository;
+        private readonly ISeatRepository _seatRepository;
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public UserController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
+        public UserController(IMapper mapper, IUserRepository userRepository, ISeatRepository seatRepository, IBookingRepository bookingRepository, IDateTimeProvider dateTimeProvider)
         {
             _mapper = mapper;
-            _officeService = officeService;
-            _userService = userService;
-            _roomService = roomService;
-            _seatService = seatService;
-            _bookingService = bookingService;
+            _userRepository = userRepository;
+            _seatRepository = seatRepository;
+            _bookingRepository = bookingRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         // HTTP requests
@@ -43,7 +42,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserReadDTO>>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsers();
+            var users = await _userRepository.GetUsersAsync();
 
             return _mapper.Map<List<UserReadDTO>>(users);
         }
@@ -56,16 +55,14 @@ namespace BookingApp.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserReadDTO>> GetUser(int userId)
         {
-            try
-            {
-                var user = await _userService.GetUserAsync(userId);
+            var user = await _userRepository.GetUserAsync(userId);
 
-                return _mapper.Map<UserReadDTO>(user);
-            }
-            catch (NullReferenceException)
+            if (user == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<UserReadDTO>(user);
         }
 
         /// <summary>
@@ -82,7 +79,7 @@ namespace BookingApp.Controllers
 
             var domainUser = _mapper.Map<User>(dtoUser);
 
-            await _userService.AddAsync(domainUser);
+            await _userRepository.AddAsync(domainUser);
 
             return CreatedAtAction("GetUser",
                 new { userId = domainUser.Id },
@@ -109,7 +106,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainUser = await _userService.GetUserAsync(userId);
+            var domainUser = await _userRepository.GetUserAsync(userId);
 
             if (domainUser != null)
             {
@@ -122,7 +119,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _userService.UpdateAsync(domainUser);
+                await _userRepository.UpdateAsync(domainUser);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -143,12 +140,12 @@ namespace BookingApp.Controllers
         [HttpDelete("userId")]
         public async Task<IActionResult> DeleteUser(int userId)
         {
-            if (!_userService.UserExists(userId))
+            if (!_userRepository.UserExists(userId))
             {
                 return NotFound();
             }
 
-            await _userService.DeleteAsync(userId);
+            await _userRepository.DeleteAsync(userId);
 
             return NoContent();
         }
@@ -173,10 +170,10 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var dateTime = DateTime.Parse(date).ToUniversalTime();
+            var dateTime = _dateTimeProvider.Parse(date);
 
-            var domainUser = await _userService.GetUserAsync(userId);
-            var domainSeat = await _seatService.GetSeatAsync(seatId);
+            var domainUser = await _userRepository.GetUserAsync(userId);
+            var domainSeat = await _seatRepository.GetSeatAsync(seatId);
 
             if (domainUser == null || domainSeat == null)
             {
@@ -185,7 +182,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _bookingService.BookSeat(domainUser, domainSeat, dateTime);
+                await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -214,9 +211,9 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var dateTime = DateTime.Parse(date).ToUniversalTime();
+            var dateTime = _dateTimeProvider.Parse(date);
 
-            var domainUser = await _userService.GetUserAsync(userId);
+            var domainUser = await _userRepository.GetUserAsync(userId);
 
             if (domainUser == null)
             {
@@ -225,7 +222,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _bookingService.UnbookSeat(domainUser, dateTime);
+                await _bookingRepository.UnbookSeat(domainUser, dateTime);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -254,7 +251,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                dateTime = DateTime.Parse(date).ToUniversalTime();
+                dateTime = _dateTimeProvider.Parse(date);
             }
             catch (Exception)
             {
@@ -262,16 +259,22 @@ namespace BookingApp.Controllers
             }
 
             // validate that date is not in the past
-            if (DateTime.Compare(dateTime.Date, DateTime.Today.Date) < 0)
+            if (_dateTimeProvider.Compare(dateTime.Date, _dateTimeProvider.Today().Date) < 0)
             {
                 return new ValidationResult(false, "Cannot book for past dates");
             }
 
 
             // validate if seat is taken that day
-            if (_bookingService.GetBookingByDateAndSeat(dateTime,seatId) != null)
+            if (_bookingRepository.GetBookingByDateAndSeat(dateTime,seatId) != null)
             {
                 return new ValidationResult(false, "Seat already booked that day");
+            }
+
+            // validate if user already booked a seat that day
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, userId) != null)
+            {
+                return new ValidationResult(false, "User already booked that day");
             }
 
             return new ValidationResult(true);
@@ -285,7 +288,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                dateTime = DateTime.Parse(date).ToUniversalTime();
+                dateTime = _dateTimeProvider.Parse(date);
             }
             catch (Exception)
             {
@@ -293,7 +296,7 @@ namespace BookingApp.Controllers
             }
 
             // validate booking exists
-            if (_bookingService.GetBookingByDateAndUser(dateTime, userId) == null)
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, userId) == null)
             {
                 return new ValidationResult(false, "No booking found for the user on that day");
             }

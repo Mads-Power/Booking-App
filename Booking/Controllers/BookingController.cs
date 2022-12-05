@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
-using BookingApp.Services;
+using BookingApp.Repositories;
+using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingApp.Controllers
@@ -18,20 +19,12 @@ namespace BookingApp.Controllers
     public class BookingController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly OfficeService _officeService;
-        private readonly UserService _userService;
-        private readonly RoomService _roomService;
-        private readonly SeatService _seatService;
-        private readonly BookingService _bookingService;
+        private readonly IBookingRepository _bookingRepository;
 
-        public BookingController(IMapper mapper, OfficeService officeService, UserService userService, RoomService roomService, SeatService seatService, BookingService bookingService)
+        public BookingController(IMapper mapper, IBookingRepository bookingRepository)
         {
             _mapper = mapper;
-            _officeService = officeService;
-            _userService = userService;
-            _roomService = roomService;
-            _seatService = seatService;
-            _bookingService = bookingService;
+            _bookingRepository = bookingRepository;
         }
 
         // HTTP requests
@@ -43,7 +36,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<BookingReadDTO>>> GetAllBookings()
         {
-            var bookings = await _bookingService.GetAllBookings();
+            var bookings = await _bookingRepository.GetBookingsAsync();
 
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
@@ -59,16 +52,14 @@ namespace BookingApp.Controllers
         [HttpGet("{bookingId}")]
         public async Task<ActionResult<BookingReadDTO>> GetBooking(int bookingId)
         {
-            try
-            {
-                var booking = await _bookingService.GetBookingAsync(bookingId);
+            var booking = await _bookingRepository.GetBookingAsync(bookingId);
 
-                return _mapper.Map<BookingReadDTO>(booking);
-            }
-            catch (NullReferenceException)
+            if (booking == null)
             {
                 return NotFound();
             }
+
+            return _mapper.Map<BookingReadDTO>(booking);
         }
 
         /// <summary>
@@ -87,7 +78,7 @@ namespace BookingApp.Controllers
 
             var domainBooking = _mapper.Map<Booking>(dtoBooking);
 
-            await _bookingService.AddAsync(domainBooking);
+            await _bookingRepository.AddAsync(domainBooking);
 
             return CreatedAtAction("GetBooking",
                 new { bookingId = domainBooking.Id },
@@ -114,7 +105,7 @@ namespace BookingApp.Controllers
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainBooking = await _bookingService.GetBookingAsync(bookingId);
+            var domainBooking = await _bookingRepository.GetBookingAsync(bookingId);
 
             if (domainBooking != null)
             {
@@ -127,7 +118,7 @@ namespace BookingApp.Controllers
 
             try
             {
-                await _bookingService.UpdateAsync(domainBooking);
+                await _bookingRepository.UpdateAsync(domainBooking);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -148,19 +139,22 @@ namespace BookingApp.Controllers
         [HttpDelete("bookingId")]
         public async Task<IActionResult> DeleteBooking(int bookingId)
         {
-            if (!_bookingService.BookingExists(bookingId))
+            if (!_bookingRepository.BookingExists(bookingId))
             {
                 return NotFound();
             }
 
-            await _bookingService.DeleteAsync(bookingId);
+            await _bookingRepository.DeleteAsync(bookingId);
 
             return NoContent();
         }
 
         private ValidationResult ValidateUpdateBooking(BookingEditDTO bookingDto, int endpoint)
         {
-            // validation
+            if (endpoint != bookingDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and room id must match");
+            }
 
             return new ValidationResult(true);
         }
