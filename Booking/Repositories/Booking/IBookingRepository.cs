@@ -7,7 +7,7 @@ namespace BookingApp.Repositories
 	public interface IBookingRepository
 	{
         public bool BookingExists(int bookingId);
-        public Task<List<Booking>> GetAllBookings();
+        public Task<List<Booking>> GetBookingsAsync();
         public Task<Booking?> GetBookingAsync(int bookingId);
         public Booking? GetBookingByDateAndUser(DateTime date, int userId);
         public Booking? GetBookingByDateAndSeat(DateTime date, int seatId);

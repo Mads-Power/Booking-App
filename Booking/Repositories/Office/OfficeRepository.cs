@@ -22,7 +22,7 @@ namespace BookingApp.Repositories
             return _context.Offices.Find(officeId) != null;
         }
 
-        public async Task<List<Office>> GetAllOffices()
+        public async Task<List<Office>> GetOfficesAsync()
         {
             return await _context.Offices.Include(office => office.Rooms)
                 .Include(office => office.Users).ToListAsync();

@@ -22,7 +22,7 @@ namespace BookingApp.Repositories
             return _context.Bookings.Find(bookingId) != null;
         }
 
-        public async Task<List<Booking>> GetAllBookings()
+        public async Task<List<Booking>> GetBookingsAsync()
         {
             return await _context.Bookings.ToListAsync();
         }

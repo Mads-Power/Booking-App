@@ -36,7 +36,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<OfficeReadDTO>>> GetAllOffices()
         {
-            var offices = await _officeRepository.GetAllOffices();
+            var offices = await _officeRepository.GetOfficesAsync();
 
             return _mapper.Map<List<OfficeReadDTO>>(offices);
         }

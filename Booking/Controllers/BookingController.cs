@@ -36,7 +36,7 @@ namespace BookingApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<BookingReadDTO>>> GetAllBookings()
         {
-            var bookings = await _bookingRepository.GetAllBookings();
+            var bookings = await _bookingRepository.GetBookingsAsync();
 
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
@@ -151,7 +151,10 @@ namespace BookingApp.Controllers
 
         private ValidationResult ValidateUpdateBooking(BookingEditDTO bookingDto, int endpoint)
         {
-            // validation
+            if (endpoint != bookingDto.Id)
+            {
+                return new ValidationResult(false, "API endpoint and room id must match");
+            }
 
             return new ValidationResult(true);
         }
