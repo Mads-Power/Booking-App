@@ -232,7 +232,21 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(2, result.Count);
         }
 
-        // TODO: GetSeatsInRoom when nexists
+        [Fact]
+        public async void GetSeatsInRoom_WhenNexists_ReturnsEmptyList()
+        {
+            // Arrange
+            var roomId = 1;
+            _mockRoomRepository.Setup(repo => repo.GetSeatsInRoom(roomId)).ReturnsAsync(new List<Seat>());
+
+            // Act
+            var actionResult = await _controller.GetSeatsInRoom(roomId);
+
+            // Assert
+            var result = actionResult.Value;
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
 
         [Fact]
         public async void GetBookingsInRoomByDate_WhenExists_ReturnBookings()
@@ -256,7 +270,23 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(2, result.Count);
         }
 
-        // TODO: GetBookingsInRoomByDate when nexists
+        [Fact]
+        public async void GetBookingsInRoomByDate_WhenNexists_ReturnEmptyList()
+        {
+            // Arrange
+            var roomId = 1;
+            var date = "01-01-2022";
+            var mockDate = new FixedDateTimeProvider().Parse(date);
+            _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>());
+
+            // Act
+            var actionResult = await _controller.GetBookingsInRoomByDate(roomId, date);
+
+            // Assert
+            var result = actionResult.Value;
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
     }
 }
 
