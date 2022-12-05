@@ -13,7 +13,7 @@ namespace BookingApp.Repositories
         public Task UpdateAsync(Room updatedRoom);
         public Task DeleteAsync(int roomId);
         public Task<List<Seat>> GetSeatsInRoom(int roomId);
-        public Task<List<Booking>> GetTodaysBookingsInRoom(int roomId, DateTime date);
+        public Task<List<Booking>> GetBookingsInRoomByDate(int roomId, DateTime date);
     }
 }
 

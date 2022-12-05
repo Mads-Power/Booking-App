@@ -180,10 +180,10 @@ namespace BookingApp.Controllers
         ///     NotFound if room id is invalid.
         /// </returns>
         [HttpGet("{roomId}/Bookings")]
-        public async Task<ActionResult<List<BookingReadDTO>>> GetTodaysBookingsInRoom(int roomId, [FromQuery] string date)
+        public async Task<ActionResult<List<BookingReadDTO>>> GetBookingsInRoomByDate(int roomId, [FromQuery] string date)
         {
             var dateTime = _dateTimeProvider.Parse(date);
-            var bookings = await _roomRepository.GetTodaysBookingsInRoom(roomId, dateTime);
+            var bookings = await _roomRepository.GetBookingsInRoomByDate(roomId, dateTime);
 
             if (bookings == null)
             {

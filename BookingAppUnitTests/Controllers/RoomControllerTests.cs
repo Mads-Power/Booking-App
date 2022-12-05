@@ -24,13 +24,18 @@ namespace BookingAppUnitTests.Controllers
                 {
                     mc.AddProfile(new RoomProfile());
                     mc.AddProfile(new SeatProfile());
+                    mc.AddProfile(new BookingProfile());
                 });
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
+
+            // mock date
+            var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1));
+
             _mockRoomRepository = new Mock<IRoomRepository>();
             _controller = new RoomController(_mapper,
-                _mockRoomRepository.Object);
+                _mockRoomRepository.Object, fixedDate);
         }
 
         private static List<Room> GetTestRooms()
@@ -226,6 +231,32 @@ namespace BookingAppUnitTests.Controllers
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
         }
+
+        // TODO: GetSeatsInRoom when nexists
+
+        [Fact]
+        public async void GetBookingsInRoomByDate_WhenExists_ReturnBookings()
+        {
+            // Arrange
+            var roomId = 1;
+            var date = "01-01-2022";
+            var mockDate = new FixedDateTimeProvider().Parse(date);
+            _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>()
+            {
+                new Booking() {Id = 1, UserId = 1, SeatId = 1},
+                new Booking() {Id = 2, UserId = 2, SeatId = 2}
+            });
+
+            // Act
+            var actionResult = await _controller.GetBookingsInRoomByDate(roomId, date);
+
+            // Assert
+            var result = actionResult.Value;
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+        }
+
+        // TODO: GetBookingsInRoomByDate when nexists
     }
 }
 

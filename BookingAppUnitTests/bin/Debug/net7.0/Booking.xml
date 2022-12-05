@@ -155,13 +155,14 @@
                 NotFound if room id is invalid.
             </returns>
         </member>
-        <member name="M:BookingApp.Controllers.RoomController.GetUsersInRoom(System.Int32)">
+        <member name="M:BookingApp.Controllers.RoomController.GetBookingsInRoomByDate(System.Int32,System.String)">
             <summary>
-                Get all users with seats booked in the room.
+                Get all bookings in the room for the given date.
             </summary>
-            <param name="roomId">If of the room.</param>
+            <param name="roomId"> Id of the room.</param>
+            <param name="date"> Date for the bookings.</param>
             <returns>
-                List of user read DTOs.
+                List of booking read DTOs.
                 NotFound if room id is invalid.
             </returns>
         </member>

@@ -63,7 +63,7 @@ namespace BookingApp.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Booking>> GetTodaysBookingsInRoom(int roomId, DateTime date)
+        public async Task<List<Booking>> GetBookingsInRoomByDate(int roomId, DateTime date)
         {
             // Note: Since dateProvider parses dates to UTC, we go to previous date at 23:00. Using date.Date will then
             // give us the previous day. Therefore, adding one day to get input date correctly.
