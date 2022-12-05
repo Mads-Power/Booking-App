@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingApp.Migrations
 {
     [DbContext(typeof(OfficeDbContext))]
-    [Migration("20221125130938_InitialCreate")]
+    [Migration("20221205155014_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,7 +54,7 @@ namespace BookingApp.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2022, 11, 24, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2022, 12, 4, 23, 0, 0, 0, DateTimeKind.Utc),
                             SeatId = 1,
                             UserId = 1
                         });
@@ -251,16 +251,19 @@ namespace BookingApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OfficeId")
-                        .HasColumnType("integer");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeId");
 
                     b.ToTable("User");
 
@@ -268,32 +271,37 @@ namespace BookingApp.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "ted.mosby@himym.com",
                             Name = "Ted Mosby",
-                            OfficeId = 1
+                            PhoneNumber = "00000001"
                         },
                         new
                         {
                             Id = 2,
+                            Email = "marshall.eriksen@himym.com",
                             Name = "Marshall Eriksen",
-                            OfficeId = 1
+                            PhoneNumber = "00000002"
                         },
                         new
                         {
                             Id = 3,
+                            Email = "lily.aldrin@himym.com",
                             Name = "Lily Aldrin",
-                            OfficeId = 1
+                            PhoneNumber = "00000003"
                         },
                         new
                         {
                             Id = 4,
+                            Email = "barney.stinson@himym.com",
                             Name = "Barney Stinson",
-                            OfficeId = 1
+                            PhoneNumber = "00000004"
                         },
                         new
                         {
                             Id = 5,
+                            Email = "robin.scherbatsky@himym.com",
                             Name = "Robin Scherbatsky",
-                            OfficeId = 1
+                            PhoneNumber = "00000005"
                         });
                 });
 
@@ -338,22 +346,9 @@ namespace BookingApp.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("BookingApp.Models.Domain.User", b =>
-                {
-                    b.HasOne("BookingApp.Models.Domain.Office", "Office")
-                        .WithMany("Users")
-                        .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Office");
-                });
-
             modelBuilder.Entity("BookingApp.Models.Domain.Office", b =>
                 {
                     b.Navigation("Rooms");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("BookingApp.Models.Domain.Room", b =>

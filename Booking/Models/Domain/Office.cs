@@ -17,7 +17,6 @@ namespace BookingApp.Models.Domain
 		public string Name { get; set; }
 		public int Capacity { get; set; }
 
-		public ICollection<User> Users { get; set; }
         public ICollection<Room> Rooms { get; set; }
     }
 }

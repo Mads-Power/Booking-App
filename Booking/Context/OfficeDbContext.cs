@@ -20,14 +20,13 @@ namespace BookingApp.Context
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Create one-to-many Office and User relation by adding foreign key to Office
-            modelBuilder.Entity<User>()
-                .HasOne<Office>(user => user.Office)
-                .WithMany(office => office.Users)
-                .HasForeignKey(user => user.OfficeId);
-
             // Create one-to-many Office and Room relation by adding foreign key to Office
             modelBuilder.Entity<Room>()
                 .HasOne<Office>(room => room.Office)
@@ -194,35 +193,40 @@ namespace BookingApp.Context
             {
                 Id = 1,
                 Name = "Ted Mosby",
-                OfficeId = 1
+                Email = "ted.mosby@himym.com",
+                PhoneNumber = "00000001"
             });
 
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 2,
                 Name = "Marshall Eriksen",
-                OfficeId = 1
+                Email = "marshall.eriksen@himym.com",
+                PhoneNumber = "00000002"
             });
 
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 3,
                 Name = "Lily Aldrin",
-                OfficeId = 1
+                Email = "lily.aldrin@himym.com",
+                PhoneNumber = "00000003"
             });
 
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 4,
                 Name = "Barney Stinson",
-                OfficeId = 1
+                Email = "barney.stinson@himym.com",
+                PhoneNumber = "00000004"
             });
 
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 5,
                 Name = "Robin Scherbatsky",
-                OfficeId = 1
+                Email = "robin.scherbatsky@himym.com",
+                PhoneNumber = "00000005"
             });
 
             // Add Bookings

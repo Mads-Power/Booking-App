@@ -48,14 +48,12 @@ namespace BookingAppUnitTests.Controllers
             var user1 = new User()
             {
                 Id = 1,
-                Name = "Test User 1",
-                OfficeId = 1
+                Name = "Test User 1"
             };
             var user2 = new User()
             {
                 Id = 2,
-                Name = "Test User 2",
-                OfficeId = 2
+                Name = "Test User 2"
             };
             return new List<User>() { user1, user2 };
         }
@@ -125,7 +123,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PostUser_WhenValidModel_ReturnsNewUser()
         {
             // Arrange
-            var newUser = new UserCreateDTO() { Id = 3, Name = "Test User 3", OfficeId = 1 };
+            var newUser = new UserCreateDTO() { Id = 3, Name = "Test User 3" };
 
             // Act
             var actionResult = await _controller.PostUser(newUser);
@@ -148,7 +146,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenValidModel_ReturnsNoContent()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = 1, Name = "Updated User 1", OfficeId = 2 };
+            var updateUser = new UserEditDTO() { Id = 1, Name = "Updated User 1" };
             _mockUserRepository.Setup(repo => repo.GetUserAsync(1)).ReturnsAsync(GetTestUsers()[0]);
 
             // Act
@@ -162,7 +160,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenInvalidModel_ReturnsBadRequest()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = 1, Name = "Updated User 1", OfficeId = 2 };
+            var updateUser = new UserEditDTO() { Id = 1, Name = "Updated User 1" };
             _mockUserRepository.Setup(repo => repo.GetUserAsync(1)).ReturnsAsync(GetTestUsers()[0]);
 
             // Act
@@ -176,7 +174,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = 10, Name = "Not Found User", OfficeId = 1 };
+            var updateUser = new UserEditDTO() { Id = 10, Name = "Not Found User"};
             _mockUserRepository.Setup(repo => repo.GetUserAsync(1));
 
             // Act

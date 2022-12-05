@@ -29,6 +29,21 @@ namespace BookingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
                 {
@@ -43,26 +58,6 @@ namespace BookingApp.Migrations
                     table.PrimaryKey("PK_Room", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Room_Office_OfficeId",
-                        column: x => x.OfficeId,
-                        principalTable: "Office",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    OfficeId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_Office_OfficeId",
                         column: x => x.OfficeId,
                         principalTable: "Office",
                         principalColumn: "Id",
@@ -122,24 +117,24 @@ namespace BookingApp.Migrations
                 values: new object[] { 1, 20, "Lille Grensen" });
 
             migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Email", "Name", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, "ted.mosby@himym.com", "Ted Mosby", "00000001" },
+                    { 2, "marshall.eriksen@himym.com", "Marshall Eriksen", "00000002" },
+                    { 3, "lily.aldrin@himym.com", "Lily Aldrin", "00000003" },
+                    { 4, "barney.stinson@himym.com", "Barney Stinson", "00000004" },
+                    { 5, "robin.scherbatsky@himym.com", "Robin Scherbatsky", "00000005" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Room",
                 columns: new[] { "Id", "Capacity", "Name", "OfficeId" },
                 values: new object[,]
                 {
                     { 1, 10, "Storerommet", 1 },
                     { 2, 5, "Lillerommet", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "User",
-                columns: new[] { "Id", "Name", "OfficeId" },
-                values: new object[,]
-                {
-                    { 1, "Ted Mosby", 1 },
-                    { 2, "Marshall Eriksen", 1 },
-                    { 3, "Lily Aldrin", 1 },
-                    { 4, "Barney Stinson", 1 },
-                    { 5, "Robin Scherbatsky", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -167,7 +162,7 @@ namespace BookingApp.Migrations
             migrationBuilder.InsertData(
                 table: "Booking",
                 columns: new[] { "Id", "Date", "SeatId", "UserId" },
-                values: new object[] { 1, new DateTime(2022, 11, 24, 23, 0, 0, 0, DateTimeKind.Utc), 1, 1 });
+                values: new object[] { 1, new DateTime(2022, 12, 4, 23, 0, 0, 0, DateTimeKind.Utc), 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Booking_SeatId",
@@ -188,11 +183,6 @@ namespace BookingApp.Migrations
                 name: "IX_Seat_RoomId",
                 table: "Seat",
                 column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_OfficeId",
-                table: "User",
-                column: "OfficeId");
         }
 
         /// <inheritdoc />
