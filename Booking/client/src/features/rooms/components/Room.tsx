@@ -7,11 +7,6 @@ import { Rooms } from "../types";
 const Room = () => {
   const { isLoading, data, error } = useRooms();
 
-  const capacityHandler = () => {
-    // total kapasitet
-    // skal minimere hvis noen har booket den dagen
-  };
-
   if (isLoading) {
     return <CircularProgress size={100} />;
   }
