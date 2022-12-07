@@ -1,5 +1,6 @@
-export type Seat = {
+export type Seats = {
   id: number;
-  seatId: number;
-  isTaken: boolean;
+  name: string;
+  roomId: number;
+  bookings:[]
 };

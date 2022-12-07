@@ -1,20 +1,38 @@
-import { CircularProgress } from '@mui/material';
-import React, { useState } from 'react';
-import { Container } from '../../../styles/GlobalStyles';
-import { GetSeats } from '../../seats/components/GetSeats';
-import { useRooms } from '../api/getRooms';
+import { CircularProgress, Button, Container } from "@mui/material";
+import React, { useState } from "react";
+import { GetSeats } from "../../seats/components/GetSeats";
+import { useRooms } from "../api/getRooms";
+import { Rooms } from "../types";
 
 const Room = () => {
-  const rooms = useRooms();
+  const { isLoading, data, error } = useRooms();
 
-  if (rooms.isLoading) {
+  const capacityHandler = () => {
+    // total kapasitet
+    // skal minimere hvis noen har booket den dagen
+  };
+
+  if (isLoading) {
     return <CircularProgress size={100} />;
   }
 
-  if (!rooms?.data?.length) {
+  if (error) {
     return <h4>No Rooms Found</h4>;
   }
-  return <>{console.log(rooms.data)}</>;
+
+  return (
+    <>
+      {data?.map((rooms) => (
+        <Container>
+          <h1>{rooms.name}</h1>
+          <p>Kapasitet: {rooms.capacity}</p>
+          {rooms.seats.map((seat) => (
+            <Button>{seat.id}</Button>
+          ))}
+        </Container>
+      ))}{" "}
+    </>
+  );
 };
 
 export default Room;
