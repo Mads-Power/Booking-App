@@ -22,7 +22,7 @@
       "applicationUrl": "http://localhost:51249",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "FRONTEND_URL": "http://localhost:5174"
+        "FRONTEND_URL": "http://localhost:5173"
       }
     }
   }

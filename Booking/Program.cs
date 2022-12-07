@@ -34,13 +34,17 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddCors(options =>
 {
+
+   
     options.AddPolicy(name: "Client Origin",
                       builder => builder
-                      .WithOrigins(Environment.GetEnvironmentVariable("FRONTEND_URL"))
+      //                .WithOrigins("http://localhost:5173")
+                      .AllowAnyOrigin()
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       );
 });
+
 
 var app = builder.Build();
 
