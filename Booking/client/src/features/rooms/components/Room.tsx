@@ -26,9 +26,6 @@ const Room = () => {
         <Container>
           <h1>{rooms.name}</h1>
           <p>Kapasitet: {rooms.capacity}</p>
-          {rooms.seats.map((seat) => (
-            <Button>{seat.id}</Button>
-          ))}
         </Container>
       ))}{" "}
     </>
