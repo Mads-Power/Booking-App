@@ -29,7 +29,9 @@ namespace BookingApp.Repositories
 
         public async Task<Seat?> GetSeatAsync(int seatId)
         {
-            return await _context.Seats.FindAsync(seatId);
+            var seat = await _context.Seats.Include(seat => seat.Bookings).Where(seat => seat.Id == seatId).FirstOrDefaultAsync();
+
+            return seat;
         }
 
         public async Task<Seat> AddAsync(Seat newSeat)

@@ -39,7 +39,6 @@ namespace BookingApp.Controllers
         public async Task<ActionResult<List<SeatReadDTO>>> GetAllSeats()
         {
             var seats = await _seatRepository.GetSeatsAsync();
-
             return _mapper.Map<List<SeatReadDTO>>(seats);
         }
 
@@ -60,6 +59,8 @@ namespace BookingApp.Controllers
             {
                 return NotFound();
             }
+
+            seat.Bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
 
             return _mapper.Map<SeatReadDTO>(seat);
         }

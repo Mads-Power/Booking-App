@@ -139,7 +139,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutBooking_WhenValidModel_ReturnsNoContent()
         {
             // Arrange
-            var updateBooking = new BookingEditDTO() { SeatId = 3, UserId = 3 };
+            var updateBooking = new BookingEditDTO() {Id = 1, SeatId = 3, UserId = 3 };
             _mockBookingRepository.Setup(repo => repo.GetBookingAsync(1)).ReturnsAsync(GetTestBookings()[0]);
 
             // Act

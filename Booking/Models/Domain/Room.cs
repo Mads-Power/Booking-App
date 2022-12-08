@@ -20,7 +20,7 @@ namespace BookingApp.Models.Domain
         // Foreign Key
         public int OfficeId { get; set; }
 
-        public ICollection<Seat> Seats { get; set; }
+        public List<Seat> Seats { get; set; }
         public Office Office { get; set; }
     }
 }

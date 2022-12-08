@@ -62,6 +62,8 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
+            user.Bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
+
             return _mapper.Map<UserReadDTO>(user);
         }
 
@@ -160,9 +162,16 @@ namespace BookingApp.Controllers
         ///     NotFound if the ids don't match.
         ///     NoContent if seat was successfully booked.
         /// </returns>
-        [HttpPut("{userId}/Book/{seatId}")]
-        public async Task<IActionResult> UserBookSeat(int userId, int seatId, [FromQuery] string date)
+        [HttpPut("{userId}/Book")]
+        public async Task<IActionResult> UserBookSeat(int userId, [FromQuery] int seatId, [FromQuery] string date)
         {
+            var dateValidation = ValidationResult.ValidateDateString(date);
+
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
             var validation = ValidateUserBookSeat(userId, seatId, date);
 
             if (!validation.Result)
@@ -204,6 +213,13 @@ namespace BookingApp.Controllers
         [HttpPut("{userId}/Unbook")]
         public async Task<IActionResult> UserUnbookSeat(int userId, [FromQuery] string date)
         {
+            var dateValidation = ValidationResult.ValidateDateString(date);
+
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
             var validation = ValidateUserUnbookSeat(userId, date);
 
             if (!validation.Result)

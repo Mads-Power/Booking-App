@@ -28,7 +28,7 @@ namespace BookingApp.Repositories
 
         public async Task<User?> GetUserAsync(int userId)
         {
-            return await _context.Users.FindAsync(userId);
+            return await _context.Users.Include(user => user.Bookings).Where(user => user.Id == userId).FirstOrDefaultAsync();
         }
 
         public async Task<User> AddAsync(User newUser)
