@@ -1,10 +1,5 @@
 import { CircularProgress, Button, Container, Grid } from "@mui/material";
-import React, { useState } from "react";
-import { render } from "react-dom";
-import { GetSeats } from "../../seats/components/GetSeats";
 import { useRooms } from "../api/getRooms";
-import { Rooms } from "../types";
-import Stack from "@mui/material/Stack";
 import { Box } from "@mui/system";
 
 const Room = () => {
