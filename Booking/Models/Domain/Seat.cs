@@ -19,7 +19,7 @@ namespace BookingApp.Models.Domain
         public int RoomId { get; set; }
 
         public Room Room { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
+        public List<Booking> Bookings { get; set; }
     }
 }
 

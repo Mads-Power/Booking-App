@@ -16,7 +16,7 @@ namespace BookingAppUnitTests
 
         public DateTime Today() => _fixedDateTime.Date;
 
-        public DateTime Parse(string date) => DateTime.Parse(date).ToUniversalTime();
+        public DateTime Parse(string date) => DateTime.Parse(date);
     }
 }
 

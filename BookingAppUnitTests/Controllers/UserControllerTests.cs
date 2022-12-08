@@ -33,7 +33,7 @@ namespace BookingAppUnitTests.Controllers
             }
 
             // mock date
-            var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1));
+            var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1).ToUniversalTime());
 
             _mockUserRepository = new Mock<IUserRepository>();
             _mockSeatRepository = new Mock<ISeatRepository>();
@@ -48,12 +48,14 @@ namespace BookingAppUnitTests.Controllers
             var user1 = new User()
             {
                 Id = 1,
-                Name = "Test User 1"
+                Name = "Test User 1",
+                Bookings = new List<Booking>()
             };
             var user2 = new User()
             {
                 Id = 2,
-                Name = "Test User 2"
+                Name = "Test User 2",
+                Bookings = new List<Booking>()
             };
             return new List<User>() { user1, user2 };
         }
@@ -218,7 +220,7 @@ namespace BookingAppUnitTests.Controllers
             // Arrange
             var userId = 1;
             var seatId = 1;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)).ReturnsAsync(GetTestUsers()[0]);
             _mockSeatRepository.Setup(repo => repo.GetSeatAsync(seatId)).ReturnsAsync(new Seat() { Id = 1, Name = "01", RoomId = 1 });
 
@@ -235,7 +237,7 @@ namespace BookingAppUnitTests.Controllers
             // Arrange
             var userId = 1;
             var seatId = 1;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             _mockUserRepository.Setup(repo => repo.GetUserAsync(userId));
 
             // Act
@@ -265,7 +267,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var userId = 1;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
             
             _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)).ReturnsAsync(GetTestUsers()[0]);
@@ -285,7 +287,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var userId = 3;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
 
             _mockUserRepository.Setup(repo => repo.GetUserAsync(userId));

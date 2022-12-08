@@ -17,7 +17,7 @@ namespace BookingApp.Models.Domain
 		public string Email { get; set; }
 		public string PhoneNumber { get; set; }
 
-		public ICollection<Booking> Bookings { get; set; }
+		public List<Booking> Bookings { get; set; }
 	}
 }
 

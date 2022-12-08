@@ -31,7 +31,7 @@ namespace BookingAppUnitTests.Controllers
             }
 
             // mock date
-            var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1));
+            var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1).ToUniversalTime());
 
             _mockRoomRepository = new Mock<IRoomRepository>();
             _controller = new RoomController(_mapper,
@@ -249,11 +249,11 @@ namespace BookingAppUnitTests.Controllers
         }
 
         [Fact]
-        public async void GetBookingsInRoomByDate_WhenExists_ReturnBookings()
+        public async void GetBookingsInRoomByDate_WhenExists_ReturnsBookings()
         {
             // Arrange
             var roomId = 1;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
             _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>()
             {
@@ -271,11 +271,11 @@ namespace BookingAppUnitTests.Controllers
         }
 
         [Fact]
-        public async void GetBookingsInRoomByDate_WhenNexists_ReturnEmptyList()
+        public async void GetBookingsInRoomByDate_WhenNexists_ReturnsEmptyList()
         {
             // Arrange
             var roomId = 1;
-            var date = "01-01-2022";
+            var date = "2022-01-01T00:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
             _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>());
 

@@ -176,12 +176,19 @@ namespace BookingApp.Controllers
         /// <param name="roomId"> Id of the room.</param>
         /// <param name="date"> Date for the bookings.</param>
         /// <returns>
-        ///     List of booking read DTOs.
+        ///     List of booking read DTOs where date is converted to local time.
         ///     NotFound if room id is invalid.
         /// </returns>
         [HttpGet("{roomId}/Bookings")]
         public async Task<ActionResult<List<BookingReadDTO>>> GetBookingsInRoomByDate(int roomId, [FromQuery] string date)
         {
+            var dateValidation = ValidationResult.ValidateDateString(date);
+
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
             var dateTime = _dateTimeProvider.Parse(date);
             var bookings = await _roomRepository.GetBookingsInRoomByDate(roomId, dateTime);
 
@@ -189,6 +196,8 @@ namespace BookingApp.Controllers
             {
                 return NotFound();
             }
+
+            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
 
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
