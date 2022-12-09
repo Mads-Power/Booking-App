@@ -1,11 +1,10 @@
-import React from 'react';
+import React from "react";
+import Room from "../../features/rooms/components/Room";
 
 const MainLayout = () => {
   return (
     <div>
-      <p>Date</p>
-      <p>Room 1</p>
-      <p>Room 2</p>
+      <Room />
     </div>
   );
 };

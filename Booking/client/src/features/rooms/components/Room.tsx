@@ -16,6 +16,7 @@ const Room = () => {
           <Container
             sx={{
               display: "flex",
+              flexWrap: "wrap",
               backgroundColor: "#CECECE",
               borderRadius: "25px",
               flexDirection: "column-reverse",
@@ -26,6 +27,7 @@ const Room = () => {
             <Box
               sx={{
                 display: "flex",
+                flexWrap: "wrap",
                 m: 2,
                 gap: 2,
               }}
