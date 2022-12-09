@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "./components/Layout/MainLayout";
-import OfficeLayout from "./components/Layout/OfficeLayout";
+import MainLayout from "../components/Layout/MainLayout";
+import OfficeLayout from "../components/Layout/OfficeLayout";
 
 const Routers = () => {
   return (

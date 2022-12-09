@@ -5,7 +5,7 @@ import SeatLayout from "./components/Layout/SeatLayout";
 import GetSeat from "./features/seats/components/GetSeat";
 import Seat from "./data/seats.json";
 import Room from "./features/rooms/components/Room";
-import Routers from "./Routers";
+import Routers from "./routes/Routers";
 
 function App() {
   return <AppProvider children={<Routers />} />;
