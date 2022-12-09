@@ -1,16 +1,46 @@
-import { CircularProgress, Button, Container } from "@mui/material";
-import React, { useState } from "react";
-import { GetSeats } from "../../seats/components/GetSeats";
+import { CircularProgress, Button, Container, Grid } from "@mui/material";
 import { useRooms } from "../api/getRooms";
-import { Rooms } from "../types";
+import { Box } from "@mui/system";
 
 const Room = () => {
   const { isLoading, data, error } = useRooms();
 
-  const capacityHandler = () => {
-    // total kapasitet
-    // skal minimere hvis noen har booket den dagen
-  };
+  const Rooms = () => (
+    <>
+      {data?.map((rooms) => (
+        <>
+          <Container>
+            <h1>{rooms.name}</h1>
+            <p>Capacity: {rooms.capacity}</p>
+          </Container>
+          <Container
+            sx={{
+              display: "flex",
+              backgroundColor: "#CECECE",
+              borderRadius: "25px",
+              flexDirection: "column-reverse",
+              p: 1,
+              border: "1px solid",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                m: 2,
+                gap: 2,
+              }}
+            >
+              {rooms.seats.map((seatsButton) => (
+                <Button variant="contained" sx={{ backgroundColor: "#54A4D1" }}>
+                  {seatsButton.id}
+                </Button>
+              ))}
+            </Box>
+          </Container>
+        </>
+      ))}
+    </>
+  );
 
   if (isLoading) {
     return <CircularProgress size={100} />;
@@ -22,12 +52,7 @@ const Room = () => {
 
   return (
     <>
-      {data?.map((rooms) => (
-        <Container>
-          <h1>{rooms.name}</h1>
-          <p>Kapasitet: {rooms.capacity}</p>
-        </Container>
-      ))}{" "}
+      <Rooms />
     </>
   );
 };
