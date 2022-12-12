@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using BookingApp.Controllers;
+using BookingApp.Helpers;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Profiles;
@@ -14,6 +15,8 @@ namespace BookingAppUnitTests.Controllers
 	public class BookingControllerTests
 	{
         private readonly Mock<IBookingRepository> _mockBookingRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<ISeatRepository> _mockSeatRepository;
         private readonly IMapper _mapper;
         private readonly BookingController _controller;
 
@@ -28,10 +31,14 @@ namespace BookingAppUnitTests.Controllers
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
+            // mock date
+            var fixedDate = new FixedDateTimeProvider(new DateTime(2022, 12, 12).ToUniversalTime());
 
             _mockBookingRepository = new Mock<IBookingRepository>();
+            _mockUserRepository = new Mock<IUserRepository>();
+            _mockSeatRepository = new Mock<ISeatRepository>();
             _controller = new BookingController(_mapper,
-                _mockBookingRepository.Object);
+                _mockBookingRepository.Object, _mockUserRepository.Object, _mockSeatRepository.Object, fixedDate);
         }
 
         private static List<Booking> GetTestBookings()
@@ -41,14 +48,14 @@ namespace BookingAppUnitTests.Controllers
                 Id = 1,
                 UserId = 1,
                 SeatId = 1,
-                Date = new DateTime(2021, 01, 01)
+                Date = new DateTime(2022, 12, 12)
             };
             var booking2 = new Booking()
             {
                 Id = 2,
                 UserId = 2,
                 SeatId = 2,
-                Date = new DateTime(2021, 01, 01)
+                Date = new DateTime(2021, 12, 12)
             };
             return new List<Booking>() { booking1, booking2 };
         }
@@ -117,7 +124,11 @@ namespace BookingAppUnitTests.Controllers
         public async void PostBooking_WhenValidModel_ReturnsNewBooking()
         {
             // Arrange
-            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = 3 };
+            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = 3, Date = new DateTime(2022, 12, 13) };
+            _mockUserRepository.Setup(repo => repo.UserExists(newBooking.UserId)).Returns(true);
+            _mockSeatRepository.Setup(repo => repo.SeatExists(newBooking.SeatId)).Returns(true);
+            _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndUser(newBooking.Date, newBooking.UserId));
+            _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndSeat(newBooking.Date, newBooking.SeatId));
 
             // Act
             var actionResult = await _controller.PostBooking(newBooking);
@@ -129,11 +140,18 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(newBooking.UserId, result.UserId);
         }
 
-        // TODO: add unit test when bad request validation is added to post
-        //[Fact]
-        //public async void PostBooking_WhenInvalidModel_ReturnsBadRequest()
-        //{
-        //}
+        [Fact]
+        public async void PostBooking_WhenInvalidModel_ReturnsBadRequest()
+        {
+            // Arrange
+            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = 3, Date = new DateTime(2022, 12, 1) };
+
+            // Act
+            var actionResult = await _controller.PostBooking(newBooking);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+        }
 
         [Fact]
         public async void PutBooking_WhenValidModel_ReturnsNoContent()

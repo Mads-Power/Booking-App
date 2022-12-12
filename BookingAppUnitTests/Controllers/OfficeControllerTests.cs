@@ -115,6 +115,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var newOffice = new OfficeCreateDTO() { Id = 3, Name = "Test Office 3", Capacity = 3 };
+            _mockOfficeRepository.Setup(repo => repo.OfficeExists(newOffice.Id)).Returns(false);
 
             // Act
             var actionResult = await _controller.PostOffice(newOffice);
@@ -128,10 +129,19 @@ namespace BookingAppUnitTests.Controllers
         }
 
         // TODO: add unit test when bad request validation is added to post
-        //[Fact]
-        //public async void PostOffice_WhenInvalidModel_ReturnsBadRequest()
-        //{
-        //}
+        [Fact]
+        public async void PostOffice_WhenInvalidModel_ReturnsBadRequest()
+        {
+            // Arrange
+            var newOffice = new OfficeCreateDTO() { Id = 3, Name = "Test Office 3", Capacity = 3 };
+            _mockOfficeRepository.Setup(repo => repo.OfficeExists(newOffice.Id)).Returns(true);
+
+            // Act
+            var actionResult = await _controller.PostOffice(newOffice);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+        }
 
         [Fact]
         public async void PutOffice_WhenValidModel_ReturnsNoContent()
