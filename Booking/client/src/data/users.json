@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Per Test",
+    "email": "pe@test.no",
+    "phoneNumber": "12345678",
+    "bookings": [
+      {
+        "id": 0,
+        "seatId": 0,
+        "userId": 0,
+        "date": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Ed Test",
+    "email": "et@test.no",
+    "phoneNumber": "87654321",
+    "bookings": [
+      {
+        "id": 0,
+        "seatId": 0,
+        "userId": 0,
+        "date": ""
+      }
+    ]
+  }
+]
