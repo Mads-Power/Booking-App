@@ -73,6 +73,12 @@ namespace BookingApp.Controllers
         public async Task<ActionResult<OfficeCreateDTO>> PostOffice(OfficeCreateDTO dtoOffice)
         {
             // validate request and if not validated return BadRequest()?
+            var validation = ValidatePostOffice(dtoOffice);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var domainOffice = _mapper.Map<Office>(dtoOffice);
 
@@ -155,6 +161,16 @@ namespace BookingApp.Controllers
             }
 
             // more validation
+
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidatePostOffice(OfficeCreateDTO officeDto)
+        {
+            if (_officeRepository.OfficeExists(officeDto.Id))
+            {
+                return new ValidationResult(false, "Office Id already exists");
+            }
 
             return new ValidationResult(true);
         }

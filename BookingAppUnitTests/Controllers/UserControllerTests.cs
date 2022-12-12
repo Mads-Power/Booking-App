@@ -126,6 +126,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var newUser = new UserCreateDTO() { Id = 3, Name = "Test User 3" };
+            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Id)).Returns(false);
 
             // Act
             var actionResult = await _controller.PostUser(newUser);
@@ -138,11 +139,19 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(newUser.Name, result.Name);
         }
 
-        // TODO: add unit test when bad request validation is added to post
-        //[Fact]
-        //public async void PostUser_WhenInvalidModel_ReturnsBadRequest()
-        //{
-        //}
+        [Fact]
+        public async void PostUser_WhenInvalidModel_ReturnsBadRequest()
+        {
+            // Arrange
+            var newUser = new UserCreateDTO() { Id = 3};
+            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Id)).Returns(false);
+
+            // Act
+            var actionResult = await _controller.PostUser(newUser);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+        }
 
         [Fact]
         public async void PutUser_WhenValidModel_ReturnsNoContent()

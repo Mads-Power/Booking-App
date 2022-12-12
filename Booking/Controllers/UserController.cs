@@ -77,7 +77,12 @@ namespace BookingApp.Controllers
         [HttpPost]
         public async Task<ActionResult<UserCreateDTO>> PostUser(UserCreateDTO dtoUser)
         {
-            // validate request and if not validated return BadRequest()?
+            var validation = ValidatePostUser(dtoUser);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var domainUser = _mapper.Map<User>(dtoUser);
 
@@ -317,6 +322,20 @@ namespace BookingApp.Controllers
                 return new ValidationResult(false, "No booking found for the user on that day");
             }
 
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidatePostUser(UserCreateDTO userDto)
+        {
+            if (_userRepository.UserExists(userDto.Id))
+            {
+                return new ValidationResult(false, "User Id already exists");
+            }
+
+            if (userDto.Name == null)
+            {
+                return new ValidationResult(false, "Must provide a name for the user.");
+            }
             return new ValidationResult(true);
         }
     }

@@ -75,9 +75,12 @@ namespace BookingApp.Controllers
         [HttpPost]
         public async Task<ActionResult<SeatCreateDTO>> PostSeat(SeatCreateDTO dtoSeat)
         {
-            // validate request and if not validated return BadRequest()?
+            var validation = ValidatePostSeat(dtoSeat);
 
-            // if room does not exist bad request?
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var domainSeat = _mapper.Map<Seat>(dtoSeat);
 
@@ -174,6 +177,21 @@ namespace BookingApp.Controllers
             //{
             //    return new ValidationResult(false, "Cannot have a user without being occupied");
             //}
+
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidatePostSeat(SeatCreateDTO seatDto)
+        {
+            if (!_roomRepository.RoomExists(seatDto.RoomId))
+            {
+                return new ValidationResult(false, "Cannot match room");
+            }
+
+            if (_seatRepository.SeatExists(seatDto.Id))
+            {
+                return new ValidationResult(false, "Seat Id already exists");
+            }
 
             return new ValidationResult(true);
         }

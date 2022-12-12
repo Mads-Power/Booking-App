@@ -13,6 +13,7 @@ namespace BookingAppUnitTests.Controllers
 	public class RoomControllerTests
 	{
         private readonly Mock<IRoomRepository> _mockRoomRepository;
+        private readonly Mock<IOfficeRepository> _mockOfficeRepository;
         private readonly IMapper _mapper;
         private readonly RoomController _controller;
 
@@ -34,8 +35,9 @@ namespace BookingAppUnitTests.Controllers
             var fixedDate = new FixedDateTimeProvider(new DateTime(2021, 1, 1).ToUniversalTime());
 
             _mockRoomRepository = new Mock<IRoomRepository>();
+            _mockOfficeRepository = new Mock<IOfficeRepository>();
             _controller = new RoomController(_mapper,
-                _mockRoomRepository.Object, fixedDate);
+                _mockRoomRepository.Object, _mockOfficeRepository.Object, fixedDate);
         }
 
         private static List<Room> GetTestRooms()
@@ -123,6 +125,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var newRoom = new RoomCreateDTO() { Id = 3, Name = "Test Room 3", Capacity = 3, OfficeId = 1 };
+            _mockOfficeRepository.Setup(repo => repo.OfficeExists(newRoom.OfficeId)).Returns(true);
 
             // Act
             var actionResult = await _controller.PostRoom(newRoom);
@@ -135,11 +138,19 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(newRoom.Name, result.Name);
         }
 
-        // TODO: add unit test when bad request validation is added to post
-        //[Fact]
-        //public async void PostRoom_WhenInvalidModel_ReturnsBadRequest()
-        //{
-        //}
+        [Fact]
+        public async void PostRoom_WhenInvalidModel_ReturnsBadRequest()
+        {
+            // Arrange
+            var newRoom = new RoomCreateDTO() { Id = 3, Name = "Test Room 3", Capacity = 3, OfficeId = 10 };
+            _mockOfficeRepository.Setup(repo => repo.OfficeExists(newRoom.OfficeId)).Returns(false);
+
+            // Act
+            var actionResult = await _controller.PostRoom(newRoom);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+        }
 
         [Fact]
         public async void PutRoom_WhenValidModel_ReturnsNoContent()

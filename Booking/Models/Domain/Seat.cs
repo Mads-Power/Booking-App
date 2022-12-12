@@ -16,6 +16,7 @@ namespace BookingApp.Models.Domain
         public string Name { get; set; }
 
         // Foreign Keys
+        [Required]
         public int RoomId { get; set; }
 
         public Room Room { get; set; }

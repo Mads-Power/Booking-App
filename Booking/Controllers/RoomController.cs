@@ -20,12 +20,14 @@ namespace BookingApp.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
+        private readonly IOfficeRepository _officeRepository;
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        public RoomController(IMapper mapper, IRoomRepository roomRepository, IDateTimeProvider dateTimeProvider)
+        public RoomController(IMapper mapper, IRoomRepository roomRepository, IOfficeRepository officeRepository, IDateTimeProvider dateTimeProvider)
         {
             _mapper = mapper;
             _roomRepository = roomRepository;
+            _officeRepository = officeRepository;
             _dateTimeProvider = dateTimeProvider;
         }
 
@@ -74,7 +76,12 @@ namespace BookingApp.Controllers
         [HttpPost]
         public async Task<ActionResult<RoomCreateDTO>> PostRoom(RoomCreateDTO dtoRoom)
         {
-            // validate request and if not validated return BadRequest()?
+            var validation = ValidatePostRoom(dtoRoom);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var domainRoom = _mapper.Map<Room>(dtoRoom);
 
@@ -223,6 +230,21 @@ namespace BookingApp.Controllers
             }
 
             // more validation
+
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidatePostRoom(RoomCreateDTO roomDto)
+        {
+            if (!_officeRepository.OfficeExists(roomDto.OfficeId))
+            {
+                return new ValidationResult(false, "Could not match office");
+            }
+
+            if (_roomRepository.RoomExists(roomDto.Id))
+            {
+                return new ValidationResult(false, "Room Id already exists");
+            }
 
             return new ValidationResult(true);
         }

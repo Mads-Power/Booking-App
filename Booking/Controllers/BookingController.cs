@@ -20,11 +20,17 @@ namespace BookingApp.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IBookingRepository _bookingRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ISeatRepository _seatRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public BookingController(IMapper mapper, IBookingRepository bookingRepository)
+        public BookingController(IMapper mapper, IBookingRepository bookingRepository, IUserRepository userRepository, ISeatRepository seatRepository, IDateTimeProvider dateTimeProvider)
         {
             _mapper = mapper;
             _bookingRepository = bookingRepository;
+            _userRepository = userRepository;
+            _seatRepository = seatRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         // HTTP requests
@@ -70,13 +76,26 @@ namespace BookingApp.Controllers
         ///     A read DTO of the booking which was created.
         /// </returns>
         [HttpPost]
-        public async Task<ActionResult<BookingCreateDTO>> PostBooking(BookingCreateDTO dtoBooking)
+        public async Task<ActionResult<BookingReadDTO>> PostBooking(BookingCreateDTO dtoBooking)
         {
-            // validate request and if not validated return BadRequest()?
+            // validate date // date is not in the past etc
+            var dateValidation = ValidateDtoDate(dtoBooking.Date);
 
-            // if room does not exist bad request?
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
+            var validation = ValidatePostBooking(dtoBooking);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
 
             var domainBooking = _mapper.Map<Booking>(dtoBooking);
+
+            domainBooking.Date = dtoBooking.Date.ToUniversalTime();
 
             await _bookingRepository.AddAsync(domainBooking);
 
@@ -156,6 +175,45 @@ namespace BookingApp.Controllers
                 return new ValidationResult(false, "API endpoint and room id must match");
             }
 
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidatePostBooking(BookingCreateDTO bookingDto)
+        {
+            if (!_userRepository.UserExists(bookingDto.UserId))
+            {
+                return new ValidationResult(false, "Cannot match user");
+            }
+
+            if (!_seatRepository.SeatExists(bookingDto.SeatId))
+            {
+                return new ValidationResult(false, "Cannot match seat");
+            }
+
+            if (_bookingRepository.GetBookingByDateAndUser(bookingDto.Date,bookingDto.UserId) != null)
+            {
+                return new ValidationResult(false, "Booking already exists for the user that day");
+            }
+
+            if (_bookingRepository.GetBookingByDateAndSeat(bookingDto.Date, bookingDto.SeatId) != null)
+            {
+                return new ValidationResult(false, "Booking already exists for the seat that day");
+            }
+
+            if (_bookingRepository.BookingExists(bookingDto.Id))
+            {
+                return new ValidationResult(false, "Booking Id already exists");
+            }
+
+            return new ValidationResult(true);
+        }
+
+        private ValidationResult ValidateDtoDate(DateTime dtoDate)
+        {
+            if (_dateTimeProvider.Compare(dtoDate.ToUniversalTime().Date, _dateTimeProvider.Today().Date) < 0)
+            {
+                return new ValidationResult(false, "Cannot book for past dates");
+            }
             return new ValidationResult(true);
         }
     }

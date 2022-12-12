@@ -41,14 +41,16 @@ namespace BookingAppUnitTests.Controllers
             {
                 Id = 1,
                 Name = "Test Seat 1",
-                RoomId = 1
+                RoomId = 1,
+                Bookings = new List<Booking>()
             };
             var seat2 = new Seat()
             {
                 Id = 2,
                 Name = "Test Seat 2",
-                RoomId = 2
-            };
+                RoomId = 2,
+                Bookings = new List<Booking>()
+        };
             return new List<Seat>() { seat1, seat2 };
         }
 
@@ -118,6 +120,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var newSeat = new SeatCreateDTO() { Id = 3, Name = "Test Seat 3", RoomId = 1 };
+            _mockRoomRepository.Setup(repo => repo.RoomExists(newSeat.RoomId)).Returns(true);
 
             // Act
             var actionResult = await _controller.PostSeat(newSeat);
@@ -130,11 +133,19 @@ namespace BookingAppUnitTests.Controllers
             Assert.Equal(newSeat.Name, result.Name);
         }
 
-        // TODO: add unit test when bad request validation is added to post
-        //[Fact]
-        //public async void PostSeat_WhenInvalidModel_ReturnsBadRequest()
-        //{
-        //}
+        [Fact]
+        public async void PostSeat_WhenInvalidModel_ReturnsBadRequest()
+        {
+            // Arrange
+            var newSeat = new SeatCreateDTO() { Id = 3, Name = "Test Seat 3", RoomId = 10 };
+            _mockRoomRepository.Setup(repo => repo.RoomExists(newSeat.RoomId)).Returns(false);
+
+            // Act
+            var actionResult = await _controller.PostSeat(newSeat);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+        }
 
         [Fact]
         public async void PutSeat_WhenValidModel_ReturnsNoContent()
