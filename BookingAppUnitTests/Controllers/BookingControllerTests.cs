@@ -223,6 +223,116 @@ namespace BookingAppUnitTests.Controllers
             // Assert
             Assert.IsType<NotFoundResult>(actionResult);
         }
+
+        [Fact]
+        public async void BookSeat_WhenValidRequest_ReturnsNoContent()
+        {
+            // Arrange
+            var userId = 1;
+            var seatId = 1;
+            var date = "2023-01-01T00:00:00Z";
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)).ReturnsAsync(new User()
+            {
+                Id = 1,
+                Name = "Test User 1",
+                Bookings = new List<Booking>()
+            });
+            _mockSeatRepository.Setup(repo => repo.GetSeatAsync(seatId)).ReturnsAsync(new Seat() { Id = 1, Name = "01", RoomId = 1 });
+
+            // Act
+            var actionResult = await _controller.BookSeat(userId, seatId, date);
+
+            // Assert
+            Assert.IsType<NoContentResult>(actionResult);
+        }
+
+        [Fact]
+        public async void BookSeat_WhenNexists_ReturnsNotFound()
+        {
+            // Arrange
+            var userId = 1;
+            var seatId = 1;
+            var date = "2023-01-01T00:00:00Z";
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId));
+
+            // Act
+            var actionResult = await _controller.BookSeat(userId, seatId, date);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(actionResult);
+        }
+
+        [Fact]
+        public async void BookSeat_WhenInvalidRequest_ReturnsBadRequest()
+        {
+            // Arrange
+            var userId = 1;
+            var seatId = 1;
+            var date = "";
+
+            // Act
+            var actionResult = await _controller.BookSeat(userId, seatId, date);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public async void UnbookSeat_WhenValidRequest_ReturnsNoContent()
+        {
+            // Arrange
+            var userId = 1;
+            var date = "2022-01-01T00:00:00Z";
+            var mockDate = new FixedDateTimeProvider().Parse(date);
+
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)).ReturnsAsync(new User()
+            {
+                Id = 1,
+                Name = "Test User 1",
+                Bookings = new List<Booking>()
+            });
+            _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndUser(mockDate, userId))
+                .Returns(new Booking() { Id = 1, Date = mockDate, UserId = 1, SeatId = 1 });
+            // Struggeling to mock this bookingservice
+
+            // Act
+            var actionResult = await _controller.UnbookSeat(userId, date);
+
+            // Assert
+            Assert.IsType<NoContentResult>(actionResult);
+        }
+
+        [Fact]
+        public async void UnbookSeat_WhenNexists_ReturnsBadRequest()
+        {
+            // Arrange
+            var userId = 3;
+            var date = "2022-01-01T00:00:00Z";
+            var mockDate = new FixedDateTimeProvider().Parse(date);
+
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId));
+            _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndUser(mockDate, userId));
+
+            // Act
+            var actionResult = await _controller.UnbookSeat(userId, date);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public async void UnbookSeat_WhenInvalidRequest_ReturnsBadRequest()
+        {
+            // Arrange
+            var userId = 1;
+            var date = "";
+
+            // Act
+            var actionResult = await _controller.UnbookSeat(userId, date);
+
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(actionResult);
+        }
     }
 }
 

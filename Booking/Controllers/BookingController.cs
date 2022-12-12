@@ -44,6 +44,8 @@ namespace BookingApp.Controllers
         {
             var bookings = await _bookingRepository.GetBookingsAsync();
 
+            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
+
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
 
@@ -64,6 +66,8 @@ namespace BookingApp.Controllers
             {
                 return NotFound();
             }
+
+            booking.Date = booking.Date.ToLocalTime();
 
             return _mapper.Map<BookingReadDTO>(booking);
         }
@@ -166,6 +170,163 @@ namespace BookingApp.Controllers
             await _bookingRepository.DeleteAsync(bookingId);
 
             return NoContent();
+        }
+
+
+        /// <summary>
+        ///     Book a seat for the user.
+        /// </summary>
+        /// <param name="userId">Id of the user.</param>
+        /// <param name="seatId">Id of the seat.</param>
+        /// <param name="date">Date of the booking, example format: 2022-12-16T00:00:00.0%2B01.</param>
+        /// <returns>
+        ///     NotFound if the ids don't match.
+        ///     NoContent if seat was successfully booked.
+        /// </returns>
+        [HttpPut("Book")]
+        public async Task<IActionResult> BookSeat([FromQuery] int userId, [FromQuery] int seatId, [FromQuery] string date)
+        {
+            var dateValidation = ValidationResult.ValidateDateString(date);
+
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
+            var validation = ValidateBookSeat(userId, seatId, date);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
+
+            var dateTime = _dateTimeProvider.Parse(date);
+
+            var domainUser = await _userRepository.GetUserAsync(userId);
+            var domainSeat = await _seatRepository.GetSeatAsync(seatId);
+
+            if (domainUser == null || domainSeat == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        ///     Unbook a seat for the user.
+        /// </summary>
+        /// <param name="userId">Id of the user.</param>
+        /// <param name="date">Date of the booking.</param>
+        /// <returns>
+        ///     NotFound if the ids don't match.
+        ///     NoContent if seat was successfully unbooked.
+        /// </returns>
+        [HttpPut("Unbook")]
+        public async Task<IActionResult> UnbookSeat([FromQuery] int userId, [FromQuery] string date)
+        {
+            var dateValidation = ValidationResult.ValidateDateString(date);
+
+            if (!dateValidation.Result)
+            {
+                return BadRequest(dateValidation.RejectionReason);
+            }
+
+            var validation = ValidateUnbookSeat(userId, date);
+
+            if (!validation.Result)
+            {
+                return BadRequest(validation.RejectionReason);
+            }
+
+            var dateTime = _dateTimeProvider.Parse(date);
+
+            var domainUser = await _userRepository.GetUserAsync(userId);
+
+            if (domainUser == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _bookingRepository.UnbookSeat(domainUser, dateTime);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        private ValidationResult ValidateBookSeat(int userId, int seatId, string date)
+        {
+            // validate date input
+            DateTime dateTime;
+
+            try
+            {
+                dateTime = _dateTimeProvider.Parse(date);
+            }
+            catch (Exception)
+            {
+                return new ValidationResult(false, "Given date is not recognized as valid");
+            }
+
+            // validate that date is not in the past
+            if (_dateTimeProvider.Compare(dateTime.Date, _dateTimeProvider.Today().Date) < 0)
+            {
+                return new ValidationResult(false, "Cannot book for past dates");
+            }
+
+
+            // validate if seat is taken that day
+            if (_bookingRepository.GetBookingByDateAndSeat(dateTime, seatId) != null)
+            {
+                return new ValidationResult(false, "Seat already booked that day");
+            }
+
+            // validate if user already booked a seat that day
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, userId) != null)
+            {
+                return new ValidationResult(false, "User already booked that day");
+            }
+
+            return new ValidationResult(true);
+        }
+
+        // validate user unbook seat
+        private ValidationResult ValidateUnbookSeat(int userId, string date)
+        {
+            // validate date input
+            DateTime dateTime;
+
+            try
+            {
+                dateTime = _dateTimeProvider.Parse(date);
+            }
+            catch (Exception)
+            {
+                return new ValidationResult(false, "Given date is not recognized as valid");
+            }
+
+            // validate booking exists
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, userId) == null)
+            {
+                return new ValidationResult(false, "No booking found for the user on that day");
+            }
+
+            return new ValidationResult(true);
         }
 
         private ValidationResult ValidateUpdateBooking(BookingEditDTO bookingDto, int endpoint)
