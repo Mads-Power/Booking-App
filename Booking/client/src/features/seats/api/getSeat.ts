@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { Seats } from "../types";
+import { Seat } from "../types";
 
-const url = "http://localhost:51249/api/Seat";
-export const getSeat = async () => {
-  const res = await fetch(url);
+const url = "http://localhost:51249/api/Seat/";
+export const getSeat = async (id: string) => {
+  const res = await fetch(url+id);
   return res.json();
 };
 
-export const useSeat = () => {
-  return useQuery<Seats[]>({
+export const useSeat = (id: string) => {
+  return useQuery<Seat>({
     queryKey: ["seat"],
-    queryFn: () => getSeat(),
+    queryFn: () => getSeat(id),
   });
 };

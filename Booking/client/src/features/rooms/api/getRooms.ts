@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Rooms } from '../types';
+import { Room } from '../types';
 
 const url = 'http://localhost:51249/api/Room';
 export const getRooms = async () => {
@@ -15,7 +15,7 @@ export const getRooms = async () => {
 };
 
 export const useRooms = () => {
-  return useQuery<Rooms[]>({
+  return useQuery<Room[]>({
     queryKey: ['rooms'],
     queryFn: () => getRooms(),
   });

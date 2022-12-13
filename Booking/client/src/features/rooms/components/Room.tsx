@@ -1,6 +1,8 @@
 import { CircularProgress, Button, Container, Grid } from "@mui/material";
 import { useRooms } from "../api/getRooms";
 import { Box } from "@mui/system";
+import { Link } from "react-router-dom";
+import { Seat } from "../../seats/types";
 
 const Room = () => {
   const { isLoading, data, error } = useRooms();
@@ -32,10 +34,15 @@ const Room = () => {
                 gap: 2,
               }}
             >
-              {rooms.seats.map((seatsButton) => (
-                <Button variant="contained" sx={{ backgroundColor: "#54A4D1" }}>
-                  {seatsButton.id}
-                </Button>
+              {rooms.seats.map((seatButton) => (
+                <Link to={`/seatLayout/${seatButton.id}`} relative="path">
+                  <Button key={seatButton.id}
+                    variant="contained"
+                    sx={{ backgroundColor: "#54A4D1" }}
+                  >
+                    {seatButton.id}
+                  </Button>
+                </Link>
               ))}
             </Box>
           </Container>
