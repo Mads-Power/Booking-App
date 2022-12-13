@@ -8,7 +8,7 @@ import Room from "./features/rooms/components/Room";
 import Routers from "./routes/Routers";
 
 function App() {
-  return <AppProvider children={<OfficeLayout />} />;
+  return <AppProvider children={<MainLayout />} />;
 }
 
 export default App;

@@ -1,10 +1,10 @@
-import { Seats } from '../../seats/types';
+import { Seat } from '../../seats/types';
 import { OfficeType } from '../../../types';
 
-export type Rooms = {
+export type Room = {
   id: number;
   name: string;
   capacity: number;
   officeId: number;
-  seats: Seats[];
+  seats: Seat[];
 };
