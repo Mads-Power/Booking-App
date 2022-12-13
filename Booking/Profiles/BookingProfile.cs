@@ -14,7 +14,8 @@ namespace BookingApp.Profiles
 		{
 			CreateMap<Booking, BookingReadDTO>();
 			CreateMap<BookingCreateDTO, Booking>().ForMember(b => b.Date, opt => opt.Ignore());
-            CreateMap<BookingEditDTO, Booking>();
+			CreateMap<BookingEditDTO, Booking>();
+			CreateMap<BookingBookDTO, Booking>().ForMember(b => b.Id, opt => opt.Ignore()).ForMember(b => b.Date, opt => opt.Ignore());
         }
 	}
 }
