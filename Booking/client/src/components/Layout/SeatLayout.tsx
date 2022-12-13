@@ -7,8 +7,10 @@ import Chari from '../../features/seats/components/chair.png';
 import { Booking } from '../../features/bookings/types';
 
 const SeatLayout = () => {
+  const mutation = useBook();
   let { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
+  
 
   if (isLoading) {
     return <CircularProgress size={100} />;
@@ -21,14 +23,14 @@ const SeatLayout = () => {
     data: {
       seatId: data?.id,
       userId: 1,
-      date: '2022-12-24T12:00:00.000+01',
+      date: '2022-12-26T12:00:00.000+01',
     },
   } as CreateBooking;
 
-  const mutation = useBook();
   const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     mutation.mutate(bookingData);
+    
   };
 
   return (

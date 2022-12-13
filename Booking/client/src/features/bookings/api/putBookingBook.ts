@@ -13,16 +13,18 @@ const url = 'http://localhost:51249/api/Booking/Book';
 export const putBookingBook = async ({ data }: CreateBooking) => {
   const requestOptions = {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     body: JSON.stringify({
-      data,
+      data
     }),
   };
-  const res = fetch(url, requestOptions);
+  const res = await fetch(url, requestOptions);
+  console.log(res);
+  return res.json();
 };
 
 export const useBook = () => {
   return useMutation({
-    mutationFn: putBookingBook,
+    mutationFn: putBookingBook
   });
 };
