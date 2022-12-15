@@ -27,6 +27,8 @@ namespace BookingApp.Helpers
         public static ValidationResult ValidateDateString(string date)
         {
             // length/size validation
+            if (date.Length < 1) return new ValidationResult(false, "Empty date string size");
+
             if (date.Length > 40) return new ValidationResult(false, "Unreasonable date string size");
 
             // lexical content validation

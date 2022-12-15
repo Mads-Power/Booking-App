@@ -11,6 +11,7 @@ using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
 using BookingApp.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace BookingApp.Controllers
 {
@@ -176,15 +177,13 @@ namespace BookingApp.Controllers
         /// <summary>
         ///     Book a seat for the user.
         /// </summary>
-        /// <param name="userId">Id of the user.</param>
-        /// <param name="seatId">Id of the seat.</param>
-        /// <param name="date">Date of the booking, example format: 2022-12-16T00:00:00.0%2B01.</param>
+        /// <param name="bookingDto">The DTO of a booking with seatId, userId and date. Example date format: 2022-12-16T00:00:00.0+01 </param>
         /// <returns>
         ///     NotFound if the ids don't match.
-        ///     NoContent if seat was successfully booked.
+        ///     NoContent if booking was successful.
         /// </returns>
         [HttpPut("Book")]
-        public async Task<IActionResult> BookSeat([FromBody] BookingBookDTO bookingDto)
+        public async Task<IActionResult> BookSeat(BookingBookDTO bookingDto)
         {
             var dateValidation = ValidationResult.ValidateDateString(bookingDto.Date);
 
@@ -232,7 +231,7 @@ namespace BookingApp.Controllers
         ///     NoContent if seat was successfully unbooked.
         /// </returns>
         [HttpPut("Unbook")]
-        public async Task<IActionResult> UnbookSeat([FromBody] BookingBookDTO bookingDto)
+        public async Task<IActionResult> UnbookSeat(BookingUnbookDTO bookingDto)
         {
             var dateValidation = ValidationResult.ValidateDateString(bookingDto.Date);
 
@@ -306,7 +305,7 @@ namespace BookingApp.Controllers
         }
 
         // validate user unbook seat
-        private ValidationResult ValidateUnbookSeat(BookingBookDTO bookingDto)
+        private ValidationResult ValidateUnbookSeat(BookingUnbookDTO bookingDto)
         {
             // validate date input
             DateTime dateTime;
