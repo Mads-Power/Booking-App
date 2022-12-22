@@ -35,8 +35,8 @@ const Room = () => {
               }}
             >
               {rooms.seats.map((seatButton) => (
-                <Link to={`/seatLayout/${seatButton.id}`} relative="path">
-                  <Button key={seatButton.id}
+                <Link to={`/seatLayout/${seatButton.id}`} key={seatButton.id} relative="path">
+                  <Button
                     variant="contained"
                     sx={{ backgroundColor: "#54A4D1" }}
                   >

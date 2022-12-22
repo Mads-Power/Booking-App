@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { useSeat, getSeat } from "../../features/seats/api/getSeat";
+import React, { useEffect, useState } from "react";
+import { useSeat } from "../../features/seats/api/getSeat";
 import {
   CreateBooking,
   useBook,
@@ -8,8 +8,6 @@ import {
   CircularProgress,
   Button,
   TextField,
-  Alert,
-  AlertTitle,
   Modal,
   Box,
   Typography,
@@ -19,7 +17,6 @@ import Chair from "../../features/seats/components/chair.png";
 import { Booking } from "../../features/bookings/types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
-  DatePicker,
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
@@ -54,25 +51,38 @@ const theme = createTheme(
   coreNbNO // core translations
 );
 
+const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
+  let occupiedDaysInMonth: number[] = [];
+  bookings.forEach((b: Booking) => {
+    if (dayjs(b.date).month() == date.month()) {
+      occupiedDaysInMonth.push(dayjs(b.date).date());
+    }
+  })
+  return occupiedDaysInMonth;
+}
+
 const SeatLayout = () => {
   const mutation = useBook();
   let { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
   const [date, setDate] = useState<Dayjs | null>(dayjs());
-  // const [bookings, setBookings] = useState<Booking[]>()
   const [occupiedDays, setOccupiedDays] = useState<number[]>();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    // if (data?.bookings) console.log("useffect");
-    // data?.bookings.sort((a, b) => a.date.localeCompare(b.date));
-  }, []);
-
+    if (data && date) {
+      setOccupiedDays(getOccupiedDays(data.bookings, date))
+    }
+  }, [data]);
 
   if (isLoading) {
-    return <CircularProgress size={100} />;
+    return (
+      <div style={{ display: "flex" }}>
+        <CircularProgress size={100} style={{ margin: "10vh auto" }} />;
+      </div>
+    );
   }
 
   if (error) {
@@ -92,7 +102,6 @@ const SeatLayout = () => {
         sx={
           isOccupied
             ? {
-                // backgroundColor: "#DF8B0D",
                 border: "solid #DF8B0D",
               }
             : undefined
@@ -103,15 +112,7 @@ const SeatLayout = () => {
   };
 
   const handleMonthChange = (date: Dayjs) => {
-    setOccupiedDays([]);
-    let occupiedDaysInMonth: number[] = [];
-    data?.bookings.forEach((b: Booking) => {
-      if (dayjs(b.date).month() == date.month()) {
-        occupiedDaysInMonth.push(dayjs(b.date).date());
-      }
-    });
-    console.log(occupiedDaysInMonth);
-    setOccupiedDays(occupiedDaysInMonth);
+    setOccupiedDays(getOccupiedDays(data!.bookings,date));
   };
 
   const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -124,17 +125,25 @@ const SeatLayout = () => {
     mutation.mutate(bookingData);
 
     // TODO: fiks så den bare kjører når respons har kode 204
-    //if (mutation.isSuccess) handleOpen();
+    // if (mutation.isSuccess) handleOpen();
     handleOpen();
   };
   return (
     <>
       <ThemeProvider theme={theme}>
         <div
-          style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
         >
           <div style={{ margin: "50px auto", textAlign: "center" }}>
-            <img src={Chair} height="120" style={{ margin: "auto auto 20px" }} />
+            <img
+              src={Chair}
+              height="120"
+              style={{ margin: "auto auto 20px" }}
+            />
             <h3>Setenummer: {data?.name}</h3>
             <h3>Romnummer: {data?.roomId}</h3>
             <h3>Bruker: Test User</h3>
@@ -153,7 +162,11 @@ const SeatLayout = () => {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={modalStyle}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
                     Sete er booket!
                   </Typography>
                 </Box>
@@ -162,7 +175,7 @@ const SeatLayout = () => {
           </div>
         </div>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="nb">
-          <StaticDatePicker
+            <StaticDatePicker
             value={date}
             onChange={(newValue) => {
               setDate(newValue);
@@ -175,11 +188,10 @@ const SeatLayout = () => {
             showToolbar={false}
             disablePast={true}
             displayStaticWrapperAs="desktop"
-            
-            shouldDisableYear={(year) => {
-              if (year.year() > dayjs().year()+1) return true
-              else return false
-            }}
+            // shouldDisableYear={(year) => {
+            //   if (year.year() > dayjs().year() + 1) return true;
+            //   else return false;
+            // }}
           />
         </LocalizationProvider>
       </ThemeProvider>
