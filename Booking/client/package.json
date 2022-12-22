@@ -23,9 +23,11 @@
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.39.3",
     "react-router-dom": "^6.4.4",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "vite-tsconfig-paths": "^4.0.3"
   },
   "devDependencies": {
+    "@types/node": "^18.11.17",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@types/styled-components": "^5.1.26",

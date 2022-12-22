@@ -15,15 +15,16 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
+    "baseUrl": "./",
     "paths": {
-      "@api/*": ["api/*"],
-      "@components/*": ["components/*"],
-      "@assets/*": ["assets/*"],
-      "@data/*": ["data/*"],
-      "@type/*": ["types/*"]
+      "@api/*": ["src/api/*"],
+      "@components/*": ["src/components/*"],
+      "@assets/*": ["src/assets/*"],
+      "@data/*": ["src/data/*"],
+      "@type/*": ["src/types/*"],
+      "@routes/*": ["src/routes/*"]
     }
   },
-  "include": ["src"],
+  "include": ["**/*.ts", "**/*.tsx", "src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

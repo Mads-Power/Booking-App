@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSeat } from '../../api/getSeat';
+import { useSeat } from '@api/getSeat';
 import { CreateBooking, useBook } from '@api/putBookingBook';
 import {
   CircularProgress,
@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import Chair from '../../features/seats/components/chair.png';
+import Chair from '@assets/chair.png';
 import { Booking } from '@type/booking';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -60,11 +60,13 @@ const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
 };
 
 export const Seat = () => {
-  let { seatId } = useParams();
+  const { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [occupiedDays, setOccupiedDays] = useState<number[]>();
   const [open, setOpen] = useState(false);
+  const mutation = useBook();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -85,13 +87,6 @@ export const Seat = () => {
   if (error) {
     return <h4>No Rooms Found</h4>;
   }
-  const bookingData = {
-    seatId: data?.id,
-    userId: 1,
-    date: '2022-12-24T12:00:00.000+01',
-  } as CreateBooking;
-
-  const mutation = useBook();
 
   const renderOccupiedDays = (
     day: Dayjs,
