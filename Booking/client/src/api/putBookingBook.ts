@@ -1,5 +1,4 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Booking } from '../types';
 
 export type CreateBooking = {
   seatId: number;

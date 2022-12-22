@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSeat } from '../../features/seats/api/getSeat';
-import { CreateBooking, useBook } from '../../features/bookings/api/putBookingBook';
+import { useSeat } from '../../api/getSeat';
+import { CreateBooking, useBook } from '@api/putBookingBook';
 import {
   CircularProgress,
   Button,
@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import Chair from '../../features/seats/components/chair.png';
-import { Booking } from '../../features/bookings/types';
+import { Booking } from '@type/booking';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   LocalizationProvider,
@@ -24,6 +24,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/nb';
 import { nbNO as coreNbNO } from '@mui/material/locale';
+import styles from './Seat.module.css';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -58,7 +59,7 @@ const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
   return occupiedDaysInMonth;
 };
 
-const SeatLayout = () => {
+export const Seat = () => {
   let { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
   const [date, setDate] = useState<Dayjs | null>(dayjs());
@@ -91,10 +92,6 @@ const SeatLayout = () => {
   } as CreateBooking;
 
   const mutation = useBook();
-  const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    mutation.mutate(bookingData);
-  };
 
   const renderOccupiedDays = (
     day: Dayjs,
@@ -134,6 +131,7 @@ const SeatLayout = () => {
     // if (mutation.isSuccess) handleOpen();
     handleOpen();
   };
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -192,7 +190,7 @@ const SeatLayout = () => {
       </ThemeProvider>
       {/* <div style={{display: "flex", flexDirection: "column", overflow: "hidden"}}>
           <div style={{margin: "0 auto"}}>
-            { 
+            {
               data?.bookings.map((b: any) => (
                 <div key={b.id}>Date: {b.date}</div>
               ))
@@ -202,5 +200,3 @@ const SeatLayout = () => {
     </>
   );
 };
-
-export default SeatLayout;

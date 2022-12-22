@@ -1,8 +1,7 @@
-import { Booking } from "../../bookings/types";
-
+import { Booking } from './booking';
 export type Seat = {
   id: number;
   name: string;
   roomId: number;
-  bookings: Booking[]
+  bookings: Booking[];
 };

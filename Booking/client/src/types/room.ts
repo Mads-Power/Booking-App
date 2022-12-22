@@ -1,6 +1,4 @@
-import { Seat } from '../../seats/types';
-import { OfficeType } from '../../../types';
-
+import { Seat } from './seat';
 export type Room = {
   id: number;
   name: string;
