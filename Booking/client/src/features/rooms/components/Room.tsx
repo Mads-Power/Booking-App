@@ -10,7 +10,7 @@ const Room = () => {
   const Rooms = () => (
     <>
       {data?.map((rooms) => (
-        <>
+        <div key={rooms.id}>
           <Container>
             <h1>{rooms.name}</h1>
             <p>Capacity: {rooms.capacity}</p>
@@ -46,7 +46,7 @@ const Room = () => {
               ))}
             </Box>
           </Container>
-        </>
+        </div>
       ))}
     </>
   );
