@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 
-export type CreateBooking = {
-  seatId: number;
+export type DeleteBooking = {
   userId: number;
   date: string;
 };
 
-const url = 'http://localhost:51249/api/Booking/Book';
-export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) => {
+const url = 'http://localhost:51249/api/Booking/Unbook';
+export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -15,10 +14,9 @@ export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      seatId,
       userId,
-      date,
-    }),
+      date
+    })
   };
   const res = await fetch(url, requestOptions);
 
@@ -30,9 +28,9 @@ export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) =>
   }
 };
 
-export const useBook = () => {
+export const useUnbook = () => {
   return useMutation({
-    mutationFn: putBookingBook,
+    mutationFn: putBookingUnbook,
     onError: error => {
       console.log(error);
     },
