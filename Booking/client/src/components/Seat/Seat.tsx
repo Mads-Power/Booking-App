@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSeat } from "@api/getSeat";
 import { CircularProgress, Button, TextField } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Booking } from "@type/booking";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -38,10 +38,22 @@ const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
   return occupiedDaysInMonth;
 };
 
+const handleInitialDate = (date: Date) => {
+  if (date) {
+    console.log("got date")
+    return dayjs(date);
+  }
+  else {
+    console.log("did not get date")
+    return dayjs();
+  }
+}
+
 export const Seat = () => {
   const { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
-  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const propsDate = useLocation().state.date;
+  const [date, setDate] = useState<Dayjs | null>(handleInitialDate(propsDate));
   const [occupiedDays, setOccupiedDays] = useState<number[]>();
 
   let navigate = useNavigate();
@@ -66,7 +78,7 @@ export const Seat = () => {
 
   const routeChange = () => {
     let path = `/`;
-    navigate(path);
+    navigate(path, { state: {date: date}});
   };
 
   const renderOccupiedDays = (
