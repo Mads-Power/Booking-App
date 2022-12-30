@@ -1,24 +1,23 @@
-import dayjs, { Dayjs } from "dayjs";
-import { SetStateAction, useEffect, useState } from "react";
-import * as weekOfYear from "dayjs/plugin/weekOfYear";
-dayjs.extend(weekOfYear);
+import { useEffect, useState } from "react";
 
 import {
   format,
-  subMonths,
-  addMonths,
   startOfWeek,
   addDays,
   isSameDay,
   lastDayOfWeek,
   getWeek,
   addWeeks,
-  subWeeks
+  subWeeks,
+  isBefore
 } from "date-fns";
 
+import {nb} from "date-fns/esm/locale"
+
 import styles from './WeekViewDatePicker.module.css';
-import { MuiPickersAdapterContext, nbNO } from "@mui/x-date-pickers";
+import { nbNO } from "@mui/x-date-pickers";
 import { ThemeProvider, Button, Container, createTheme } from "@mui/material";
+import { DateContextType, useDateContext } from "@components/Provider/DateContextProvider";
 
 const theme = createTheme(
   {
@@ -29,47 +28,37 @@ const theme = createTheme(
   nbNO // x-date-pickers translations
 );
 
-const handleInitialDate = (date: Date) => {
-  if (date) {
-    console.log(date)
-    return date;
-  }
-  else {
-    return new Date();
-  }
-}
+const nor: Locale = nb;
 
-export const WeekViewDatePicker = ({...props}) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
-  const [selectedDate, setSelectedDate] = useState(handleInitialDate(props.date));
+export const WeekViewDatePicker = () => {
+  const { selectedDate, setSelectedDate }: DateContextType = useDateContext();
+  const [selectedMonth, setSelectedMonth] = useState(selectedDate);
+  const [selectedWeek, setSelectedWeek] = useState(getWeek(selectedMonth));
+
 
   const handleWeekChange = (btnType: string) => {
   if (btnType === "prev") {
-    setCurrentMonth(subWeeks(currentMonth, 1));
-    setCurrentWeek(getWeek(subWeeks(currentMonth, 1)));
+    setSelectedMonth(subWeeks(selectedMonth, 1));
+    setSelectedWeek(getWeek(subWeeks(selectedMonth, 1)));
   }
   if (btnType === "next") {
-    setCurrentMonth(addWeeks(currentMonth, 1));
-    setCurrentWeek(getWeek(addWeeks(currentMonth, 1)));
+    setSelectedMonth(addWeeks(selectedMonth, 1));
+    setSelectedWeek(getWeek(addWeeks(selectedMonth, 1)));
   }
   };
 
   useEffect(() => {
-    console.log("SELECTEDDATE")
-    console.log(selectedDate)
   }, []);
 
   const onDateChange = (day: Date) => {
     setSelectedDate(day);
-    props.handleSelectDate(day);
   };
 
   const renderHeader = () => {
     const dateFormat = "MMM yyyy";
     return (
       <Container>
-          <span>{format(currentMonth, dateFormat)}</span>
+          <span>{format(selectedMonth, dateFormat, {locale: nor})}</span>
       </Container>
     );
   };
@@ -77,11 +66,11 @@ export const WeekViewDatePicker = ({...props}) => {
     const renderDays = () => {
       const dateFormat = "EEE";
       const days = [];
-      let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
+      let startDate = startOfWeek(selectedMonth, { weekStartsOn: 1 });
       for (let i = 0; i < 7; i++) {
         days.push(
           <Container key={i} className={styles.day}>
-            {format(addDays(startDate, i), dateFormat)}
+            {format(addDays(startDate, i), dateFormat, {locale: nor})}
           </Container>
         );
       }
@@ -89,18 +78,26 @@ export const WeekViewDatePicker = ({...props}) => {
     };
 
     const renderCells = () => {
-      const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
-      const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
+      const startDate = startOfWeek(selectedMonth, { weekStartsOn: 1 });
+      const endDate = lastDayOfWeek(selectedMonth, { weekStartsOn: 1 });
       const dateFormat = "d";
       const rows = [];
       let days = [];
       let day: Date = startDate;
+      let yesterday: Date = new Date();
+      yesterday.setDate(yesterday.getDate() - 1 );
       let formattedDate = "";
       while (day <= endDate) {
         for (let i = 0; i < 7; i++) {
-          formattedDate = format(day, dateFormat);
+          formattedDate = format(day, dateFormat, {locale: nor});
           const cloneDay = day;
           days.push(
+            isBefore(day, yesterday) ?
+            <Container
+            className={styles.disabled + " " + styles.MuiButton} key={day.getDate()}>
+              <span>{formattedDate}</span>
+            </Container>
+            :
             <Container
             // variant="outlined"
             className={
@@ -137,7 +134,7 @@ export const WeekViewDatePicker = ({...props}) => {
             <Button variant="outlined" onClick={() => handleWeekChange("prev")}>
             {'<'}
             </Button>
-          <span style={{margin: "0 10px"}}>Week {currentWeek< 10 ? "0"+currentWeek : currentWeek}</span>
+          <span style={{margin: "0 10px"}}>uke {selectedWeek< 10 ? "0" + selectedWeek : selectedWeek}</span>
           <Button variant="outlined" onClick={() => handleWeekChange("next")}>
             {'>'}
           </Button>

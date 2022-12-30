@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSeat } from "@api/getSeat";
 import { CircularProgress, Button, TextField } from "@mui/material";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Booking } from "@type/booking";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
@@ -17,6 +17,10 @@ import "dayjs/locale/nb";
 import { nbNO as coreNbNO } from "@mui/material/locale";
 import styles from "./Seat.module.css";
 import { BookSeat } from "./BookSeat";
+import {
+  DateContextType,
+  useDateContext,
+} from "@components/Provider/DateContextProvider";
 
 const theme = createTheme(
   {
@@ -40,20 +44,21 @@ const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
 
 const handleInitialDate = (date: Date) => {
   if (date) {
-    console.log("got date")
     return dayjs(date);
-  }
-  else {
-    console.log("did not get date")
+  } else {
     return dayjs();
   }
-}
+};
 
 export const Seat = () => {
   const { seatId } = useParams();
   const { isLoading, data, error } = useSeat(seatId!);
-  const propsDate = useLocation().state.date;
-  const [date, setDate] = useState<Dayjs | null>(handleInitialDate(propsDate));
+
+  // Two date states are needed to handle convertion between Date type and Dayjs type
+  const { selectedDate, setSelectedDate }: DateContextType = useDateContext();
+  const [date, setDate] = useState<Dayjs | null>(
+    handleInitialDate(selectedDate)
+  );
   const [occupiedDays, setOccupiedDays] = useState<number[]>();
 
   let navigate = useNavigate();
@@ -78,7 +83,7 @@ export const Seat = () => {
 
   const routeChange = () => {
     let path = `/`;
-    navigate(path, { state: {date: date}});
+    navigate(path);
   };
 
   const renderOccupiedDays = (
@@ -140,6 +145,9 @@ export const Seat = () => {
             value={date}
             onChange={(newValue) => {
               setDate(newValue);
+              if (newValue) {
+                setSelectedDate(new Date(newValue.toISOString()));
+              }
             }}
             onMonthChange={handleMonthChange}
             renderInput={(params) => <TextField {...params} />}
@@ -148,22 +156,9 @@ export const Seat = () => {
             showToolbar={false}
             disablePast={true}
             displayStaticWrapperAs="desktop"
-            // shouldDisableYear={(year) => {
-            //   if (year.year() > dayjs().year() + 1) return true;
-            //   else return false;
-            // }}
           />
         </LocalizationProvider>
       </ThemeProvider>
-      {/* <div style={{display: "flex", flexDirection: "column", overflow: "hidden"}}>
-          <div style={{margin: "0 auto"}}>
-            {
-              data?.bookings.map((b: any) => (
-                <div key={b.id}>Date: {b.date}</div>
-              ))
-            }
-          </div>
-        </div> */}
     </>
   );
 };

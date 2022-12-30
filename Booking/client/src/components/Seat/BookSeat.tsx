@@ -30,7 +30,7 @@ const modalStyle = {
 const boxStyle = {
   border: "solid",
   borderRadius: "5px",
-  padding: "30px 20px"
+  padding: "30px 20px",
 };
 
 export const BookSeat = ({
@@ -111,9 +111,9 @@ export const BookSeat = ({
             />
             <h3>Setenummer: {seat?.name}</h3>
             <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toISOString().substring(0,10)}</h3>
+            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
             <h3>Booket av: </h3>
-            <div style={{textAlign: 'left'}}>
+            <div style={{ textAlign: "left" }}>
               <h3>Bruker: {data?.name}</h3>
               <h3>Telefon: {data?.phoneNumber}</h3>
               <h3>Email: {data?.email}</h3>
@@ -135,7 +135,7 @@ export const BookSeat = ({
             />
             <h3>Setenummer: {seat?.name}</h3>
             <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toISOString().substring(0,10)}</h3>
+            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
             <Button
               variant="contained"
               style={{ backgroundColor: "#DF8B0D" }}
@@ -177,7 +177,7 @@ export const BookSeat = ({
             />
             <h3>Setenummer: {seat?.name}</h3>
             <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toISOString().substring(0,10)}</h3>
+            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
             <Button
               variant="contained"
               style={{ backgroundColor: "#DF8B0D" }}

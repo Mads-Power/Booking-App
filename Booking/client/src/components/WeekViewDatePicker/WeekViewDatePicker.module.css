@@ -27,6 +27,7 @@
   flex-direction: column;
   /* min-width: 90vw; */
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .cells {
@@ -48,6 +49,10 @@
   background-color: #DF8B0D !important;
   font-weight: 500;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.disabled {
+  color: rgba(0, 0, 0, 0.38) !important;
 }
 
 .MuiButton {
