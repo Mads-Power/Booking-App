@@ -8,7 +8,7 @@ export const getBooking = async () => {
 };
 
 export const useBooking = () => {
-  return useQuery<Booking[]>({
+  return useQuery<Booking>({
     queryKey: ['booking'],
     queryFn: () => getBooking(),
   });
