@@ -35,7 +35,7 @@ const theme = createTheme(
 const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
   let occupiedDaysInMonth: number[] = [];
   bookings.forEach((b: Booking) => {
-    if (dayjs(b.date).month() == date.month()) {
+    if (dayjs(b.date).month() == date.month() && dayjs(b.date).year() == date.year()) {
       occupiedDaysInMonth.push(dayjs(b.date).date());
     }
   });
@@ -67,7 +67,7 @@ export const Seat = () => {
     if (data && date) {
       setOccupiedDays(getOccupiedDays(data.bookings, date));
     }
-  }, [data]);
+  }, [data, date]);
 
   if (isLoading) {
     return (
