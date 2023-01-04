@@ -14,10 +14,20 @@ export const getUser = async (id: string) => {
   return res.json();
 };
 
+// Placeholder is used on initial load
+const placeholderUser: User = {
+  id: 0,
+  name: '',
+  email: '',
+  phoneNumber: '',
+  bookings: []
+}
+
 export const useUser = (id: string) => {
   return useQuery<User>({
     queryKey: ['user', id],
     queryFn: () => getUser(id),
-    enabled: !!id
+    enabled: !!id,
+    placeholderData: placeholderUser
   });
 };

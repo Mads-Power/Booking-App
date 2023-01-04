@@ -16,7 +16,7 @@ export const getSeat = async (id: string) => {
 
 export const useSeat = (id: string) => {
   return useQuery<Seat>({
-    queryKey: ['seat'],
+    queryKey: ['seat', id],
     queryFn: () => getSeat(id),
   });
 };

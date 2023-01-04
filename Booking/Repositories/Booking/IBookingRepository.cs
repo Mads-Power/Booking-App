@@ -14,7 +14,7 @@ namespace BookingApp.Repositories
         public Task<Booking> AddAsync(Booking newBooking);
         public Task UpdateAsync(Booking updatedBooking);
         public Task DeleteAsync(int bookingId);
-        public Task BookSeat(User user, Seat seat, DateTime date);
+        public Task<Booking> BookSeat(User user, Seat seat, DateTime date);
         public Task UnbookSeat(User user, DateTime date);
     }
 }

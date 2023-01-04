@@ -69,11 +69,13 @@ namespace BookingApp.Repositories
             }
         }
 
-        public async Task BookSeat(User user, Seat seat, DateTime date)
+        public async Task<Booking> BookSeat(User user, Seat seat, DateTime date)
         {
-            _context.Add(new Booking { Seat = seat, User = user, Date = date });
+            var booking = new Booking { Seat = seat, User = user, Date = date };
+            _context.Add(booking);
 
             await _context.SaveChangesAsync();
+            return booking;
         }
 
         public async Task UnbookSeat(User user, DateTime date)

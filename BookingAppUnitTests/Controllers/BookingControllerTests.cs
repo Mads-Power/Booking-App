@@ -225,7 +225,7 @@ namespace BookingAppUnitTests.Controllers
         }
 
         [Fact]
-        public async void BookSeat_WhenValidRequest_ReturnsNoContent()
+        public async void BookSeat_WhenValidRequest_ReturnsNewBooking()
         {
             // Arrange
             var newBooking = new BookingBookDTO() { SeatId = 1, UserId = 1, Date = "2023-01-01T00:00:00Z" };
@@ -238,7 +238,7 @@ namespace BookingAppUnitTests.Controllers
             var actionResult = await _controller.BookSeat(newBooking);
 
             // Assert
-            Assert.IsType<NoContentResult>(actionResult);
+            Assert.IsType<CreatedAtActionResult>(actionResult);
         }
 
         [Fact]

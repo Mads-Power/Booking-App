@@ -17,7 +17,7 @@ const ErrorFallback = () => {
   );
 };
 
-const queryClient = new QueryClient();
+
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -32,9 +32,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         </div>
       }>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <QueryClientProvider client={queryClient}>
           <BrowserRouter>{children}</BrowserRouter>
-        </QueryClientProvider>
       </ErrorBoundary>
     </Suspense>
   );

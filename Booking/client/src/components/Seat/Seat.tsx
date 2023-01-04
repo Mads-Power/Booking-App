@@ -72,7 +72,7 @@ export const Seat = () => {
   if (isLoading) {
     return (
       <div style={{ display: "flex" }}>
-        <CircularProgress size={100} style={{ margin: "10vh auto" }} />;
+        <CircularProgress size={100} style={{ margin: "10vh auto" }} />
       </div>
     );
   }

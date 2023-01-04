@@ -209,16 +209,21 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
+            Booking domainBooking;
             try
             {
-                await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
+                domainBooking = await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
             }
             catch (DbUpdateConcurrencyException)
             {
                 throw;
             }
+            domainBooking.Date = domainBooking.Date.ToLocalTime();
+            return CreatedAtAction("GetBooking",
+                new { bookingId = domainBooking.Id },
+                _mapper.Map<BookingReadDTO>(domainBooking));
 
-            return NoContent();
+            //return NoContent();
         }
 
         /// <summary>

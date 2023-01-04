@@ -99,7 +99,6 @@ export const WeekViewDatePicker = () => {
             </Container>
             :
             <Container
-            // variant="outlined"
             className={
               `${
                 isSameDay(day, selectedDate)

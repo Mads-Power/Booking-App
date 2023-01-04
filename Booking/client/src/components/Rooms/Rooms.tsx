@@ -11,12 +11,14 @@ import {
   DateContextType,
   useDateContext,
 } from "@components/Provider/DateContextProvider";
+import { useUserContext } from "@components/Provider/UserContextProvider";
 
 export const Rooms = () => {
   const { isLoading, data, error } = useRooms();
   const { selectedDate: date, setSelectedDate: setDate }: DateContextType =
     useDateContext(); //'2023-01-02T13:42:16.115Z'
   const occupiedSeats = useBookingsByRoom(1, date);
+  const loggedInUser = useUserContext().user;
 
   useEffect(() => {}, [date]);
 
@@ -31,6 +33,14 @@ export const Rooms = () => {
   const renderIsOccupied = (seatId: number) => {
     const predicate =
       occupiedSeats.data?.find((o) => o.seatId == seatId) != undefined;
+    return predicate;
+  };
+
+  const renderOccupiedByLoggedInUser = (seatId: number) => {
+    const predicate =
+      occupiedSeats.data?.find(
+        (o) => o.seatId == seatId && o.userId == loggedInUser.id
+      ) != undefined;
     return predicate;
   };
 
@@ -68,7 +78,9 @@ export const Rooms = () => {
                   <Button
                     variant="contained"
                     sx={
-                      renderIsOccupied(seat.id)
+                      renderOccupiedByLoggedInUser(seat.id)
+                        ? { backgroundColor: "#61C577" }
+                        : renderIsOccupied(seat.id)
                         ? { backgroundColor: "#DF8B0D" }
                         : { backgroundColor: "#54A4D1" }
                     }

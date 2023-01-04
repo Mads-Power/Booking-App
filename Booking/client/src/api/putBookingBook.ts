@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 export type CreateBooking = {
   seatId: number;
@@ -23,11 +23,12 @@ export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) =>
   const res = await fetch(url, requestOptions);
 
   // return as json if error, so we can log error message
-  if (res.status == 400) {
-    return res.json();
-  } else {
-    return res;
-  }
+  // if (res.status == 400) {
+  //   return res.json();
+  // } else {
+  //   return res.json();
+  // }
+  return res.json();
 };
 
 export const useBook = () => {
@@ -41,6 +42,6 @@ export const useBook = () => {
     },
     onSuccess: s => {
       console.log(s);
-    },
+    }
   });
 };
