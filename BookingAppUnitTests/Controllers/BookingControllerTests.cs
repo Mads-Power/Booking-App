@@ -230,15 +230,27 @@ namespace BookingAppUnitTests.Controllers
             // Arrange
             var newBooking = new BookingBookDTO() { SeatId = 1, UserId = 1, Date = "2023-01-01T00:00:00Z" };
             var dateTime = DateTime.Parse(newBooking.Date);
-            _mockUserRepository.Setup(repo => repo.GetUserAsync(newBooking.UserId)).ReturnsAsync(new User() { Id = 1, Name = "Test User 1", Bookings = new List<Booking>()
-            });
-            _mockSeatRepository.Setup(repo => repo.GetSeatAsync(newBooking.SeatId)).ReturnsAsync(new Seat() { Id = 1, Name = "01", RoomId = 1 });
+            var user = new User()
+            {
+                Id = 1,
+                Name = "Test User 1",
+                Bookings = new List<Booking>()
+            };
+            var seat = new Seat() { Id = 1, Name = "01", RoomId = 1 };
+            var mockResultBooking = new Booking() { Id = 1, UserId = 1, SeatId = 1, Date = dateTime };
+
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(newBooking.UserId)).ReturnsAsync(user);
+            _mockSeatRepository.Setup(repo => repo.GetSeatAsync(newBooking.SeatId)).ReturnsAsync(seat);
+            _mockBookingRepository.Setup(repo => repo.BookSeat(user, seat, dateTime)).Returns(Task.FromResult<Booking>(mockResultBooking));
 
             // Act
             var actionResult = await _controller.BookSeat(newBooking);
 
             // Assert
-            Assert.IsType<CreatedAtActionResult>(actionResult);
+            Assert.IsType<CreatedAtActionResult>(actionResult.Result);
+            var result = (actionResult.Result as CreatedAtActionResult)?.Value as BookingReadDTO;
+            Assert.NotNull(result);
+            Assert.Equal(newBooking.UserId, result.UserId);
         }
 
         [Fact]
@@ -253,7 +265,7 @@ namespace BookingAppUnitTests.Controllers
             var actionResult = await _controller.BookSeat(newBooking);
 
             // Assert
-            Assert.IsType<NotFoundResult>(actionResult);
+            Assert.IsType<NotFoundResult>(actionResult.Result);
         }
 
         [Fact]
@@ -266,7 +278,7 @@ namespace BookingAppUnitTests.Controllers
             var actionResult = await _controller.BookSeat(newBooking);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(actionResult);
+            Assert.IsType<BadRequestObjectResult>(actionResult.Result);
         }
 
         [Fact]

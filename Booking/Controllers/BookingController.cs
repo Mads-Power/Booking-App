@@ -183,7 +183,7 @@ namespace BookingApp.Controllers
         ///     NoContent if booking was successful.
         /// </returns>
         [HttpPut("Book")]
-        public async Task<IActionResult> BookSeat(BookingBookDTO bookingDto)
+        public async Task<ActionResult<BookingReadDTO>> BookSeat(BookingBookDTO bookingDto)
         {
             var dateValidation = ValidationResult.ValidateDateString(bookingDto.Date);
 
