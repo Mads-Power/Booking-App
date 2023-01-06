@@ -46,7 +46,7 @@ const handleInitialDate = (date: Date) => {
   if (date) {
     return dayjs(date);
   } else {
-    return dayjs();
+    return dayjs().startOf('d');
   }
 };
 
