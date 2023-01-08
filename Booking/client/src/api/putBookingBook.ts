@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export type CreateBooking = {
   seatId: number;
@@ -31,6 +31,8 @@ export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) =>
   return res.json();
 };
 
+const queryClient = useQueryClient();
+
 export const useBook = () => {
   return useMutation({
     mutationFn: putBookingBook,
@@ -42,6 +44,7 @@ export const useBook = () => {
     },
     onSuccess: s => {
       console.log(s);
-    }
+      queryClient.setQueryData(['seat', s.id], s);
+    },
   });
 };
