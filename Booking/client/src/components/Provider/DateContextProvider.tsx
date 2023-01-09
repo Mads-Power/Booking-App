@@ -14,7 +14,8 @@ export interface DateContextType {
 const DateContext = createContext<DateContextType>(undefined!);
 
 export const DateProvider = ({ children }: any) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const initialValue = new Date(new Date().setHours(0,0,0,0));
+  const [selectedDate, setSelectedDate] = useState(initialValue);
 
   return (
     <DateContext.Provider
