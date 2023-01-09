@@ -1,6 +1,7 @@
 import { useRooms } from "@api/getRooms";
 import { Box } from "@mui/system";
 import { CircularProgress, Button, Container } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link } from "react-router-dom";
 import { Seat } from "@type/seat";
 import { WeekViewDatePicker } from "@components/WeekViewDatePicker";
@@ -34,35 +35,33 @@ export const Rooms = () => {
     return predicate;
   };
 
+  const boxDefault = {
+    display: "flex",
+    flexWrap: "wrap",
+    backgroundColor: "#CECECE",
+    borderRadius: "25px",
+    flexDirection: "row",
+    p: 1,
+    gap: 2,
+    border: "1px solid",
+    justifyContent: "space-around",
+    placeItems: "center",
+    minHeight: "30rem",
+    maxWidth: "60rem",
+  };
+
   return (
     <>
-      <Container style={{ width: "90vw" }}>
-        <WeekViewDatePicker />
-      </Container>
-      {data?.map((rooms) => (
-        <div key={rooms.id}>
-          <Container>
-            <h1>{rooms.name}</h1>
-          </Container>
-          <Container
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              backgroundColor: "#CECECE",
-              borderRadius: "25px",
-              flexDirection: "column-reverse",
-              p: 1,
-              border: "1px solid",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                m: 2,
-                gap: 2,
-              }}
-            >
+      <Box sx={{}}>
+        <Box style={{ display: "flex", flexWrap: "wrap", width: "90vw" }}>
+          <WeekViewDatePicker />
+        </Box>
+        {data?.map((rooms) => (
+          <div key={rooms.id}>
+            <Box>
+              <h1>{rooms.name}</h1>
+            </Box>
+            <Box sx={boxDefault}>
               {rooms.seats.map((seat: Seat) => (
                 <Link to={`/seat/${seat.id}`} key={seat.id} relative="path">
                   <Button
@@ -78,9 +77,9 @@ export const Rooms = () => {
                 </Link>
               ))}
             </Box>
-          </Container>
-        </div>
-      ))}
+          </div>
+        ))}
+      </Box>
     </>
   );
 };
