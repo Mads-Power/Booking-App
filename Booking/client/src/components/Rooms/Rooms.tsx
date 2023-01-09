@@ -35,25 +35,38 @@ export const Rooms = () => {
     return predicate;
   };
 
-  const boxDefault = {
-    display: "flex",
-    flexWrap: "wrap",
+  const boxButton = {
+    // display: "flex",
+    // flexWrap: "wrap",
     backgroundColor: "#CECECE",
     borderRadius: "25px",
-    flexDirection: "row",
+    // flexDirection: "row",
     p: 1,
     gap: 2,
     border: "1px solid",
-    justifyContent: "space-around",
-    placeItems: "center",
-    minHeight: "30rem",
-    maxWidth: "60rem",
+    // justifyContent: "space-around",
+    // placeItems: "center",
+    // minHeight: "30rem",
+    // maxWidth: "60rem",
+  };
+  const blackBox = {
+    backgroundColor: "#CECECE",
+    height: "5rem",
+    width: "5rem",
   };
 
+  const mainBox = {
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    p: 1,
+    gap: 2,
+  };
+  // 40em,
   return (
     <>
-      <Box sx={{}}>
-        <Box style={{ display: "flex", flexWrap: "wrap", width: "90vw" }}>
+      <Box sx={mainBox}>
+        <Box style={{ width: "90vw" }}>
           <WeekViewDatePicker />
         </Box>
         {data?.map((rooms) => (
@@ -61,7 +74,7 @@ export const Rooms = () => {
             <Box>
               <h1>{rooms.name}</h1>
             </Box>
-            <Box sx={boxDefault}>
+            <Box sx={boxButton}>
               {rooms.seats.map((seat: Seat) => (
                 <Link to={`/seat/${seat.id}`} key={seat.id} relative="path">
                   <Button
