@@ -194,7 +194,7 @@ namespace BookingApp.Context
                 Id = 1,
                 Name = "Ted Mosby",
                 Email = "ted.mosby@himym.com",
-                PhoneNumber = "00000001"
+                PhoneNumber = "44112233"
             });
 
             modelBuilder.Entity<User>().HasData(new User
@@ -202,7 +202,7 @@ namespace BookingApp.Context
                 Id = 2,
                 Name = "Marshall Eriksen",
                 Email = "marshall.eriksen@himym.com",
-                PhoneNumber = "00000002"
+                PhoneNumber = "44223344"
             });
 
             modelBuilder.Entity<User>().HasData(new User
@@ -210,7 +210,7 @@ namespace BookingApp.Context
                 Id = 3,
                 Name = "Lily Aldrin",
                 Email = "lily.aldrin@himym.com",
-                PhoneNumber = "00000003"
+                PhoneNumber = "44334455"
             });
 
             modelBuilder.Entity<User>().HasData(new User
@@ -218,7 +218,7 @@ namespace BookingApp.Context
                 Id = 4,
                 Name = "Barney Stinson",
                 Email = "barney.stinson@himym.com",
-                PhoneNumber = "00000004"
+                PhoneNumber = "44445566"
             });
 
             modelBuilder.Entity<User>().HasData(new User
@@ -226,17 +226,96 @@ namespace BookingApp.Context
                 Id = 5,
                 Name = "Robin Scherbatsky",
                 Email = "robin.scherbatsky@himym.com",
-                PhoneNumber = "00000005"
+                PhoneNumber = "44556677"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 6,
+                Name = "Ross Geller",
+                Email = "ross.geller@friends.com",
+                PhoneNumber = "99112233"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 7,
+                Name = "Monica Geller",
+                Email = "monica.geller@friends.com",
+                PhoneNumber = "99223344"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 8,
+                Name = "Phoebe Buffay",
+                Email = "phoebe.buffay@friends.com",
+                PhoneNumber = "99334455"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 9,
+                Name = "Chandler Bing",
+                Email = "chandler.bing@friends.com",
+                PhoneNumber = "99445566"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 10,
+                Name = "Joey Tribiani",
+                Email = "joey.tribiani@friends.com",
+                PhoneNumber = "99556677"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 11,
+                Name = "Rachel Green",
+                Email = "rachel.green@friends.com",
+                PhoneNumber = "99667788"
+            });
+
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 12,
+                Name = "Test User",
+                Email = "test.user@testing.com",
+                PhoneNumber = "98765432"
             });
 
             // Add Bookings
-            modelBuilder.Entity<Booking>().HasData(new Booking
+            createBookings(modelBuilder);
+        }
+
+        private static void createBookings(ModelBuilder modelBuilder)
+        {
+            for (int i = 1; i <= 11; i++)
             {
-                Id = 1,
-                SeatId = 1,
-                UserId = 1,
-                Date = DateTime.Today.ToUniversalTime()
-            });
+                var userId = i;
+                var seatId = 0;
+                if (i < 6)
+                {
+                    seatId = 10 + i;
+                }
+                else
+                {
+                    seatId = i - 5;
+                }
+                for (int j = 1; j <= 20; j++)
+                {
+                    var bookingId = ((i-1)*20) + j ;
+                    var dateOffset = j-1;
+                    modelBuilder.Entity<Booking>().HasData(new Booking
+                    {
+                        Id = bookingId,
+                        SeatId = seatId,
+                        UserId = userId,
+                        Date = DateTime.Today.AddDays(dateOffset).ToUniversalTime()
+                    }) ;
+                }
+            }
         }
     }
 }
