@@ -21,12 +21,14 @@ import {
   useDateContext,
 } from "@components/Provider/DateContextProvider";
 import { useUserContext } from "@components/Provider/UserContextProvider";
+import { Room } from "@type/room";
 
 export const Rooms = () => {
   const { isLoading, data, error } = useRooms();
   const { selectedDate: date, setSelectedDate: setDate }: DateContextType =
     useDateContext(); //'2023-01-02T13:42:16.115Z'
   const [room, setRoom] = useState(1);
+  const [ selectedRoom, setSelectedRoom ] = useState<Room>()
   const occupiedSeats = useBookingsByRoom(room, date);
   const loggedInUser = useUserContext().user;
 
@@ -41,8 +43,11 @@ export const Rooms = () => {
   }
 
   const handleChangeRoom = (e: SelectChangeEvent) => {
-    setRoom(e.target.value as unknown as number);
-    console.log("ROOM ", e.target.value);
+    const val = parseInt(e.target.value);
+    if(data) {
+      setRoom(val);
+      setSelectedRoom(data[val - 1])
+    }
   };
 
   const renderIsOccupied = (seatId: number) => {
@@ -68,7 +73,7 @@ export const Rooms = () => {
         <FormControl fullWidth>
           <InputLabel>Room</InputLabel>
           <Select
-            value={room as unknown as string}
+            value={room.toString()}
             label="Room"
             onChange={handleChangeRoom}
           >
@@ -90,56 +95,12 @@ export const Rooms = () => {
       </div>
       </Container>
 
-      {data?.map((rooms) => (
-        <div key={rooms.id}>
-          {rooms.id == room ? (
-            <div>
-              <Container>
-                <h1>{rooms.name}</h1>
-              </Container>
-              <Container
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  backgroundColor: "#CECECE",
-                  borderRadius: "25px",
-                  flexDirection: "column-reverse",
-                  p: 1,
-                  border: "1px solid",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    m: 2,
-                    gap: 2,
-                  }}
-                >
-                  {rooms.seats.map((seat: Seat) => (
-                    <Link to={`/seat/${seat.id}`} key={seat.id} relative="path">
-                      <Button
-                        variant="contained"
-                        sx={
-                          renderOccupiedByLoggedInUser(seat.id)
-                            ? { backgroundColor: "#61C577" }
-                            : renderIsOccupied(seat.id)
-                            ? { backgroundColor: "#DF8B0D" }
-                            : { backgroundColor: "#54A4D1" }
-                        }
-                      >
-                        {seat.id}
-                      </Button>
-                    </Link>
-                  ))}
-                </Box>
-              </Container>
-            </div>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      ))}
+    {room === 1 ? (
+    <div>
+      <h1>{selectedRoom?.name}</h1>
+    </div>) : (
+    <div>dsa</div>
+    )}
     </>
   );
 };
