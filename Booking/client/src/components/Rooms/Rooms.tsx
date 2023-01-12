@@ -34,7 +34,7 @@ export const Rooms = () => {
 
   useEffect(() => {
     if (data) {
-      if(!room) setRoom(1);
+      if (!room) setRoom(1);
       setSelectedRoom(data[room - 1]);
     }
   }, [date, room, data]);
@@ -58,7 +58,7 @@ export const Rooms = () => {
   const chooseDeskFill = (seatId: number) => {
     let fillHex = "";
     const occupied = occupiedSeats.data?.find(seat => seat.seatId === seatId);
-    if(occupied) {
+    if (occupied) {
       // If the seat is booked by the current logged in user, set the `fillHex` to be green, if not, set the color to be blue
       fillHex = occupiedSeats.data?.find(seat => seat.userId === loggedInUser.id) ? "#68B984" : "#3981F1"
     } else {
@@ -69,16 +69,20 @@ export const Rooms = () => {
   }
 
   const handleDeskClick = (id: number) => {
+    console.log("desk click", id);
+    console.log("Occupied seats", occupiedSeats.data);
+    console.log("logged in user id", loggedInUser.id);
   }
+
   const renderDeskSvgs = (seatId: number) => {
     return <svg xmlns="http://www.w3.org/2000/svg"
-     height="48"
+      height="48"
       width="48"
       onClick={() => handleDeskClick(seatId)}
-      fill = {chooseDeskFill(seatId)}
-      >
-        <path d="M4 36V12h40v24h-3v-5h-9.5v5h-3V15H7v21Zm27.5-16H41v-5h-9.5Zm0 8H41v-5h-9.5Z" />
-      </svg>
+      fill={chooseDeskFill(seatId)}
+    >
+      <path d="M4 36V12h40v24h-3v-5h-9.5v5h-3V15H7v21Zm27.5-16H41v-5h-9.5Zm0 8H41v-5h-9.5Z" />
+    </svg>
   }
 
   return (
@@ -101,22 +105,22 @@ export const Rooms = () => {
         </FormControl>
       </Container>
       <Container>
-      <div className="flex flex-row">
-        <div className="grow">
-              Opptatt
+        <div className="flex flex-row">
+          <div className="grow">
+            Opptatt
+          </div>
+          <div className="">
+            Booket av deg
+          </div>
+
         </div>
-        <div className="">
-              Booket av deg
-        </div>
-        
-      </div>
       </Container>
 
       {/* 1 = Storerommet / 2 = Lillerommet */}
-    {room === 1 ? (
+      {room === 1 ? (
         <div className="w-80 mx-auto bg-slate-400 bg-opacity-10 flex flex-col p-4 gap-y-8">
           {selectedRoom ? (
-            <div className="border border-solid border-black p-4 flex flex-col">
+            <div className="border border-solid border-black p-4">
               <div className="flex flex-col">
                 <div className="flex flex-row-reverse gap-x-6">
                   {renderDeskSvgs(1)}
@@ -131,9 +135,9 @@ export const Rooms = () => {
               </div>
             </div>
           ) : (
-            <div>Kunne ikke hente valgt rom</div>
+            <div>Kunne ikke hente rommet som ble valgt</div>
           )}
-    <div>
+          <div>
             {selectedRoom ? (
               <div className="border border-solid border-black p-4 flex flex-col">
                 <div className="flex flex-col">
@@ -145,13 +149,31 @@ export const Rooms = () => {
                     {renderDeskSvgs(9)}
                     {renderDeskSvgs(10)}
                   </div>
-                </div>  
+                </div>
               </div>
-            ): (<></>)}
+            ) : (<></>)}
           </div>
-    </div>) : (
-    <div>dsa</div>
-    )}
+        </div>) : (
+        <div className="w-80 mx-auto bg-slate-400 bg-opacity-10">
+          {selectedRoom ? (
+            <div className="border border-solid border-black p-4 flex flex-col gap-y-4">
+              <div className="flex flex-row-reverse gap-x-6 justify-center">
+                {renderDeskSvgs(1)}
+                {renderDeskSvgs(2)}
+              </div>
+              <div className="flex flex-row justify-end">
+                {renderDeskSvgs(3)}
+              </div>
+              <div className="flex flex-row justify-between">
+                {renderDeskSvgs(4)}
+                {renderDeskSvgs(5)}
+              </div>
+            </div>
+          ) : (
+            <div>Kunne ikke hente rommet som ble valgt</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
