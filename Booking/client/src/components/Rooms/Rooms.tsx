@@ -2,7 +2,6 @@ import { useRooms } from "@api/getRooms";
 import { Box } from "@mui/system";
 import {
   CircularProgress,
-  Button,
   Container,
   FormControl,
   InputLabel,
@@ -10,7 +9,6 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import { Seat } from "@type/seat";
 import { WeekViewDatePicker } from "@components/WeekViewDatePicker";
 import "./Rooms.module.css";
@@ -22,6 +20,7 @@ import {
 } from "@components/Provider/DateContextProvider";
 import { useUserContext } from "@components/Provider/UserContextProvider";
 import { Room } from "@type/room";
+import { useNavigate } from "react-router-dom";
 
 export const Rooms = () => {
   const { isLoading, data, error } = useRooms();
@@ -31,6 +30,7 @@ export const Rooms = () => {
   const [selectedRoom, setSelectedRoom] = useState<Room>()
   const occupiedSeats = useBookingsByRoom(room, date);
   const loggedInUser = useUserContext().user;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -69,9 +69,7 @@ export const Rooms = () => {
   }
 
   const handleDeskClick = (id: number) => {
-    console.log("desk click", id);
-    console.log("Occupied seats", occupiedSeats.data);
-    console.log("logged in user id", loggedInUser.id);
+    navigate(`/seat/${id}`, { relative: "path"})
   }
 
   const renderDeskSvgs = (seatId: number) => {
@@ -105,7 +103,7 @@ export const Rooms = () => {
         </FormControl>
       </Container>
       <Container className="mb-4">
-      <div className="flex flex-row my-2">
+      <div className="flex flex-row">
         <Box className="grow flex flex-row border w-1/2 h-8 mr-1">
           <div className="py-1">
             <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#3981F1]" height="24" width="24"><path d="M6 18V6h12v12Z"/></svg>
@@ -133,7 +131,7 @@ export const Rooms = () => {
       {room === 1 ? (
         <div className="w-80 mx-auto bg-slate-400 bg-opacity-10 flex flex-col p-4 gap-y-8">
           {selectedRoom ? (
-            <div className="border border-solid border-black p-4">
+            <div className="p-4">
               <div className="flex flex-col">
                 <div className="flex flex-row-reverse gap-x-6">
                   {renderDeskSvgs(1)}
@@ -152,7 +150,7 @@ export const Rooms = () => {
           )}
           <div>
             {selectedRoom ? (
-              <div className="border border-solid border-black p-4 flex flex-col">
+              <div className="p-4 flex flex-col">
                 <div className="flex flex-col">
                   <div className="flex flex-row-reverse gap-x-6">
                     {renderDeskSvgs(7)}
@@ -169,7 +167,7 @@ export const Rooms = () => {
         </div>) : (
         <div className="w-80 mx-auto bg-slate-400 bg-opacity-10">
           {selectedRoom ? (
-            <div className="border border-solid border-black p-4 flex flex-col gap-y-4">
+            <div className="p-4 flex flex-col gap-y-4">
               <div className="flex flex-row-reverse gap-x-6 justify-center">
                 {renderDeskSvgs(1)}
                 {renderDeskSvgs(2)}
