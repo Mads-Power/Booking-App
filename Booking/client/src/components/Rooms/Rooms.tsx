@@ -64,12 +64,12 @@ export const Rooms = () => {
       <Container>
         <WeekViewDatePicker />
       </Container>
-      <Container>
+      <Container className="mt-12 mb-8">
         <FormControl fullWidth>
-          <InputLabel>Room</InputLabel>
+          <InputLabel>Rom</InputLabel>
           <Select
             value={room as unknown as string}
-            label="Room"
+            label="Rom"
             onChange={handleChangeRoom}
           >
             {data?.map((rooms) => (
@@ -78,15 +78,28 @@ export const Rooms = () => {
           </Select>
         </FormControl>
       </Container>
-      <Container>
-      <div className="flex flex-row">
-        <div className="grow">
+      <Container className="mb-4">
+      <div className="flex flex-row my-2">
+        <Box className="grow flex flex-row border w-1/2 h-8 mr-1">
+          <div className="py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#3981F1]" height="24" width="24"><path d="M6 18V6h12v12Z"/></svg>
+          </div>
+          <Container className="text-center">
+            <span className="align-middle text-sm">
               Opptatt
-        </div>
-        <div className="">
+            </span>
+          </Container>
+        </Box>
+        <Box className="grow flex flex-row border w-1/2 h-8 ml-1 ">
+          <div className="py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#68B984]" height="24" width="24"><path d="M6 18V6h12v12Z"/></svg>
+          </div>
+          <Container className="text-center">
+            <span className="align-middle text-sm">
               Booket av deg
-        </div>
-        
+            </span>
+          </Container>
+        </Box>    
       </div>
       </Container>
 
