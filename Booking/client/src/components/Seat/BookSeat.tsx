@@ -62,12 +62,6 @@ export const BookSeat = ({
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    // console.log(`BOOKING USER ID: ${booking?.userId}`)
-    // console.log(`USER ID: ${loggedInUser.id}`)
-    console.log(`USER BOOKINGS FOR USER: ${loggedInUser.id}`)
-    // loggedInUser.bookings.forEach(b => {
-    //   console.log(b)
-    // })
     if (booking) {
       setUserId(booking?.userId.toString());
     }
@@ -95,12 +89,6 @@ export const BookSeat = ({
     bookMutation.mutate(bookingData);
     loggedInUserAddBooking(bookingData);
     
-    // if (bookMutation.isSuccess) {
-    //   console.log("BOOKING SUCCESFUL")
-    //   console.log(bookMutation.data)
-    //   // loggedInUserAddBooking(bookMutation.data)
-    // }
-    // loggedInUser.bookings.push(bookingData)
     // TODO: fiks så den bare kjører når respons har kode 204
     // if (mutation.isSuccess) handleOpen();
     handleOpen();
