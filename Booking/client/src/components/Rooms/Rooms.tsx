@@ -32,7 +32,12 @@ export const Rooms = () => {
   const occupiedSeats = useBookingsByRoom(room, date);
   const loggedInUser = useUserContext().user;
 
-  useEffect(() => {}, [date, room]);
+  useEffect(() => {
+    if (data) {
+      if(!room) setRoom(1);
+      setSelectedRoom(data[room - 1]);
+    }
+  }, [date, room, data]);
 
   if (isLoading) {
     return <CircularProgress size={100} />;
@@ -44,9 +49,9 @@ export const Rooms = () => {
 
   const handleChangeRoom = (e: SelectChangeEvent) => {
     const val = parseInt(e.target.value);
-    if(data) {
+    if (data) {
       setRoom(val);
-      setSelectedRoom(data[val - 1])
+      setSelectedRoom(data[val - 1]);
     }
   };
 
