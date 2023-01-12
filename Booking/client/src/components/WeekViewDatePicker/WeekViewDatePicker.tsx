@@ -74,7 +74,7 @@ export const WeekViewDatePicker = () => {
     let startDate = startOfWeek(selectedMonth, { weekStartsOn: 1 });
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div key={i} className={"w-full w-9 text-center"}>
+        <div key={i} className={"w-full text-center"}>
           {format(addDays(startDate, i), dateFormat, { locale: nor })}
         </div>
       );
@@ -98,17 +98,17 @@ export const WeekViewDatePicker = () => {
         const cloneDay = day;
         days.push(
           isBefore(day, yesterday) ? (
-            <div className="w-full justify-center flex">
+            <div className="w-full justify-center flex" key={day.getDate()}>
               <div
               className={"w-full " + styles.disabled + " " + styles.MuiButton}
-              key={day.getDate()}
+              
               >
                 <span>{formattedDate}</span>
               </div>
             </div>
 
           ) : (
-            <div className="w-full justify-center flex">
+            <div className="w-full justify-center flex" key={day.getDate()}>
               <div
                 className={`${
                   isSameDay(day, selectedDate)
@@ -117,7 +117,6 @@ export const WeekViewDatePicker = () => {
                     ? "w-full " + styles.today + " " + styles.MuiButton
                     : "w-full " + styles.MuiButton
                 }`}
-                key={day.getDate()}
                 onClick={() => {
                   onDateChange(cloneDay);
                 }}
