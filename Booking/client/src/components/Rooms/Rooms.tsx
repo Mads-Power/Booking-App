@@ -9,7 +9,6 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from "@mui/material";
-import { Seat } from "@type/seat";
 import { WeekViewDatePicker } from "@components/WeekViewDatePicker";
 import "./Rooms.module.css";
 import { useEffect, useState } from "react";
@@ -37,7 +36,9 @@ export const Rooms = () => {
       if (!room) setRoom(1);
       setSelectedRoom(data[room - 1]);
     }
-  }, [date, room, data]);
+    console.log(occupiedSeats.data);
+    
+  }, [date, room, data, occupiedSeats]);
 
   if (isLoading) {
     return <CircularProgress size={100} />;
@@ -49,6 +50,7 @@ export const Rooms = () => {
 
   const handleChangeRoom = (e: SelectChangeEvent) => {
     const val = parseInt(e.target.value);
+    
     if (data) {
       setRoom(val);
       setSelectedRoom(data[val - 1]);
@@ -60,7 +62,15 @@ export const Rooms = () => {
     const occupied = occupiedSeats.data?.find(seat => seat.seatId === seatId);
     if (occupied) {
       // If the seat is booked by the current logged in user, set the `fillHex` to be green, if not, set the color to be blue
-      fillHex = occupiedSeats.data?.find(seat => seat.userId === loggedInUser.id) ? "#68B984" : "#3981F1"
+      occupiedSeats.data?.some(seat => {
+        if(seat.userId === loggedInUser.id && seat.seatId === seatId) {
+          fillHex = "#68B984"; 
+          return true;
+        }
+        else {
+          fillHex = "#3981F1";
+        }
+      })
     } else {
       // If seat is free, set `fillHex` to the color black
       fillHex = "#000000"
@@ -169,15 +179,15 @@ export const Rooms = () => {
           {selectedRoom ? (
             <div className="p-4 flex flex-col gap-y-4">
               <div className="flex flex-row-reverse gap-x-6 justify-center">
-                {renderDeskSvgs(1)}
-                {renderDeskSvgs(2)}
+                {renderDeskSvgs(11)}
+                {renderDeskSvgs(12)}
               </div>
               <div className="flex flex-row justify-end">
-                {renderDeskSvgs(3)}
+                {renderDeskSvgs(13)}
               </div>
               <div className="flex flex-row justify-between">
-                {renderDeskSvgs(4)}
-                {renderDeskSvgs(5)}
+                {renderDeskSvgs(14)}
+                {renderDeskSvgs(15)}
               </div>
             </div>
           ) : (
