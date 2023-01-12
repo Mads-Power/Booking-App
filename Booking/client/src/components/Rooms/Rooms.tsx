@@ -36,8 +36,6 @@ export const Rooms = () => {
       if (!room) setRoom(1);
       setSelectedRoom(data[room - 1]);
     }
-    console.log(occupiedSeats.data);
-    
   }, [date, room, data, occupiedSeats]);
 
   if (isLoading) {

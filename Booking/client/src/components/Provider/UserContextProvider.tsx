@@ -35,11 +35,9 @@ const defaultUser: User =
 
 const handleInitialUser = (apiUser: any): User => {
   if (apiUser) {
-    // console.log(apiUser.name)
     return apiUser;
   }
   else {
-    // console.log(defaultUser.name)
     return defaultUser;
   }
 }
