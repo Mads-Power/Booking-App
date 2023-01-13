@@ -113,6 +113,7 @@ export const Rooms = () => {
       <Container>
         <WeekViewDatePicker />
       </Container>
+      {/* This div will be hidden on screens smaller than 1024 px */}
       <div className="w-full mt-12 mb-8 lg:hidden">
         <FormControl fullWidth>
           <InputLabel>Rom</InputLabel>
@@ -157,8 +158,11 @@ export const Rooms = () => {
         {/* This div will be hidden on all screens smaller than 1024px */}
         <div className="hidden lg:block basis-1/4 bg-slate-400 bg-opacity-10 p-2 overflow-hidden">
           <div className="w-full flex flex-col h-full gap-y-4">
-            {renderMenuButtonForLargeScreens("Storerommet")}
-            {renderMenuButtonForLargeScreens("Lillerommet")}
+            {data?.map((room) => (
+              <div key={room.id} className="w-full flex hover:cursor-pointer">
+                {renderMenuButtonForLargeScreens(room.name)}
+              </div>
+            ))}
           </div>
         </div>
         <div className="lg:basis-3/4 lg:w-[90%] bg-slate-400 bg-opacity-10 ">
