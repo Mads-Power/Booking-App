@@ -48,10 +48,16 @@ export const Rooms = () => {
 
   const handleChangeRoom = (e: SelectChangeEvent) => {
     const val = parseInt(e.target.value);
-
     if (data) {
       setRoom(val);
       setSelectedRoom(data[val - 1]);
+    }
+  };
+
+  const handleSelectRoom = (roomId: number) => {
+    if (data) {
+      setRoom(roomId);
+      setSelectedRoom(data[roomId - 1]);
     }
   };
 
@@ -92,10 +98,10 @@ export const Rooms = () => {
     </svg>
   }
 
-  const renderMenuButtonForLargeScreens = (label: string) => {
-    return <div className="w-full bg-slate-400 bg-opacity-10 flex flex-row shadow-md mx-auto justify-between">
+  const renderMenuButtonForLargeScreens = (room: Room) => {
+    return <div className={"w-full bg-opacity-20 flex flex-row shadow-md mx-auto justify-between " + (selectedRoom?.id === room.id ? 'bg-slate-800' : 'bg-slate-400')}>
       <div className="p-2 m-2">
-        <p className="text-base">{label}</p>
+        <p className="text-base">{room.name}</p>
       </div>
       <div
         className="basis-1/4 h-full flex align-middle bg-slate-400 bg-opacity-10">
@@ -159,8 +165,11 @@ export const Rooms = () => {
         <div className="hidden lg:block basis-1/4 bg-slate-400 bg-opacity-10 p-2 overflow-hidden">
           <div className="w-full flex flex-col h-full gap-y-4">
             {data?.map((room) => (
-              <div key={room.id} className="w-full flex hover:cursor-pointer">
-                {renderMenuButtonForLargeScreens(room.name)}
+              <div 
+              key={room.id} 
+              className="w-full flex hover:cursor-pointer"
+              onClick={() => handleSelectRoom(room.id)}>
+                {renderMenuButtonForLargeScreens(room)}
               </div>
             ))}
           </div>
