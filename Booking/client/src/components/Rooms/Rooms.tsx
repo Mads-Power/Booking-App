@@ -48,7 +48,7 @@ export const Rooms = () => {
 
   const handleChangeRoom = (e: SelectChangeEvent) => {
     const val = parseInt(e.target.value);
-    
+
     if (data) {
       setRoom(val);
       setSelectedRoom(data[val - 1]);
@@ -61,8 +61,8 @@ export const Rooms = () => {
     if (occupied) {
       // If the seat is booked by the current logged in user, set the `fillHex` to be green, if not, set the color to be blue
       occupiedSeats.data?.some(seat => {
-        if(seat.userId === loggedInUser.id && seat.seatId === seatId) {
-          fillHex = "#68B984"; 
+        if (seat.userId === loggedInUser.id && seat.seatId === seatId) {
+          fillHex = "#68B984";
           return true;
         }
         else {
@@ -77,7 +77,7 @@ export const Rooms = () => {
   }
 
   const handleDeskClick = (id: number) => {
-    navigate(`/seat/${id}`, { relative: "path"})
+    navigate(`/seat/${id}`, { relative: "path" })
   }
 
   const renderDeskSvgs = (seatId: number) => {
@@ -86,17 +86,34 @@ export const Rooms = () => {
       width="48"
       onClick={() => handleDeskClick(seatId)}
       fill={chooseDeskFill(seatId)}
+      className="transition ease-in-out delay-75 hover:scale-125 lg:h-16 lg:w-16"
     >
       <path d="M4 36V12h40v24h-3v-5h-9.5v5h-3V15H7v21Zm27.5-16H41v-5h-9.5Zm0 8H41v-5h-9.5Z" />
     </svg>
   }
 
+  const renderMenuButtonForLargeScreens = (label: string) => {
+    return <div className="w-full bg-slate-400 bg-opacity-10 flex flex-row shadow-md mx-auto justify-between">
+      <div className="p-2 m-2">
+        <p className="text-base">{label}</p>
+      </div>
+      <div
+        className="basis-1/4 h-full flex align-middle bg-slate-400 bg-opacity-10">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          height="20"
+          width="20"
+          className="mx-auto self-center"
+        ><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" /></svg>
+      </div>
+    </div>
+  }
+
   return (
-    <div className="h-full overflow-hidden flex flex-col gap-4">
+    <div className="h-full w-[85%] overflow-hidden flex flex-col gap-4 my-10 mx-auto">
       <Container>
         <WeekViewDatePicker />
       </Container>
-      <Container className="mt-12 mb-8">
+      <div className="w-full mt-12 mb-8 lg:hidden">
         <FormControl fullWidth>
           <InputLabel>Rom</InputLabel>
           <Select
@@ -109,90 +126,101 @@ export const Rooms = () => {
             ))}
           </Select>
         </FormControl>
-      </Container>
-      <Container className="mb-4">
-      <div className="flex flex-row">
-        <Box className="grow flex flex-row border w-1/2 h-8 mr-1">
-          <div className="py-1">
-            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#3981F1]" height="24" width="24"><path d="M6 18V6h12v12Z"/></svg>
-          </div>
-          <Container className="text-center">
-            <span className="align-middle text-sm">
-              Opptatt
-            </span>
-          </Container>
-        </Box>
-        <Box className="grow flex flex-row border w-1/2 h-8 ml-1 ">
-          <div className="py-1">
-            <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#68B984]" height="24" width="24"><path d="M6 18V6h12v12Z"/></svg>
-          </div>
-          <Container className="text-center">
-            <span className="align-middle text-sm">
-              Booket av deg
-            </span>
-          </Container>
-        </Box>    
       </div>
-      </Container>
+      <div className="w-[90%] mx-auto">
+        <div className="flex flex-row w-full">
+          <Box className="grow flex flex-row border w-1/2 h-8 mr-1">
+            <div className="py-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#3981F1]" height="24" width="24"><path d="M6 18V6h12v12Z" /></svg>
+            </div>
+            <Container className="text-center">
+              <span className="align-middle text-sm truncate">
+                Opptatt
+              </span>
+            </Container>
+          </Box>
+          <Box className="grow flex flex-row border w-1/2 h-8 ml-1 ">
+            <div className="py-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="fill-[#68B984]" height="24" width="24"><path d="M6 18V6h12v12Z" /></svg>
+            </div>
+            <Container className="text-center">
+              <span className="align-middle text-sm truncate">
+                Booket av deg
+              </span>
+            </Container>
+          </Box>
+        </div>
+      </div>
 
       {/* 1 = Storerommet / 2 = Lillerommet */}
-      {room === 1 ? (
-        <div className="w-80 mx-auto bg-slate-400 bg-opacity-10 flex flex-col p-4 gap-y-8">
-          {selectedRoom ? (
-            <div className="p-4">
-              <div className="flex flex-col">
-                <div className="flex flex-row-reverse gap-x-6">
-                  {renderDeskSvgs(1)}
-                  {renderDeskSvgs(2)}
-                  {renderDeskSvgs(3)}
-                </div>
-                <div className="flex flex-row-reverse gap-x-6">
-                  {renderDeskSvgs(4)}
-                  {renderDeskSvgs(5)}
-                  {renderDeskSvgs(6)}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>Kunne ikke hente rommet som ble valgt</div>
-          )}
-          <div>
-            {selectedRoom ? (
-              <div className="p-4 flex flex-col">
-                <div className="flex flex-col">
-                  <div className="flex flex-row-reverse gap-x-6">
-                    {renderDeskSvgs(7)}
-                    {renderDeskSvgs(8)}
-                  </div>
-                  <div className="flex flex-row-reverse gap-x-6">
-                    {renderDeskSvgs(9)}
-                    {renderDeskSvgs(10)}
-                  </div>
-                </div>
-              </div>
-            ) : (<></>)}
+      <div className="w-[90%] lg:w-[80%] lg:flex lg:flex-row lg:justify-around lg:child:mx-2 grow child:h-[80%] mx-auto ">
+        {/* This div will be hidden on all screens smaller than 1024px */}
+        <div className="hidden lg:block basis-1/4 bg-slate-400 bg-opacity-10 p-2 overflow-hidden">
+          <div className="w-full flex flex-col h-full gap-y-4">
+            {renderMenuButtonForLargeScreens("Storerommet")}
+            {renderMenuButtonForLargeScreens("Lillerommet")}
           </div>
-        </div>) : (
-        <div className="w-80 mx-auto bg-slate-400 bg-opacity-10">
-          {selectedRoom ? (
-            <div className="p-4 flex flex-col gap-y-4">
-              <div className="flex flex-row-reverse gap-x-6 justify-center">
-                {renderDeskSvgs(11)}
-                {renderDeskSvgs(12)}
+        </div>
+        <div className="lg:basis-3/4 lg:w-[90%] bg-slate-400 bg-opacity-10 ">
+          {room === 1 ? (
+            <div className="w-full mx-auto child:p-2">
+              {selectedRoom ? (
+                <div>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row-reverse gap-x-6">
+                      {renderDeskSvgs(1)}
+                      {renderDeskSvgs(2)}
+                      {renderDeskSvgs(3)}
+                    </div>
+                    <div className="flex flex-row-reverse gap-x-6">
+                      {renderDeskSvgs(4)}
+                      {renderDeskSvgs(5)}
+                      {renderDeskSvgs(6)}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>Kunne ikke hente rommet som ble valgt</div>
+              )}
+              <div>
+                {selectedRoom ? (
+                  <div className="p-4 flex flex-col">
+                    <div className="flex flex-col">
+                      <div className="flex flex-row-reverse gap-x-6">
+                        {renderDeskSvgs(7)}
+                        {renderDeskSvgs(8)}
+                      </div>
+                      <div className="flex flex-row-reverse gap-x-6">
+                        {renderDeskSvgs(9)}
+                        {renderDeskSvgs(10)}
+                      </div>
+                    </div>
+                  </div>
+                ) : (<></>)}
               </div>
-              <div className="flex flex-row justify-end">
-                {renderDeskSvgs(13)}
-              </div>
-              <div className="flex flex-row justify-between">
-                {renderDeskSvgs(14)}
-                {renderDeskSvgs(15)}
-              </div>
+            </div>) : (
+            <div className="w-full lg:w-auto mx-auto bg-slate-400 bg-opacity-10">
+              {selectedRoom ? (
+                <div className="p-4 flex flex-col gap-y-4">
+                  <div className="flex flex-row-reverse gap-x-6 justify-center">
+                    {renderDeskSvgs(11)}
+                    {renderDeskSvgs(12)}
+                  </div>
+                  <div className="flex flex-row justify-end">
+                    {renderDeskSvgs(13)}
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    {renderDeskSvgs(14)}
+                    {renderDeskSvgs(15)}
+                  </div>
+                </div>
+              ) : (
+                <div>Kunne ikke hente rommet som ble valgt</div>
+              )}
             </div>
-          ) : (
-            <div>Kunne ikke hente rommet som ble valgt</div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
