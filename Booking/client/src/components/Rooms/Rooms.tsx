@@ -127,7 +127,7 @@ export const Rooms = () => {
           </Select>
         </FormControl>
       </div>
-      <div className="w-[90%] mx-auto">
+      <div className="w-[90%] lg:w-[70%] mx-auto">
         <div className="flex flex-row w-full">
           <Box className="grow flex flex-row border w-1/2 h-8 mr-1">
             <div className="py-1">
