@@ -237,3 +237,6 @@ _Pvt_Extensions
 
 .DS_Store
 .vscode
+.env
+appsettings.json
+appsettings.Development.json
