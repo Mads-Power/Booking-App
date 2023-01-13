@@ -5,12 +5,45 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
 using System.Reflection;
 using BookingApp.Helpers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+
+// Authentication
+builder.Services
+    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.Bind("AzureAd");
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+    }, cookieOptions =>
+    {
+        cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        //cookieOptions.Cookie.SameSite = SameSiteMode.Strict; // May require frontend and backend to run on same port when running locally
+        cookieOptions.Cookie.HttpOnly = true;
+    });
+
+builder.Services.AddCors(options =>
+{
+
+    options.AddPolicy(name: "Client Origin",
+                      builder => builder
+                      //.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials()
+                      .WithOrigins("http://localhost:5173")
+    );
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -30,19 +63,6 @@ builder.Services.AddSwaggerGen(options =>
 {
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
-
-builder.Services.AddCors(options =>
-{
-
-   
-    options.AddPolicy(name: "Client Origin",
-                      builder => builder
-    //                .WithOrigins("http://localhost:5173")
-                      .AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      );
 });
 
 
@@ -67,15 +87,14 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = string.Empty;
 });
 
-////app.UseHttpsRedirection();
 //app.UseStaticFiles();
 app.UseRouting();
-
 app.MapControllers();
+
+app.UseHttpsRedirection();
 app.UseCors("Client Origin");
+app.UseAuthentication();
 app.UseAuthorization();
-
-
 
 app.MapFallbackToFile("index.html"); ;
 

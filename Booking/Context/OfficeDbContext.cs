@@ -20,10 +20,10 @@ namespace BookingApp.Context
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Booking> Bookings { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableSensitiveDataLogging();
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.EnableSensitiveDataLogging();
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
