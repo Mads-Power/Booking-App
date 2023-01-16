@@ -22,7 +22,7 @@ builder.Services
     .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(options =>
     {
-        builder.Configuration.Bind("AzureAd");
+        builder.Configuration.Bind("AzureAd", options);
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
     }, cookieOptions =>
@@ -37,11 +37,11 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy(name: "Client Origin",
                       builder => builder
-                      //.AllowAnyOrigin()
+                      .AllowAnyOrigin()
                       .AllowAnyHeader()
                       .AllowAnyMethod()
-                      .AllowCredentials()
-                      .WithOrigins("http://localhost:5173")
+                      //.AllowCredentials()
+                      //.WithOrigins("http://localhost:5173")
     );
 });
 
@@ -75,10 +75,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllers();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwaggerUI();
 }
 
 app.UseSwaggerUI(options =>
@@ -87,9 +92,7 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = string.Empty;
 });
 
-//app.UseStaticFiles();
-app.UseRouting();
-app.MapControllers();
+
 
 app.UseHttpsRedirection();
 app.UseCors("Client Origin");
