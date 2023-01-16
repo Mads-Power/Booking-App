@@ -1,34 +1,23 @@
-import { useRooms } from "@api/getRooms";
-import { Box } from "@mui/system";
-import {
-  CircularProgress,
-  Container,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-} from "@mui/material";
-import { WeekViewDatePicker } from "@components/WeekViewDatePicker";
-import "./Rooms.module.css";
-import { useEffect, useState } from "react";
-import { useBookingsByRoom } from "@api/getBookingsByRoom";
-import {
-  DateContextType,
-  useDateContext,
-} from "@components/Provider/DateContextProvider";
-import { useUserContext } from "@components/Provider/UserContextProvider";
+import { useRoomsQuery } from '@api/useRoomsQuery';
+import { Box } from '@mui/system';
+import { CircularProgress, Button, Container, SelectChangeEvent, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { WeekViewDatePicker } from '@components/WeekViewDatePicker';
+import './Rooms.module.css';
+import { useEffect, useState } from 'react';
+import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';
+import { useAtom } from 'jotai';
+import { dateAtom } from '../../jotaiProvider';
+import { useUserQuery } from '@api/useUserQuery';
 import { Room } from "@type/room";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const Rooms = () => {
-  const { isLoading, data, error } = useRooms();
-  const { selectedDate: date, setSelectedDate: setDate }: DateContextType =
-    useDateContext(); //'2023-01-02T13:42:16.115Z'
+  const { isLoading, data, error } = useRoomsQuery();
+  const [date, setDate] = useAtom(dateAtom);
+  const occupiedSeats = useBookingsByRoomQuery(1, date);
+  const { data: loggedInUser } = useUserQuery('5');
   const [room, setRoom] = useState(1);
   const [selectedRoom, setSelectedRoom] = useState<Room>()
-  const occupiedSeats = useBookingsByRoom(room, date);
-  const loggedInUser = useUserContext().user;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +48,7 @@ export const Rooms = () => {
       setRoom(roomId);
       setSelectedRoom(data[roomId - 1]);
     }
-  };
+  }
 
   const chooseDeskFill = (seatId: number) => {
     let fillHex = "";
@@ -67,7 +56,7 @@ export const Rooms = () => {
     if (occupied) {
       // If the seat is booked by the current logged in user, set the `fillHex` to be green, if not, set the color to be blue
       occupiedSeats.data?.some(seat => {
-        if (seat.userId === loggedInUser.id && seat.seatId === seatId) {
+        if (seat.userId === loggedInUser?.id && seat.seatId === seatId) {
           fillHex = "#68B984";
           return true;
         }
@@ -236,4 +225,4 @@ export const Rooms = () => {
       </div>
     </div>
   );
-};
+}

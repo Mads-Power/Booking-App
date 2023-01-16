@@ -1,21 +1,8 @@
-import { AppProvider } from "@components/Provider/app";
-import { DateProvider } from "@components/Provider/DateContextProvider";
-import { UserProvider } from "@components/Provider/UserContextProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Routers from "../src/routes/Routers";
-
-const queryClient = new QueryClient();
+import { AppProvider } from '@components/Provider/app';
+import Routers from '../src/routes/Routers';
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <DateProvider>
-        <UserProvider>
-          <AppProvider children={<Routers />} />
-        </UserProvider>
-      </DateProvider>
-    </QueryClientProvider>
-  );
+  return <AppProvider children={<Routers />} />;
 }
 
 export default App;

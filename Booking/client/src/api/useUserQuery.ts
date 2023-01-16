@@ -20,14 +20,14 @@ const placeholderUser: User = {
   name: '',
   email: '',
   phoneNumber: '',
-  bookings: []
-}
+  bookings: [],
+};
 
-export const useUser = (id: string) => {
+export const useUserQuery = (id: string) => {
   return useQuery<User>({
     queryKey: ['user', id],
     queryFn: () => getUser(id),
     enabled: !!id,
-    placeholderData: placeholderUser
+    placeholderData: placeholderUser,
   });
 };

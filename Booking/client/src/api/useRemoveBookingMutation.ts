@@ -6,7 +6,7 @@ export type DeleteBooking = {
 };
 
 const url = 'http://localhost:51249/api/Booking/Unbook';
-export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
+export const removeBooking = async ({ userId, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -15,8 +15,8 @@ export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
     },
     body: JSON.stringify({
       userId,
-      date
-    })
+      date,
+    }),
   };
   const res = await fetch(url, requestOptions);
 
@@ -28,9 +28,9 @@ export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
   }
 };
 
-export const useUnbook = () => {
+export const useRemoveBookingMutation = () => {
   return useMutation({
-    mutationFn: putBookingUnbook,
+    mutationFn: removeBooking,
     onError: error => {
       console.log(error);
     },
