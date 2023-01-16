@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSeat } from '@api/getSeat';
+import { useSeatQuery } from '@api/useSeatQuery';
 import { CircularProgress, Button, TextField } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Booking } from '@type/booking';
@@ -17,14 +17,11 @@ import 'dayjs/locale/nb';
 import { nbNO as coreNbNO } from '@mui/material/locale';
 import styles from './Seat.module.css';
 import { BookSeat } from './BookSeat';
-import {
-  DateContextType,
-  useDateContext,
-} from '@components/Provider/DateContextProvider';
 import { DateSeat } from './DateSeat';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
+import { useUserQuery } from '@api/useUserQuery';
 
 const theme = createTheme(
   {
@@ -36,46 +33,13 @@ const theme = createTheme(
   coreNbNO // core translations
 );
 
-// const getOccupiedDays = (bookings: Booking[], date: Date): number[] => {
-//   const dayDate = dayjs(date)
-//   return bookings.map((booking: Booking) => {
-//     if(dayjs(booking.date).month() === dayDate.month() && dayjs(booking.date).year() === dayDate.year()){
-
-//     }
-//   });
-
-//   // bookings.forEach((b: Booking) => {
-//   //   if (dayjs(b.date).month() == date.month() && dayjs(b.date).year() == date.year()) {
-//   //     occupiedDaysInMonth.push(dayjs(b.date).date());
-//   //   }
-//   // });
-
-// };
-
-// const handleInitialDate = (date: Date) => {
-//   if (date) {
-//     return dayjs(date);
-//   } else {
-//     return dayjs();
-//   }
-// };
-
 export const Seat = () => {
   const { seatId } = useParams();
-  const { isLoading, data, error } = useSeat(seatId as string);
+  const { isLoading, data, error } = useSeatQuery(seatId!);
+  const { data: userData } = useUserQuery('5');
   const [date] = useAtom(dateAtom);
   const navigate = useNavigate();
-
-  // Two date states are needed to handle convertion between Date type and Dayjs type
-  //const { selectedDate, setSelectedDate }: DateContextType = useDateContext();
-  //const [date, setDate] = useState<Dayjs | null>(handleInitialDate(selectedDate));
-  // const [occupiedDays, setOccupiedDays] = useState<number[]>();
-
-  // useEffect(() => {
-  //   if (data && date) {
-  //     setOccupiedDays(getOccupiedDays(data.bookings, date));
-  //   }
-  // }, [data, date]);
+  const [seatInfo, setSeatInfo] = useState('bookAvailableSeat');
 
   if (isLoading) {
     return (
@@ -88,6 +52,8 @@ export const Seat = () => {
   if (error) {
     return <h4>Kan ikke hente setet.</h4>;
   }
+
+  const handleDateChange = () => {};
 
   const dayDate = dayjs(date);
   return (
@@ -105,16 +71,17 @@ export const Seat = () => {
           <BookSeat
             seat={data!}
             date={dayDate}
-            booking={
-              data?.bookings.find(
-                booking =>
-                  dayjs(booking.date).format('YYYY-MM-DD') ===
-                  dayDate?.format('YYYY-MM-DD')
-              )!
-            }
+            data={userData!}
+            seatInfo={seatInfo}
+            onSeatInfoChange={setSeatInfo}
           />
         </div>
-        <DateSeat data={data!} />
+        <DateSeat
+          data={data!}
+          onDateChange={handleDateChange}
+          userData={userData!}
+          onSeatInfoChange={setSeatInfo}
+        />
       </ThemeProvider>
     </>
   );

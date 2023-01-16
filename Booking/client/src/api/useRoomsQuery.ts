@@ -14,7 +14,7 @@ export const getRooms = async () => {
   return res.json();
 };
 
-export const useRooms = () => {
+export const useRoomsQuery = () => {
   return useQuery<Room[]>({
     queryKey: ['rooms'],
     queryFn: () => getRooms(),

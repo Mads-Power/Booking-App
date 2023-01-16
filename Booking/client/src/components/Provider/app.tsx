@@ -4,8 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Button } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
-import { DateProvider } from './DateContextProvider';
-import { UserProvider } from './UserContextProvider';
 import { Provider } from 'jotai';
 
 const ErrorFallback = () => {
@@ -20,7 +18,7 @@ const ErrorFallback = () => {
   );
 };
 
-export const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -37,9 +35,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <QueryClientProvider client={queryClient}>
           <Provider>
-            <UserProvider>
-              <BrowserRouter>{children}</BrowserRouter>
-            </UserProvider>
+            <BrowserRouter>{children}</BrowserRouter>
           </Provider>
         </QueryClientProvider>
       </ErrorBoundary>

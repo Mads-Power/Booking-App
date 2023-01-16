@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { SetStateAction, Dispatch, useState } from 'react';
 import { CircularProgress, Button, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -13,33 +13,47 @@ import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
 import { Seat } from '@type/seat';
 import { Booking } from '@type/booking';
+import { User } from '@type/user';
 
-export const DateSeat = ({ data }: { data: Seat }) => {
-  const [occupiedDays, setOccupiedDays] = useState<number[]>();
+type TDateSeat = {
+  data: Seat;
+  onDateChange: () => void;
+  userData: User;
+  onSeatInfoChange: Dispatch<SetStateAction<string>>;
+};
+
+export const DateSeat = ({
+  data,
+  onDateChange,
+  userData,
+  onSeatInfoChange,
+}: TDateSeat) => {
   const [date, setDate] = useAtom(dateAtom);
 
-  //   useEffect(() => {
-  //     if (data && date) {
-  //       setOccupiedDays(getOccupiedDays(data.bookings, date));
-  //     }
-  //   }, [data, date]);
+  // type OccupiedDays = [
+  //   {
+  //     date: number;
+  //     userId: number;
+  //   },
+  //   { empty: '' }
+  // ];
 
-  //   const getOccupiedDays = (bookings: Booking[], date: Date): number[] => {
-  //     const dayDate = dayjs(date);
-  //     return bookings.map((booking: Booking) => {
-  //       if (
-  //         dayjs(booking.date).month() === dayDate.month() &&
-  //         dayjs(booking.date).year() === dayDate.year()
-  //       ) {
-  //       }
-  //     });
+  const getOccupiedDays = (bookings: Booking[], date: Date) => {
+    const dateDay = dayjs(date);
 
-  //     // bookings.forEach((b: Booking) => {
-  //     //   if (dayjs(b.date).month() == date.month() && dayjs(b.date).year() == date.year()) {
-  //     //     occupiedDaysInMonth.push(dayjs(b.date).date());
-  //     //   }
-  //     // });
-  //   };
+    const occupiedDaysInMonth = bookings.map((booking: Booking) => {
+      if (
+        dayjs(booking.date).month() === dateDay.month() &&
+        dayjs(booking.date).year() === dateDay.year()
+      )
+        return { date: dayjs(booking.date).date(), userId: booking.userId };
+    });
+
+    return occupiedDaysInMonth;
+  };
+
+  const occupiedDays = getOccupiedDays(data?.bookings, date);
+  console.log(occupiedDays);
 
   const handleOccupiedDays = (
     day: Date,
@@ -47,9 +61,7 @@ export const DateSeat = ({ data }: { data: Seat }) => {
     pickerDayProps: PickersDayProps<Date>
   ) => {
     const dayDate = dayjs(day);
-    const isOccupied =
-      !pickerDayProps.outsideCurrentMonth &&
-      occupiedDays?.find(day => day === dayDate.date());
+    const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
     return (
       <PickersDay
         sx={isOccupied ? { border: 'solid #DF8B0D' } : null}
@@ -60,18 +72,36 @@ export const DateSeat = ({ data }: { data: Seat }) => {
 
   const handleMonthChange = (date: Date) => {
     setDate(date);
-    //setOccupiedDays(getOccupiedDays(data!.bookings, date));
   };
 
   const handleChange = (newValue: Date) => {
-    setDate(newValue);
+    const dayDate = dayjs(newValue);
+    occupiedDays?.find(day => {
+      if (day?.date === dayDate.date() && day.userId === userData.id) {
+        onSeatInfoChange('removeBookedSeat');
+        setDate(newValue);
+      }
+      if (day?.date !== dayDate.date() && day?.userId !== userData.id) {
+        onSeatInfoChange('bookAvailableSeat');
+        setDate(newValue);
+      }
+      if (day?.date === dayDate.date() && day?.userId !== userData.id) {
+        onSeatInfoChange('bookedSeat');
+        setDate(newValue);
+      }
+    });
   };
+
+  // userID = your or Someone else
+  // undefined = default
+
+  const dayDate = dayjs(date);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='nb'>
       <StaticDatePicker
         value={date}
-        onChange={() => handleChange}
+        onChange={date => handleChange(date!)}
         onMonthChange={handleMonthChange}
         renderInput={params => <TextField {...params} />}
         renderDay={handleOccupiedDays}
@@ -79,6 +109,7 @@ export const DateSeat = ({ data }: { data: Seat }) => {
         showToolbar={false}
         disablePast={true}
         displayStaticWrapperAs='desktop'
+        openTo='day'
       />
     </LocalizationProvider>
   );

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Seat } from '@type/seat';
 
 const url = 'http://localhost:51249/api/Seat/';
-export const getSeat = async (id: string) => {
+export const getSeat = async (seatId: string) => {
   const requestOptions = {
     method: 'GET',
     headers: {
@@ -10,13 +10,14 @@ export const getSeat = async (id: string) => {
       'Content-Type': 'application/json',
     },
   };
-  const res = await fetch(url + id, requestOptions);
+  const res = await fetch(url + seatId, requestOptions);
   return res.json();
 };
 
-export const useSeat = (id: string) => {
+export const useSeatQuery = (seatId: string) => {
   return useQuery<Seat>({
-    queryKey: ['seat', id],
-    queryFn: () => getSeat(id),
+    queryKey: ['seat', seatId],
+    queryFn: () => getSeat(seatId),
+    refetchInterval: 1000,
   });
 };

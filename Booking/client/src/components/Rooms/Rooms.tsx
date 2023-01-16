@@ -1,4 +1,4 @@
-import { useRooms } from '@api/getRooms';
+import { useRoomsQuery } from '@api/useRoomsQuery';
 import { Box } from '@mui/system';
 import { CircularProgress, Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -6,22 +6,16 @@ import { Seat } from '@type/seat';
 import { WeekViewDatePicker } from '@components/WeekViewDatePicker';
 import './Rooms.module.css';
 import { useEffect, useState } from 'react';
-import { useBookingsByRoom } from '@api/getBookingsByRoom';
-import {
-  DateContextType,
-  useDateContext,
-} from '@components/Provider/DateContextProvider';
-import { useUserContext } from '@components/Provider/UserContextProvider';
+import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
+import { useUserQuery } from '@api/useUserQuery';
 
 export const Rooms = () => {
-  const { isLoading, data, error } = useRooms();
+  const { isLoading, data, error } = useRoomsQuery();
   const [date, setDate] = useAtom(dateAtom);
-  const occupiedSeats = useBookingsByRoom(1, date);
-  const loggedInUser = useUserContext().user;
-
-  //useEffect(() => {}, [date]);
+  const occupiedSeats = useBookingsByRoomQuery(1, date);
+  const { data: userData } = useUserQuery('5');
 
   if (isLoading) {
     return <CircularProgress size={100} />;
@@ -40,7 +34,7 @@ export const Rooms = () => {
   const occupiedByLoggedInUser = (seatId: number) => {
     return occupiedSeats.data?.find(
       occupiedSeat =>
-        occupiedSeat.seatId === seatId && occupiedSeat.userId === loggedInUser.id
+        occupiedSeat.seatId === seatId && occupiedSeat.userId === userData?.id
     );
   };
 
