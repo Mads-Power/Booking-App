@@ -108,7 +108,6 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
   return (
     <div style={{ margin: '10px', textAlign: 'center' }}>
       <Box style={boxStyle}>
-        <img src={Chair} height='120' style={{ margin: 'auto auto 20px' }} />
         <h3>Setenummer: {seat?.name}</h3>
         <h3>Romnummer: {seat?.roomId}</h3>
         <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
