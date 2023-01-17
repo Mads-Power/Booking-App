@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSeatQuery } from '@api/useSeatQuery';
 import { CircularProgress, Button, TextField } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Booking } from '@type/booking';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
-  LocalizationProvider,
-  PickersDay,
-  PickersDayProps,
-  StaticDatePicker,
   nbNO,
 } from '@mui/x-date-pickers';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import 'dayjs/locale/nb';
 import { nbNO as coreNbNO } from '@mui/material/locale';
-import styles from './Seat.module.css';
 import { BookSeat } from './BookSeat';
 import { DateSeat } from './DateSeat';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
@@ -25,9 +18,6 @@ import { useUserQuery } from '@api/useUserQuery';
 
 const theme = createTheme(
   {
-    palette: {
-      primary: { main: '#DF8B0D' },
-    },
   },
   nbNO, // x-date-pickers translations
   coreNbNO // core translations
