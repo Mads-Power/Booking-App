@@ -7,6 +7,7 @@ import {
   PickersDayProps,
   StaticDatePicker,
   nbNO,
+  pickersDayClasses,
 } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
@@ -17,7 +18,6 @@ import { User } from '@type/user';
 
 type TDateSeat = {
   data: Seat;
-  onDateChange: () => void;
   userData: User;
   onSeatInfoChange: Dispatch<SetStateAction<string>>;
 };
@@ -52,20 +52,43 @@ export const DateSeat = ({
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
     const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.userId === userData.id);
 
+    // Blue fill + border
     const deskBookedByOtherUserStyle = {
       border: "2px solid #3981F1",
       background: "rgba(57, 129, 241, 0.25)"
     } as const
 
+    // Green fill + border
     const deskBookedByCurrentUserStyle = {
       border: "2px solid #61C577",
       background: "rgba(97, 197, 119, 0.25)"
     } as const
+
+    // No fill + no border
+    const deskNotOccupiedStyle = {
+      color: "black"
+    } as const
+
+    //When selected, orange fill + border
+    const deskNotOccupiedOnSelectedStyle = {
+      border: "2px solid #F68420",
+      background: "rgba(246, 132, 32, 0.25)",
+      color: "black"
+    } as const
+
+
+    // Ref for conditional styling for mui elements:
+    // https://stackoverflow.com/questions/69500357/how-to-implement-conditional-styles-in-mui-v5-sx-prop
+
     return (
       <PickersDay
         sx={{
           ...(isOccupied && !isOccupiedByCurrentUser && deskBookedByOtherUserStyle),
-          ...(isOccupiedByCurrentUser && deskBookedByCurrentUserStyle)
+          ...(isOccupiedByCurrentUser && deskBookedByCurrentUserStyle),
+          ...(!isOccupied && !isOccupiedByCurrentUser && deskNotOccupiedStyle),
+          [`&&.${pickersDayClasses.selected}`]: (
+            deskNotOccupiedOnSelectedStyle
+          )
         }}
         {...pickerDayProps}
       />
@@ -81,7 +104,7 @@ export const DateSeat = ({
     const dayDate = dayjs(newValue);
     const correctedDate = new Date(newValue.toISOString());
     let occupied = false;
-    
+
     occupiedDays?.find(day => {
       if (day?.date === dayDate.date() && day.userId === userData.id) {
         onSeatInfoChange('removeBookedSeat');
@@ -100,7 +123,7 @@ export const DateSeat = ({
       }
     });
 
-    if(!occupied) {
+    if (!occupied) {
       setDate(new Date(correctedDate));
       console.log(correctedDate);
     }
