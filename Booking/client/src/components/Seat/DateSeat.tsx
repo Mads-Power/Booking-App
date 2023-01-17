@@ -50,13 +50,23 @@ export const DateSeat = ({
   ) => {
     const dayDate = dayjs(day);
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
+    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.userId === userData.id);
+
+    const deskBookedByOtherUserStyle = {
+      border: "2px solid #3981F1",
+      background: "rgba(57, 129, 241, 0.25)"
+    } as const
+
+    const deskBookedByCurrentUserStyle = {
+      border: "2px solid #61C577",
+      background: "rgba(97, 197, 119, 0.25)"
+    } as const
     return (
-      // <PickersDay
-      //   sx={isOccupied ? { border: '2px solid #3981F1',  background: 'rgba(57, 129, 241, 0.25)'} : null}
-      //   {...pickerDayProps}
-      // />
       <PickersDay
-        sx={isOccupied ? { border: 'solid #DF8B0D' } : null}
+        sx={{
+          ...(isOccupied && !isOccupiedByCurrentUser && deskBookedByOtherUserStyle),
+          ...(isOccupiedByCurrentUser && deskBookedByCurrentUserStyle)
+        }}
         {...pickerDayProps}
       />
     );
