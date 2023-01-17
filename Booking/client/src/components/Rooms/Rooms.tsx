@@ -14,9 +14,9 @@ import { useNavigate } from 'react-router-dom';
 export const Rooms = () => {
   const { isLoading, data, error } = useRoomsQuery();
   const [date, setDate] = useAtom(dateAtom);
-  const occupiedSeats = useBookingsByRoomQuery(1, date);
   const { data: loggedInUser } = useUserQuery('5');
   const [room, setRoom] = useState(1);
+  const occupiedSeats = useBookingsByRoomQuery(room, date);
   const [selectedRoom, setSelectedRoom] = useState<Room>()
   const navigate = useNavigate();
 
