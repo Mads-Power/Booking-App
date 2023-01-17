@@ -1,12 +1,11 @@
-import { SetStateAction, Dispatch, useState } from 'react';
-import { CircularProgress, Button, TextField } from '@mui/material';
+import { SetStateAction, Dispatch } from 'react';
+import { TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
   StaticDatePicker,
-  nbNO,
   pickersDayClasses,
 } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';

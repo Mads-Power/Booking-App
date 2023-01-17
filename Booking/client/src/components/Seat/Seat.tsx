@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSeatQuery } from '@api/useSeatQuery';
-import { CircularProgress, Button, TextField } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   nbNO,
@@ -43,7 +43,6 @@ export const Seat = () => {
     return <h4>Kan ikke hente setet.</h4>;
   }
 
-  const handleDateChange = () => {};
 
   const dayDate = dayjs(date);
   return (
@@ -68,7 +67,6 @@ export const Seat = () => {
         </div>
         <DateSeat
           data={data!}
-          onDateChange={handleDateChange}
           userData={userData!}
           onSeatInfoChange={setSeatInfo}
         />
