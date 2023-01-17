@@ -24,20 +24,10 @@ type TDateSeat = {
 
 export const DateSeat = ({
   data,
-  onDateChange,
   userData,
   onSeatInfoChange,
 }: TDateSeat) => {
   const [date, setDate] = useAtom(dateAtom);
-
-  // type OccupiedDays = [
-  //   {
-  //     date: number;
-  //     userId: number;
-  //   },
-  //   { empty: '' }
-  // ];
-
   const getOccupiedDays = (bookings: Booking[], date: Date) => {
     const dateDay = dayjs(date);
 
@@ -51,9 +41,7 @@ export const DateSeat = ({
 
     return occupiedDaysInMonth;
   };
-
   const occupiedDays = getOccupiedDays(data?.bookings, date);
-  console.log(occupiedDays);
 
   const handleOccupiedDays = (
     day: Date,
@@ -63,6 +51,10 @@ export const DateSeat = ({
     const dayDate = dayjs(day);
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
     return (
+      // <PickersDay
+      //   sx={isOccupied ? { border: '2px solid #3981F1',  background: 'rgba(57, 129, 241, 0.25)'} : null}
+      //   {...pickerDayProps}
+      // />
       <PickersDay
         sx={isOccupied ? { border: 'solid #DF8B0D' } : null}
         {...pickerDayProps}
@@ -94,9 +86,6 @@ export const DateSeat = ({
 
   // userID = your or Someone else
   // undefined = default
-
-  const dayDate = dayjs(date);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='nb'>
       <StaticDatePicker
