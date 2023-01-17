@@ -103,29 +103,25 @@ export const DateSeat = ({
     const dayDate = dayjs(newValue);
     const correctedDate = new Date(newValue.toISOString());
     let occupied = false;
-
     occupiedDays?.find(day => {
-      if (day?.date === dayDate.date() && day.userId === userData.id) {
+      const selectedDateIsToday = day?.date === dayDate.date();
+      const selectedDateIsBookedByCurrentUser = day?.userId === userData.id
+
+      if (selectedDateIsToday && selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('removeBookedSeat');
-        setDate(new Date(correctedDate));
         occupied = true
-      }
-      if (day?.date !== dayDate.date() && day?.userId !== userData.id) {
-        onSeatInfoChange('bookAvailableSeat');
-        setDate(new Date(correctedDate));
-        occupied = true
-      }
-      if (day?.date === dayDate.date() && day?.userId !== userData.id) {
+      } 
+      if (selectedDateIsToday && !selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('bookedSeat');
-        setDate(new Date(correctedDate));
         occupied = true
       }
     });
 
     if (!occupied) {
-      setDate(new Date(correctedDate));
-      console.log(correctedDate);
+      onSeatInfoChange('bookAvailableSeat');
     }
+
+    setDate(new Date(correctedDate));
   };
 
   // userID = your or Someone else
