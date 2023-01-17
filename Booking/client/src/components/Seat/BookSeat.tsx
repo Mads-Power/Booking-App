@@ -52,7 +52,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
   const SeatInfoOccupied = () => {
     return (
       <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto'>
-        <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col'>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2'>
           <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
           <p>{data?.name}</p>
         </div>

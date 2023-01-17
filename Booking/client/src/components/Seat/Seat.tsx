@@ -31,7 +31,35 @@ export const Seat = () => {
   const { data: userData } = useUserQuery('5');
   const [date] = useAtom(dateAtom);
   const navigate = useNavigate();
-  const [seatInfo, setSeatInfo] = useState('bookAvailableSeat');
+
+  const initialSeatState = () => {
+    let initialSeatState = "";
+    data?.bookings.some(booking => {
+      const dateIsoString = new Date(booking.date).toISOString();
+      if(dateIsoString === date.toISOString()) {
+        if(booking.userId === userData?.id) {
+          initialSeatState = 'removeBookedSeat';
+          return true;
+        } else if(booking.userId !== userData?.id) {
+          initialSeatState = 'bookedSeat';
+          return true;
+        }
+      }
+    });
+    if(!initialSeatState.length) {
+      initialSeatState = 'bookAvailableSeat';
+    }
+    return initialSeatState;
+  }
+
+  const [seatInfo, setSeatInfo] = useState(initialSeatState);
+
+  useEffect(() => {
+    if(!initialSeatState.length) {
+      setSeatInfo(initialSeatState());
+    }
+    
+  }, [ data ]);
 
   if (isLoading) {
     return (
