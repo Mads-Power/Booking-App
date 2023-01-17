@@ -15,6 +15,8 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
 import { useUserQuery } from '@api/useUserQuery';
+import { ColorDescription } from '@components/shared/colorDescription';
+import { Divider } from '@mui/material'
 
 const theme = createTheme(
   {
@@ -48,28 +50,36 @@ export const Seat = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ArrowCircleLeftIcon htmlColor='#DF8B0D' onClick={() => navigate(`/`)} />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-            margin: '10px',
-            minWidth: '80vw',
-          }}>
-          <BookSeat
-            seat={data!}
-            date={dayDate}
-            data={userData!}
-            seatInfo={seatInfo}
-            onSeatInfoChange={setSeatInfo}
-          />
-        </div>
-        <DateSeat
-          data={data!}
-          userData={userData!}
+        <div className='flex flex-col gap-y-8'>
+          <div className='p-3 mb-4'>
+            <ArrowCircleLeftIcon
+              htmlColor='#DF8B0D'
+              onClick={() => navigate(`/`)}
+            />
+          </div>
+          <div className='flex flex-col gap-y-4 w-[90%] mx-auto'>
+            <div className='m-3'>
+              <ColorDescription />
+            </div>
+            <div>
+              <DateSeat
+                data={data!}
+                userData={userData!}
+                onSeatInfoChange={setSeatInfo}
+              />
+            </div>
+            <Divider sx={{ mx:2, background:"#BDBDBD"}}/>
+            <div className='flex flex-col w-full'>
+            <BookSeat
+          seat={data!}
+          date={dayDate}
+          data={userData!}
+          seatInfo={seatInfo}
           onSeatInfoChange={setSeatInfo}
-        />
+          />
+            </div>
+          </div>
+        </div>
       </ThemeProvider>
     </>
   );
