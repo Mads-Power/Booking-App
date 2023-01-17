@@ -1,15 +1,10 @@
 import { Seat } from '@type/seat';
-import Chair from '@assets/chair.png';
-import { Box, Button, CircularProgress, Modal, Typography } from '@mui/material';
-import { SetStateAction, Dispatch, useState } from 'react';
+import { Box, Button } from '@mui/material';
+import { SetStateAction, Dispatch, useEffect } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
-import { Booking } from '@type/booking';
 import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
-import { useUserQuery } from '@api/useUserQuery';
-import { isSameDay } from 'date-fns';
 import { User } from '@type/user';
-import { Container } from '@mui/system';
 
 type TBookSeat = {
   seat: Seat;
