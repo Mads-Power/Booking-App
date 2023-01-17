@@ -8,7 +8,7 @@ import {
   StaticDatePicker,
   nbNO,
 } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
 import { Seat } from '@type/seat';
@@ -78,18 +78,21 @@ export const DateSeat = ({
 
   const handleChange = (newValue: Date) => {
     const dayDate = dayjs(newValue);
+
+    const correctedDate = new Date(newValue.toISOString());
+    
     occupiedDays?.find(day => {
       if (day?.date === dayDate.date() && day.userId === userData.id) {
         onSeatInfoChange('removeBookedSeat');
-        setDate(newValue);
+        setDate(new Date(correctedDate));
       }
       if (day?.date !== dayDate.date() && day?.userId !== userData.id) {
         onSeatInfoChange('bookAvailableSeat');
-        setDate(newValue);
+        setDate(new Date(correctedDate));
       }
       if (day?.date === dayDate.date() && day?.userId !== userData.id) {
         onSeatInfoChange('bookedSeat');
-        setDate(newValue);
+        setDate(new Date(correctedDate));
       }
     });
   };
