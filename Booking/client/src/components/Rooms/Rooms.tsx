@@ -109,6 +109,7 @@ export const Rooms = () => {
         <WeekViewDatePicker />
       </Container>
       {/* This div will be hidden on screens smaller than 1024 px */}
+      {/* Roompicker for smaller screens */}
       <div className="w-full mt-12 mb-8 lg:hidden">
         <FormControl fullWidth>
           <InputLabel>Rom</InputLabel>
@@ -151,6 +152,7 @@ export const Rooms = () => {
       {/* 1 = Storerommet / 2 = Lillerommet */}
       <div className="w-[90%] lg:w-[80%] lg:flex lg:flex-row lg:justify-around lg:child:mx-2 grow child:h-[80%] mx-auto ">
         {/* This div will be hidden on all screens smaller than 1024px */}
+        {/* Roompicker for bigger screens */}
         <div className="hidden lg:block basis-1/4 bg-slate-400 bg-opacity-10 p-2 overflow-hidden">
           <div className="w-full flex flex-col h-full gap-y-4">
             {data?.map((room) => (
