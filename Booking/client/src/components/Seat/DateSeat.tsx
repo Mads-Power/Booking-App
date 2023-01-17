@@ -73,28 +73,37 @@ export const DateSeat = ({
   };
 
   const handleMonthChange = (date: Date) => {
-    setDate(date);
+    const correctedDate = new Date(date.toISOString());
+    setDate(new Date(correctedDate));
   };
 
   const handleChange = (newValue: Date) => {
     const dayDate = dayjs(newValue);
-
     const correctedDate = new Date(newValue.toISOString());
+    let occupied = false;
     
     occupiedDays?.find(day => {
       if (day?.date === dayDate.date() && day.userId === userData.id) {
         onSeatInfoChange('removeBookedSeat');
         setDate(new Date(correctedDate));
+        occupied = true
       }
       if (day?.date !== dayDate.date() && day?.userId !== userData.id) {
         onSeatInfoChange('bookAvailableSeat');
         setDate(new Date(correctedDate));
+        occupied = true
       }
       if (day?.date === dayDate.date() && day?.userId !== userData.id) {
         onSeatInfoChange('bookedSeat');
         setDate(new Date(correctedDate));
+        occupied = true
       }
     });
+
+    if(!occupied) {
+      setDate(new Date(correctedDate));
+      console.log(correctedDate);
+    }
   };
 
   // userID = your or Someone else
