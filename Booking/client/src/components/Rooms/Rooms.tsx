@@ -2,7 +2,7 @@ import { useRoomsQuery } from '@api/useRoomsQuery';
 import { Box } from '@mui/system';
 import { CircularProgress, Button, Container, SelectChangeEvent, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WeekViewDatePicker } from '@components/WeekViewDatePicker';
-import { ColorDescription } from '@components/shared/colorDescription'
+import { ColorDescription } from '@components/ColorDescription/colorDescription'
 import './Rooms.module.css';
 import { useEffect, useState } from 'react';
 import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';

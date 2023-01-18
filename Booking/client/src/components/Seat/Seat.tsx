@@ -15,7 +15,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
 import { useUserQuery } from '@api/useUserQuery';
-import { ColorDescription } from '@components/shared/colorDescription';
+import { ColorDescription } from '@components/ColorDescription/colorDescription';
 import { Divider } from '@mui/material'
 
 const theme = createTheme(

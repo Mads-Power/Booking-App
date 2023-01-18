@@ -1,5 +1,4 @@
 import { Box, Container } from "@mui/material"
-import React, { useState } from 'react';
 
 export const ColorDescription = () => {
     return <>
