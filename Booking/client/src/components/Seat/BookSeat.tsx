@@ -1,10 +1,12 @@
 import { Seat } from '@type/seat';
 import { Box, Button } from '@mui/material';
-import { SetStateAction, Dispatch } from 'react';
+import React, { SetStateAction, Dispatch } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
 import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
 import { User } from '@type/user';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 type TBookSeat = {
   seat: Seat;
@@ -15,6 +17,11 @@ type TBookSeat = {
 };
 
 export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBookSeat) => {
+  const [state, setState] = React.useState({
+    open: false,
+    message: ''
+  });
+  const { open, message } = state;
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
 
@@ -30,6 +37,16 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     bookingMutation.mutate(bookingData, {
       onSuccess: () => {
         onSeatInfoChange('removeBookedSeat');
+        setState({
+          message: 'Bookingen er nå registrert',
+          open: true,
+        });
+      },
+      onError() {
+        setState({
+          message: 'Kunne ikke reservere bookingen',
+          open: true,
+        });
       },
     });
   };
@@ -43,6 +60,16 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     removeBookingMutation.mutate(unbookingData, {
       onSuccess() {
         onSeatInfoChange('bookAvailableSeat');
+        setState({
+          message: 'Bookingen er nå fjernet',
+          open: true,
+        });
+      },
+      onError() {
+        setState({
+          message: 'Kunne ikke fjerne bookingen',
+          open: true,
+        });
       },
     });
   };
@@ -119,6 +146,20 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     );
   };
 
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleClose = (event?: React.SyntheticEvent | Event) => {
+    setState({
+      ...state,
+      open: false,
+    });
+  }
+
   return (
     <div className='w-full h-full'>
       <Box className='p-2 flex flex-col w-full h-full'>
@@ -128,6 +169,11 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
           {seatInfo === 'bookedSeat' && <SeatInfoOccupied />}
         </div>
       </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
