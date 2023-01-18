@@ -93,7 +93,7 @@ export const WeekViewDatePicker = () => {
           isBefore(day, yesterday) ? (
             <div className="w-full justify-center flex" key={day.getDate()}>
               <div
-              className={"w-full " + styles.disabled + " " + styles.MuiButton}
+                className={"w-full " + styles.disabled + " " + styles.MuiButton}
               >
                 <span>{formattedDate}</span>
               </div>
@@ -102,13 +102,12 @@ export const WeekViewDatePicker = () => {
           ) : (
             <div className="w-full justify-center flex" key={day.getDate()}>
               <div
-                className={`${
-                  isSameDay(day, date)
+                className={`${isSameDay(day, date)
                     ? "w-full " + styles.selected + " " + styles.MuiButton
                     : isSameDay(day, new Date())
-                    ? "w-full " + styles.today + " " + styles.MuiButton
-                    : "w-full " + styles.MuiButton
-                }`}
+                      ? "w-full " + styles.today + " " + styles.MuiButton
+                      : "w-full " + styles.MuiButton
+                  }`}
                 onClick={() => {
                   onDateChange(cloneDay);
                 }}
@@ -133,37 +132,26 @@ export const WeekViewDatePicker = () => {
 
   const renderPrev = () => {
     return (
-      <div>
-        <Button
-          sx={{ 
-            minWidth: "24px",
-            marginTop: "24px",
-            color: "black"
-          }}
-          variant="outlined"
-          size="small"
-          onClick={() => handleWeekChange("prev")}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z"/></svg>
-        </Button>
-      </div>
+      <Button
+        className='mt-6 text-black min-w-fit max-w-fit'
+        variant="outlined"
+        size="small"
+        onClick={() => handleWeekChange("prev")}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" /></svg>
+      </Button>
     );
   };
 
   const renderNext = () => {
     return (
       <Button
-        sx={{ 
-          minWidth: "24px",
-          marginTop: "24px",
-          color: "black"
-        }}
-        className="absolute bottom-0 left-0"
+        className="mt-6 text-black min-w-fit max-w-fit"
         variant="outlined"
         size="small"
         onClick={() => handleWeekChange("next")}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" /></svg>
       </Button>
     );
   };
@@ -171,15 +159,15 @@ export const WeekViewDatePicker = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <div>
+        <div className='overflow-hidden flex flex-col'>
           {renderHeader()}
-          <div className="flex flex-row">
-            <div className="flex-none ml-0 mr-1">{renderPrev()}</div>
-            <div className="grow overflow-hidden w-full">
+          <div className="flex flex-row w-full">
+            {renderPrev()}
+            <div className="grow overflow-hidden">
               {renderDays()}
               {renderCells()}
             </div>
-            <div className="flex-none relative ml-1 mr-0">{renderNext()}</div>
+            <div className="flex-none">{renderNext()}</div>
           </div>
         </div>
       </ThemeProvider>

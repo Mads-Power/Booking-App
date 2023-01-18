@@ -106,7 +106,7 @@ export const Rooms = () => {
 
   return (
     <div className="h-full w-[85%] overflow-hidden flex flex-col gap-4 my-10 mx-auto">
-      <Container>
+      <Container className='overflow-hidden'>
         <WeekViewDatePicker />
       </Container>
       {/* This div will be hidden on screens smaller than 1024 px */}
@@ -125,7 +125,7 @@ export const Rooms = () => {
           </Select>
         </FormControl>
       </div>
-      
+
       {/* Color description */}
       <ColorDescription />
 
