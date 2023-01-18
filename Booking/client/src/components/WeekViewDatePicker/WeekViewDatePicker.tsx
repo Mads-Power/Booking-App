@@ -103,10 +103,10 @@ export const WeekViewDatePicker = () => {
             <div className="w-full justify-center flex" key={day.getDate()}>
               <div
                 className={`${isSameDay(day, date)
-                    ? "w-full " + styles.selected + " " + styles.MuiButton
+                    ? styles.selected + " " + styles.MuiButton
                     : isSameDay(day, new Date())
-                      ? "w-full " + styles.today + " " + styles.MuiButton
-                      : "w-full " + styles.MuiButton
+                      ? styles.today + " " + styles.MuiButton
+                      : styles.MuiButton
                   }`}
                 onClick={() => {
                   onDateChange(cloneDay);
