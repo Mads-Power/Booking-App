@@ -51,50 +51,52 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
 
   const SeatInfoOccupied = () => {
     return (
-      <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto'>
-        <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2'>
+      <>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2 md:grow'>
           <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
           <p>{data?.name}</p>
         </div>
         <Button disabled variant='contained' onClick={handleUnbook} className="w-full rounded-lg bg-[#61C577] p-2 bg-opacity-50">
           <p className='text-base m-2 text-white'>Send booking</p>
         </Button>
-      </div>
+      </>
     );
   };
 
   const SeatInfoUnbook = () => {
     return (
-      <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto'>
-        <div className='w-full bg-slate-400 bg-opacity-10 text-center'>
-          <p className='p-3 rounded-lg text-sm truncate'>Du har allerede booket denne pulten</p>
+      <>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
+          <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Du har allerede booket denne pulten</p>
         </div>
         <Button variant='contained' onClick={handleUnbook} className="w-full rounded-lg bg-[#DF0D0D] p-2">
           <p className='text-base m-2'>Fjern booking</p>
         </Button>
-      </div>
+      </>
     );
   };
 
   const SeatInfoAvailable = () => {
     return (
-      <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto'>
-        <div className='w-full bg-slate-400 bg-opacity-10 text-center'>
-          <p className='p-3 rounded-lg text-sm'>Pulten er ledig</p>
+      <>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
+          <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Pulten er ledig</p>
         </div>
         <Button variant='contained' onClick={handleBook} className="w-full rounded-lg bg-[#61C577] p-2">
           <p className='text-base m-2'>Send booking</p>
         </Button>
-      </div>
+      </>
     );
   };
 
   return (
-    <div>
-      <Box className='p-2'>
-        {seatInfo === 'bookAvailableSeat' && <SeatInfoAvailable />}
-        {seatInfo === 'removeBookedSeat' && <SeatInfoUnbook />}
-        {seatInfo === 'bookedSeat' && <SeatInfoOccupied />}
+    <div className='w-full h-full'>
+      <Box className='p-2 flex flex-col w-full h-full'>
+        <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto h-full'>
+          {seatInfo === 'bookAvailableSeat' && <SeatInfoAvailable />}
+          {seatInfo === 'removeBookedSeat' && <SeatInfoUnbook />}
+          {seatInfo === 'bookedSeat' && <SeatInfoOccupied />}
+        </div>
       </Box>
     </div>
   );

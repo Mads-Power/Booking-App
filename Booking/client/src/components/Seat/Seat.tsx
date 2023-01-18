@@ -36,17 +36,17 @@ export const Seat = () => {
     let initialSeatState = "";
     data?.bookings.some(booking => {
       const dateIsoString = new Date(booking.date).toISOString();
-      if(dateIsoString === date.toISOString()) {
-        if(booking.userId === userData?.id) {
+      if (dateIsoString === date.toISOString()) {
+        if (booking.userId === userData?.id) {
           initialSeatState = 'removeBookedSeat';
           return true;
-        } else if(booking.userId !== userData?.id) {
+        } else if (booking.userId !== userData?.id) {
           initialSeatState = 'bookedSeat';
           return true;
         }
       }
     });
-    if(!initialSeatState.length) {
+    if (!initialSeatState.length) {
       initialSeatState = 'bookAvailableSeat';
     }
     return initialSeatState;
@@ -55,11 +55,11 @@ export const Seat = () => {
   const [seatInfo, setSeatInfo] = useState(initialSeatState);
 
   useEffect(() => {
-    if(!initialSeatState.length) {
+    if (!initialSeatState.length) {
       setSeatInfo(initialSeatState());
     }
-    
-  }, [ data ]);
+
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -78,33 +78,35 @@ export const Seat = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <div className='flex flex-col gap-y-8'>
+        <div className='flex flex-col gap-y-8 md:h-full'>
           <div className='p-3 mb-4'>
             <ArrowCircleLeftIcon
               htmlColor='#DF8B0D'
               onClick={() => navigate(`/`)}
             />
           </div>
-          <div className='flex flex-col gap-y-4 w-[90%] mx-auto'>
-            <div className='m-3'>
-              <ColorDescription />
+          <div className='flex flex-col gap-y-4 w-[90%] mx-auto md:flex-row md:h-[60%]'>
+            <div className='flex flex-col md:basis-3/4'>
+              <div className='m-3'>
+                <ColorDescription />
+              </div>
+              <div>
+                <DateSeat
+                  data={data!}
+                  userData={userData!}
+                  onSeatInfoChange={setSeatInfo}
+                />
+              </div>
             </div>
-            <div>
-              <DateSeat
-                data={data!}
-                userData={userData!}
+            <Divider className="mx-2 bg-black md:hidden" />
+            <div className='flex flex-col w-full'>
+              <BookSeat
+                seat={data!}
+                date={dayDate}
+                data={userData!}
+                seatInfo={seatInfo}
                 onSeatInfoChange={setSeatInfo}
               />
-            </div>
-            <Divider sx={{ mx:2, background:"#BDBDBD"}}/>
-            <div className='flex flex-col w-full'>
-            <BookSeat
-          seat={data!}
-          date={dayDate}
-          data={userData!}
-          seatInfo={seatInfo}
-          onSeatInfoChange={setSeatInfo}
-          />
             </div>
           </div>
         </div>
