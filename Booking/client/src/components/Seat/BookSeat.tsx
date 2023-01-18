@@ -1,6 +1,6 @@
 import { Seat } from '@type/seat';
 import { Box, Button } from '@mui/material';
-import { SetStateAction, Dispatch, useEffect } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
 import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
@@ -15,8 +15,6 @@ type TBookSeat = {
 };
 
 export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBookSeat) => {
-  // user occupying seat
-
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
 
@@ -49,6 +47,38 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     });
   };
 
+  const renderBookingButton = (label: string, onclickHandler: (e: React.MouseEvent<HTMLButtonElement>) => void) => {
+
+    // Green background + 0.5 backgorund opacity
+    const occupiedStyle = {
+      // Need !important in order to overwrite the styles applied by MUI to button elements
+      background: "rgba(97, 197, 119, 0.5) !important"
+    } as const
+
+    // Green background
+    const availableStyle = {
+      background: "rgb(97, 197, 119)"
+    } as const
+
+    // Red background
+    const unbookStyle = {
+      background: "rgb(223, 13, 13)"
+    } as const
+
+    return <Button 
+    variant='contained' 
+    onClick={onclickHandler} 
+    className="w-full rounded-lg p-2"
+    disabled={seatInfo === "bookedSeat"}
+    sx={{
+      ...(seatInfo === "bookedSeat" && occupiedStyle),
+      ...(seatInfo === "bookAvailableSeat" && availableStyle),
+      ...(seatInfo === "removeBookedSeat" && unbookStyle)
+    }}>
+      <p className='text-base m-2 text-white'>{label}</p>
+    </Button>
+  }
+
   const SeatInfoOccupied = () => {
     return (
       <>
@@ -56,9 +86,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
           <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
           <p>{data?.name}</p>
         </div>
-        <Button disabled variant='contained' onClick={handleUnbook} className="w-full rounded-lg bg-[#61C577] p-2 bg-opacity-50">
-          <p className='text-base m-2 text-white'>Send booking</p>
-        </Button>
+        {renderBookingButton("Send booking", handleBook)}
       </>
     );
   };
@@ -69,9 +97,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
           <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Du har allerede booket denne pulten</p>
         </div>
-        <Button variant='contained' onClick={handleUnbook} className="w-full rounded-lg bg-[#DF0D0D] p-2">
-          <p className='text-base m-2'>Fjern booking</p>
-        </Button>
+        {renderBookingButton("Fjern booking", handleUnbook)}
       </>
     );
   };
@@ -82,9 +108,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
           <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Pulten er ledig</p>
         </div>
-        <Button variant='contained' onClick={handleBook} className="w-full rounded-lg bg-[#61C577] p-2">
-          <p className='text-base m-2'>Send booking</p>
-        </Button>
+        {renderBookingButton("Send booking", handleBook)}
       </>
     );
   };
