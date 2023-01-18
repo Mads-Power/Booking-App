@@ -57,24 +57,30 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
 
     // Green background
     const availableStyle = {
-      background: "rgb(97, 197, 119)"
+      background: "rgb(97, 197, 119)",
+      '&:hover': {
+        background: "rgba(97, 197, 119, 0.50)"
+      }
     } as const
 
     // Red background
     const unbookStyle = {
-      background: "rgb(223, 13, 13)"
+      background: "rgb(223, 13, 13)",
+      '&:hover': {
+        background: "rgba(223, 13, 13, 0.50)"
+      }
     } as const
 
-    return <Button 
-    variant='contained' 
-    onClick={onclickHandler} 
-    className="w-full rounded-lg p-2"
-    disabled={seatInfo === "bookedSeat"}
-    sx={{
-      ...(seatInfo === "bookedSeat" && occupiedStyle),
-      ...(seatInfo === "bookAvailableSeat" && availableStyle),
-      ...(seatInfo === "removeBookedSeat" && unbookStyle)
-    }}>
+    return <Button
+      variant='contained'
+      onClick={onclickHandler}
+      className="w-full rounded-lg p-2"
+      disabled={seatInfo === "bookedSeat"}
+      sx={{
+        ...(seatInfo === "bookedSeat" && occupiedStyle),
+        ...(seatInfo === "bookAvailableSeat" && availableStyle),
+        ...(seatInfo === "removeBookedSeat" && unbookStyle)
+      }}>
       <p className='text-base m-2 text-white'>{label}</p>
     </Button>
   }
