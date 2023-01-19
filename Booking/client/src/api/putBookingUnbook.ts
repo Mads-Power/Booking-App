@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
+const API_URL = import.meta.env.VITE_API_URL
 
 export type DeleteBooking = {
   userId: number;
   date: string;
 };
 
-const url = '/api/Booking/Unbook';
+const url = `${API_URL}/api/Booking/Unbook`;
 export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',

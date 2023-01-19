@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Booking } from "@type/booking";
+const API_URL = import.meta.env.VITE_API_URL
 
 export const getBookingsByRoom = async (roomId: number, date: Date) => {
   const url =
-    `/api/Room/${roomId}/Bookings?date=` +
+    `${API_URL}/api/Room/${roomId}/Bookings?date=` +
     encodeURI(date.toISOString());
   const requestOptions = {
     method: "GET",

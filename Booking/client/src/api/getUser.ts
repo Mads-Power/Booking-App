@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { User } from '@type/user';
+const API_URL = import.meta.env.VITE_API_URL
 
-const url = '/api/User/';
+const url = `${API_URL}/api/User/`;
 export const getUser = async (id: string) => {
   const requestOptions = {
     method: 'GET',

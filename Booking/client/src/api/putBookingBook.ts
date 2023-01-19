@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+const API_URL = import.meta.env.VITE_API_URL
 
 export type CreateBooking = {
   seatId: number;
@@ -6,7 +7,7 @@ export type CreateBooking = {
   date: string;
 };
 
-const url = '/api/Booking/Book';
+const url = `${API_URL}/api/Booking/Book`;
 export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) => {
   const requestOptions = {
     method: 'PUT',
