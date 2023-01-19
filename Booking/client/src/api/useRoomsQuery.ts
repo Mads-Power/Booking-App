@@ -10,7 +10,6 @@ export const getRooms = async () => {
       'Access-Control-Allow-Origin': '*',
     },
   });
-  console.log(res);
   return res.json();
 };
 

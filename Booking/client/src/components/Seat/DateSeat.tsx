@@ -1,14 +1,14 @@
-import { SetStateAction, Dispatch, useState } from 'react';
-import { CircularProgress, Button, TextField } from '@mui/material';
+import { SetStateAction, Dispatch } from 'react';
+import { TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
   StaticDatePicker,
-  nbNO,
+  pickersDayClasses,
 } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
 import { Seat } from '@type/seat';
@@ -17,27 +17,16 @@ import { User } from '@type/user';
 
 type TDateSeat = {
   data: Seat;
-  onDateChange: () => void;
   userData: User;
   onSeatInfoChange: Dispatch<SetStateAction<string>>;
 };
 
 export const DateSeat = ({
   data,
-  onDateChange,
   userData,
   onSeatInfoChange,
 }: TDateSeat) => {
   const [date, setDate] = useAtom(dateAtom);
-
-  // type OccupiedDays = [
-  //   {
-  //     date: number;
-  //     userId: number;
-  //   },
-  //   { empty: '' }
-  // ];
-
   const getOccupiedDays = (bookings: Booking[], date: Date) => {
     const dateDay = dayjs(date);
 
@@ -51,9 +40,7 @@ export const DateSeat = ({
 
     return occupiedDaysInMonth;
   };
-
   const occupiedDays = getOccupiedDays(data?.bookings, date);
-  console.log(occupiedDays);
 
   const handleOccupiedDays = (
     day: Date,
@@ -62,41 +49,83 @@ export const DateSeat = ({
   ) => {
     const dayDate = dayjs(day);
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
+    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.userId === userData.id);
+
+    // Blue fill + border
+    const deskBookedByOtherUserStyle = {
+      border: "2px solid #3981F1",
+      background: "rgba(57, 129, 241, 0.25)"
+    } as const
+
+    // Green fill + border
+    const deskBookedByCurrentUserStyle = {
+      border: "2px solid #61C577",
+      background: "rgba(97, 197, 119, 0.25)"
+    } as const
+
+    // No fill + no border
+    const deskNotOccupiedStyle = {
+      color: "black"
+    } as const
+
+    //When selected, orange fill + border
+    const deskNotOccupiedOnSelectedStyle = {
+      border: "2px solid #F68420",
+      background: "rgba(246, 132, 32, 0.25)",
+      color: "black"
+    } as const
+
+
+    // Ref for conditional styling for mui elements:
+    // https://stackoverflow.com/questions/69500357/how-to-implement-conditional-styles-in-mui-v5-sx-prop
+
     return (
       <PickersDay
-        sx={isOccupied ? { border: 'solid #DF8B0D' } : null}
+        sx={{
+          ...(isOccupied && !isOccupiedByCurrentUser && deskBookedByOtherUserStyle),
+          ...(isOccupiedByCurrentUser && deskBookedByCurrentUserStyle),
+          ...(!isOccupied && !isOccupiedByCurrentUser && deskNotOccupiedStyle),
+          [`&&.${pickersDayClasses.selected}`]: (
+            deskNotOccupiedOnSelectedStyle
+          )
+        }}
         {...pickerDayProps}
       />
     );
   };
 
   const handleMonthChange = (date: Date) => {
-    setDate(date);
+    const correctedDate = new Date(date.toISOString());
+    setDate(new Date(correctedDate));
   };
 
   const handleChange = (newValue: Date) => {
     const dayDate = dayjs(newValue);
+    const correctedDate = new Date(newValue.toISOString());
+    let occupied = false;
     occupiedDays?.find(day => {
-      if (day?.date === dayDate.date() && day.userId === userData.id) {
+      const selectedDateIsToday = day?.date === dayDate.date();
+      const selectedDateIsBookedByCurrentUser = day?.userId === userData.id
+
+      if (selectedDateIsToday && selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('removeBookedSeat');
-        setDate(newValue);
-      }
-      if (day?.date !== dayDate.date() && day?.userId !== userData.id) {
-        onSeatInfoChange('bookAvailableSeat');
-        setDate(newValue);
-      }
-      if (day?.date === dayDate.date() && day?.userId !== userData.id) {
+        occupied = true
+      } 
+      if (selectedDateIsToday && !selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('bookedSeat');
-        setDate(newValue);
+        occupied = true
       }
     });
+
+    if (!occupied) {
+      onSeatInfoChange('bookAvailableSeat');
+    }
+
+    setDate(new Date(correctedDate));
   };
 
   // userID = your or Someone else
   // undefined = default
-
-  const dayDate = dayjs(date);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='nb'>
       <StaticDatePicker

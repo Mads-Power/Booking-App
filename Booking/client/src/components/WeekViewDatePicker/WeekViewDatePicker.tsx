@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import {
   format,
   startOfWeek,
@@ -11,15 +10,12 @@ import {
   subWeeks,
   isBefore,
 } from 'date-fns';
-
 import { nb } from 'date-fns/esm/locale';
-
 import styles from './WeekViewDatePicker.module.css';
 import { nbNO } from '@mui/x-date-pickers';
 import { ThemeProvider, Button, Container, createTheme } from '@mui/material';
 import { useAtom } from 'jotai';
 import { dateAtom } from '../../jotaiProvider';
-import { Box } from '@mui/system';
 
 const theme = createTheme(
   {
@@ -34,7 +30,6 @@ const nor: Locale = nb;
 
 export const WeekViewDatePicker = () => {
   const [date, setDate] = useAtom(dateAtom);
-
   const [selectedMonth, setSelectedMonth] = useState(date);
   const [selectedWeek, setSelectedWeek] = useState(getWeek(selectedMonth));
 
@@ -53,106 +48,128 @@ export const WeekViewDatePicker = () => {
     setDate(day);
   };
 
-  const RenderHeader = () => {
-    const dateFormat = 'MMM yyyy';
+  const renderHeader = () => {
+    const dateFormat = "MMMM";
     return (
-      <Container>
+      <Container className="text-center">
         <span>{format(selectedMonth, dateFormat, { locale: nor })}</span>
+        <span className="mx-2">-</span>
+        <span>
+          uke {selectedWeek < 10 ? "0" + selectedWeek : selectedWeek}
+        </span>
       </Container>
     );
   };
 
-  const RenderDays = () => {
-    const dateFormat = 'EEE';
+  const renderDays = () => {
+    const dateFormat = "EEE";
     const days = [];
     let startDate = startOfWeek(selectedMonth, { weekStartsOn: 1 });
     for (let i = 0; i < 7; i++) {
       days.push(
-        <Container key={i} className={styles.day}>
+        <div key={i} className={"w-full text-center"}>
           {format(addDays(startDate, i), dateFormat, { locale: nor })}
-        </Container>
+        </div>
       );
     }
-    return <div className={styles.days}>{days}</div>;
+    return <div className={"my-0 " + styles.days}>{days}</div>;
   };
 
-  const RenderCells = () => {
+  const renderCells = () => {
     const startDate = startOfWeek(selectedMonth, { weekStartsOn: 1 });
     const endDate = lastDayOfWeek(selectedMonth, { weekStartsOn: 1 });
-    const dateFormat = 'd';
+    const dateFormat = "d";
     const rows = [];
     let days = [];
     let day: Date = startDate;
     let yesterday: Date = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    let formattedDate = '';
+    let formattedDate = "";
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat, { locale: nor });
         const cloneDay = day;
         days.push(
           isBefore(day, yesterday) ? (
-            <Container
-              className={styles.disabled + ' ' + styles.MuiButton}
-              key={day.getDate()}>
-              <span>{formattedDate}</span>
-            </Container>
+            <div className="w-full justify-center flex" key={day.getDate()}>
+              <div
+                className={"w-full " + styles.disabled + " " + styles.MuiButton}
+              >
+                <span>{formattedDate}</span>
+              </div>
+            </div>
+
           ) : (
-            <Container
-              className={`${
-                isSameDay(day, date)
-                  ? styles.selected + ' ' + styles.MuiButton
-                  : isSameDay(day, new Date())
-                  ? styles.today + ' ' + styles.MuiButton
-                  : styles.MuiButton
-              }`}
-              key={day.getDate()}
-              onClick={() => {
-                onDateChange(cloneDay);
-              }}>
-              <span>{formattedDate}</span>
-            </Container>
+            <div className="w-full justify-center flex" key={day.getDate()}>
+              <div
+                className={`${isSameDay(day, date)
+                    ? styles.selected + " " + styles.MuiButton
+                    : isSameDay(day, new Date())
+                      ? styles.today + " " + styles.MuiButton
+                      : styles.MuiButton
+                  }`}
+                onClick={() => {
+                  onDateChange(cloneDay);
+                }}
+              >
+                <span>{formattedDate}</span>
+              </div>
+            </div>
           )
         );
         day = addDays(day, 1);
       }
 
       rows.push(
-        <div className={styles.cells} key={day.getDate()}>
+        <div className={"w-full " + styles.cells} key={day.getDate()}>
           {days}
         </div>
       );
       days = [];
     }
-    return <div>{rows}</div>;
+    return rows;
   };
 
-  const RenderFooter = () => {
+  const renderPrev = () => {
     return (
-      <Container>
-        <Button variant='outlined' onClick={() => handleWeekChange('prev')}>
-          {'<'}
-        </Button>
-        <span style={{ margin: '0 10px' }}>
-          uke {selectedWeek < 10 ? '0' + selectedWeek : selectedWeek}
-        </span>
-        <Button variant='outlined' onClick={() => handleWeekChange('next')}>
-          {'>'}
-        </Button>
-      </Container>
+      <Button
+        className='mt-6 text-black min-w-fit max-w-fit'
+        variant="outlined"
+        size="small"
+        onClick={() => handleWeekChange("prev")}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" /></svg>
+      </Button>
+    );
+  };
+
+  const renderNext = () => {
+    return (
+      <Button
+        className="mt-6 text-black min-w-fit max-w-fit"
+        variant="outlined"
+        size="small"
+        onClick={() => handleWeekChange("next")}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" /></svg>
+      </Button>
     );
   };
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Container className={styles.weekViewDatePicker}>
-          <RenderHeader />
-          <div className={styles.dayCellWrapper}>1234567</div>
-          <RenderDays />
-          <RenderCells />
-          <RenderFooter />
-        </Container>
+        <div className='overflow-hidden flex flex-col'>
+          {renderHeader()}
+          <div className="flex flex-row w-full">
+            {renderPrev()}
+            <div className="grow overflow-hidden">
+              {renderDays()}
+              {renderCells()}
+            </div>
+            <div className="flex-none">{renderNext()}</div>
+          </div>
+        </div>
       </ThemeProvider>
     </>
   );
