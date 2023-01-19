@@ -17,7 +17,7 @@ namespace BookingApp.Controllers
         /// <param name="returnUri"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Authenticate(string returnUri = "/")
+        public ActionResult Authenticate(string? returnUri = "/")
         {
             return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme,
                     new AuthenticationProperties

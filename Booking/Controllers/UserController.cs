@@ -157,6 +157,16 @@ namespace BookingApp.Controllers
             return NoContent();
         }
 
+        [HttpGet("me")]
+        public async Task<ActionResult<string>> GetMe()
+        {
+            var user = User?.Identity?.Name;
+
+            Console.Write(user);
+
+            return user;
+        }
+
         private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)
         {
             if (endpoint != userDto.Id)
