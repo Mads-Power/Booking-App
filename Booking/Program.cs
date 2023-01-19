@@ -13,6 +13,7 @@ using BookingApp.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -24,11 +25,13 @@ builder.Services
     {
         builder.Configuration.Bind("AzureAd", options);
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.ResponseType = OpenIdConnectResponseType.Code;
+
 
     }, cookieOptions =>
     {
         cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        //cookieOptions.Cookie.SameSite = SameSiteMode.Strict; // May require frontend and backend to run on same port when running locally
+        cookieOptions.Cookie.SameSite = SameSiteMode.Strict; //SameSiteMode.Strict; May require frontend and backend to run on same port when running locally
         cookieOptions.Cookie.HttpOnly = true;
     });
 
@@ -75,11 +78,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStaticFiles();
-app.UseRouting();
-app.MapControllers();
-
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -95,9 +93,14 @@ app.UseSwaggerUI(options =>
 
 
 app.UseHttpsRedirection();
+app.UseCookiePolicy();
 app.UseCors("Client Origin");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllers();
 
 app.MapFallbackToFile("index.html"); ;
 

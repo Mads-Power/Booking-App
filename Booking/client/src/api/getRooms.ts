@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Room } from '@type/room';
 
-const url = 'http://localhost:51249/api/Room';
+const url = '/api/Room';
 export const getRooms = async () => {
   const res = await fetch(url, {
     method: 'GET',

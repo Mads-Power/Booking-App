@@ -1,12 +1,14 @@
 {
   "name": "client",
+  "proxy": "https://localhost:5001/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev-sec": "vite --https --port 5174"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
