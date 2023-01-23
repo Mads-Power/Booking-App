@@ -26,14 +26,21 @@ builder.Services
         builder.Configuration.Bind("AzureAd", options);
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.ResponseType = OpenIdConnectResponseType.Code;
-
-
+        options.GetClaimsFromUserInfoEndpoint = true;
     }, cookieOptions =>
     {
         cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         cookieOptions.Cookie.SameSite = SameSiteMode.Strict; //SameSiteMode.Strict; May require frontend and backend to run on same port when running locally
         cookieOptions.Cookie.HttpOnly = true;
     });
+
+// Instead of adding [Authorize] to every endpoint
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddCors(options =>
 {
