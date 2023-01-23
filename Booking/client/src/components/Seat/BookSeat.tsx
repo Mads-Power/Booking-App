@@ -1,6 +1,6 @@
 import { Seat } from '@type/seat';
 import { Box, Button } from '@mui/material';
-import React, { SetStateAction, Dispatch } from 'react';
+import React, { SetStateAction, Dispatch, useEffect } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
 import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
@@ -24,6 +24,9 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
   const { open, message } = state;
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
+
+  useEffect(() => {
+  }, [data, seatInfo]);
 
   const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

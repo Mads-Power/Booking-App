@@ -33,23 +33,24 @@ export const Seat = () => {
   const navigate = useNavigate();
 
   const initialSeatState = () => {
-    let initialSeatState = "";
+    if(!userData) return "";
+    let state = "";
     data?.bookings.some(booking => {
-      const dateIsoString = new Date(booking.date).toISOString();
-      if (dateIsoString === date.toISOString()) {
+      const dateIsoString = new Date(booking.date).toLocaleString();
+      if (dateIsoString === date.toLocaleString()) {
         if (booking.userId === userData?.id) {
-          initialSeatState = 'removeBookedSeat';
+          state = 'removeBookedSeat';
           return true;
         } else if (booking.userId !== userData?.id) {
-          initialSeatState = 'bookedSeat';
+          state = 'bookedSeat';
           return true;
         }
       }
     });
-    if (!initialSeatState.length) {
-      initialSeatState = 'bookAvailableSeat';
+    if (!state.length) {
+      state = 'bookAvailableSeat';
     }
-    return initialSeatState;
+    return state;
   }
 
   const [seatInfo, setSeatInfo] = useState(initialSeatState);
@@ -59,7 +60,7 @@ export const Seat = () => {
       setSeatInfo(initialSeatState());
     }
 
-  }, [data]);
+  }, [data, userData]);
 
   if (isLoading) {
     return (
