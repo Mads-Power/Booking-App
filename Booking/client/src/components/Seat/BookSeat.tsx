@@ -1,6 +1,6 @@
 import { Seat } from '@type/seat';
-import { Box, Button } from '@mui/material';
-import React, { SetStateAction, Dispatch, useEffect } from 'react';
+import { Box, Button, CircularProgress } from '@mui/material';
+import { SetStateAction, Dispatch, useEffect, useState, forwardRef } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
 import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
@@ -17,20 +17,21 @@ type TBookSeat = {
 };
 
 export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBookSeat) => {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     open: false,
     message: ''
   });
+  const [loading, setLoading] = useState(false)
   const { open, message } = state;
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
 
   useEffect(() => {
-  }, [data, seatInfo]);
+  }, [data, loading]);
 
   const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
+    setLoading(true)
     const bookingData = {
       seatId: seat?.id,
       userId: data?.id,
@@ -40,12 +41,14 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     bookingMutation.mutate(bookingData, {
       onSuccess: () => {
         onSeatInfoChange('removeBookedSeat');
+        setLoading(false)
         setState({
           message: 'Bookingen er nå registrert',
           open: true,
         });
       },
       onError() {
+        setLoading(false)
         setState({
           message: 'Kunne ikke reservere bookingen',
           open: true,
@@ -56,6 +59,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
 
   const handleUnbook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true)
     const unbookingData = {
       userId: data?.id,
       date: date?.toISOString(), //"2023-01-06T12:00:00.000+01",
@@ -63,12 +67,14 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     removeBookingMutation.mutate(unbookingData, {
       onSuccess() {
         onSeatInfoChange('bookAvailableSeat');
+        setLoading(false)
         setState({
           message: 'Bookingen er nå fjernet',
           open: true,
         });
       },
       onError() {
+        setLoading(false)
         setState({
           message: 'Kunne ikke fjerne bookingen',
           open: true,
@@ -100,7 +106,6 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         background: "rgba(223, 13, 13, 0.50)"
       }
     } as const
-
     return <Button
       variant='contained'
       onClick={onclickHandler}
@@ -111,6 +116,9 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         ...(seatInfo === "bookAvailableSeat" && availableStyle),
         ...(seatInfo === "removeBookedSeat" && unbookStyle)
       }}>
+      {loading ? (
+        <CircularProgress size={25} />) :
+        (<></>)}
       <p className='text-base m-2 text-white'>{label}</p>
     </Button>
   }
@@ -149,7 +157,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     );
   };
 
-  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
     ref,
   ) {
