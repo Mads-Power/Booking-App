@@ -100,7 +100,7 @@ export const WeekViewDatePicker = () => {
             </div>
 
           ) : (
-            <div className="w-full justify-center flex" key={day.getDate()}>
+            <div className="w-full justify-center flex min-w-0" key={day.getDate()}>
               <div
                 className={`${isSameDay(day, date)
                     ? styles.selected + " " + styles.MuiButton
