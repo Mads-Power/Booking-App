@@ -1,5 +1,4 @@
 import { useRoomsQuery } from '@api/useRoomsQuery';
-import { Box } from '@mui/system';
 import { CircularProgress, Button, Container, SelectChangeEvent, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WeekViewDatePicker } from '@components/WeekViewDatePicker';
 import { ColorDescription } from '@components/ColorDescription/colorDescription'
@@ -82,7 +81,9 @@ export const Rooms = () => {
       width="48"
       onClick={() => handleDeskClick(seatId)}
       fill={chooseDeskFill(seatId)}
-      className="transition ease-in-out delay-75 hover:scale-125 lg:h-16 lg:w-16"
+      className="p-2 transition ease-in-out
+      lg:h-16 lg:w-16 
+      hover:border-solid hover:border hover:shadow-lg hover:cursor-pointer hover:scale-125"
     >
       <path d="M4 36V12h40v24h-3v-5h-9.5v5h-3V15H7v21Zm27.5-16H41v-5h-9.5Zm0 8H41v-5h-9.5Z" />
     </svg>
