@@ -5,12 +5,11 @@ import { useUserQuery } from "../../api/useUserQuery";
 import { BookingsListItem } from "./components/BookingsListItem";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import dayjs from 'dayjs';
-import MuiAlert from '@mui/material/Alert';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Booking } from "@type/booking";
 import { useRemoveBookingMutation } from "@api/useRemoveBookingMutation";
-import { AlertColor } from '@mui/material/Alert';
+import MuiAlert, { AlertColor } from '@mui/material/Alert';
 
 
 dayjs.extend(relativeTime)
@@ -31,7 +30,8 @@ export const Bookings = () => {
     useEffect(() => {
         if (!data) return;
         // Remove all previous bookings
-        const now = dayjs();
+        // Need to subtract one day in order to get the current day included in the array
+        const now = dayjs().subtract(1, 'day');
         setBookings(data.bookings.filter(booking => now.diff(booking.date) < 0));
     }, [data]);
 
