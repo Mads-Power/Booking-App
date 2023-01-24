@@ -57,7 +57,7 @@ export const Bookings = () => {
     const handleUnbookFromChild = (bookingData: Booking) => {
         removeBookingMutation.mutate(bookingData, {
             onSuccess() {
-                if(!data) return;
+                if (!data) return;
                 setBookings(bookings.filter(booking => booking.id !== bookingData.id));
                 setSnackbarState({
                     snackbarMessage: 'Bookingen er nå fjernet',
@@ -75,11 +75,11 @@ export const Bookings = () => {
 
     return (
         <div className="w-full h-full flex flex-col overflow-hidden">
-            <div>
+            <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/`)}>
                 <ArrowCircleLeftIcon
                     htmlColor='#DF8B0D'
-                    onClick={() => navigate(`/`)}
                 />
+                <p>Tilbake</p>
             </div>
             <div className="flex align-baseline justify-center p-2">
                 <h1 className="text-2xl">Bookingoversikt</h1>

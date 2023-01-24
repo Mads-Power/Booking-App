@@ -33,7 +33,7 @@ export const Seat = () => {
   const navigate = useNavigate();
 
   const initialSeatState = () => {
-    if(!userData) return "";
+    if (!userData) return "";
     let state = "";
     data?.bookings.some(booking => {
       const dateIsoString = new Date(booking.date).toLocaleString();
@@ -80,11 +80,11 @@ export const Seat = () => {
     <>
       <ThemeProvider theme={theme}>
         <div className='flex flex-col gap-y-8 md:h-full'>
-          <div className='p-3 mb-4'>
+          <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/`)}>
             <ArrowCircleLeftIcon
               htmlColor='#DF8B0D'
-              onClick={() => navigate(`/`)}
             />
+            <p>Tilbake</p>
           </div>
           <div className='flex flex-col gap-y-4 w-[90%] mx-auto md:flex-row md:h-[60%]'>
             <div className='flex flex-col md:basis-3/4'>
