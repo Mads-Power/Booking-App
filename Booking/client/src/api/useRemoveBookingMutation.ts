@@ -16,7 +16,7 @@ export const removeBooking = async ({ userId, date }: DeleteBooking) => {
     }),
   };
   await fetch(url, requestOptions).then(res => {
-    if(res.ok) return res.json();
+    if(res.ok) return res
     let error = new Error("Http status code: " + res.status);
     error.cause = res.statusText;
     throw error;
