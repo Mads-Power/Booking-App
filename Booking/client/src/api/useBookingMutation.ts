@@ -20,9 +20,12 @@ export const addBooking = async ({ seatId, userId, date }: CreateBooking) => {
       date,
     }),
   };
-  const res = await fetch(url, requestOptions);
-
-  return res.json();
+  await fetch(url, requestOptions).then((res) => {
+    if(res.ok) return res.json();
+    let error = new Error("Http status code: " + res.status);
+    error.cause = res.statusText;
+    throw error;
+  })
 };
 
 export const useBookingMutation = () => {
@@ -30,6 +33,8 @@ export const useBookingMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: addBooking,
+    onError: (err: Error) => {
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['seat', seatId] });
     },
