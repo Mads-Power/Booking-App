@@ -8,6 +8,7 @@ import { User } from '@type/user';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { DeleteBooking } from '@type/booking';
+import { AlertColor } from '@mui/material/Alert';
 
 type TBookSeat = {
   seat: Seat;
@@ -20,10 +21,11 @@ type TBookSeat = {
 export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBookSeat) => {
   const [state, setState] = useState({
     open: false,
-    message: ''
+    message: '',
+    severity: undefined as AlertColor | undefined
   });
   const [loading, setLoading] = useState(false)
-  const { open, message } = state;
+  const { open, message, severity } = state;
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
 
@@ -46,13 +48,15 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         setState({
           message: 'Bookingen er nå registrert',
           open: true,
+          severity: 'success'
         });
       },
       onError() {
         setLoading(false)
         setState({
-          message: 'Kunne ikke reservere bookingen',
+          message: 'Kunne ikke reservere bookingen, sjekk allerede reserverte bookinger',
           open: true,
+          severity: 'error'
         });
       },
     });
@@ -72,6 +76,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         setState({
           message: 'Bookingen er nå fjernet',
           open: true,
+          severity: 'success'
         });
       },
       onError() {
@@ -79,6 +84,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         setState({
           message: 'Kunne ikke fjerne bookingen',
           open: true,
+          severity: 'error'
         });
       },
     });
@@ -182,7 +188,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
         </div>
       </Box>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
           {message}
         </Alert>
       </Snackbar>

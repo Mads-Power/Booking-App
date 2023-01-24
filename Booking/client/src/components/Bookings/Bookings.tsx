@@ -10,8 +10,10 @@ import MuiAlert from '@mui/material/Alert';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Booking } from "@type/booking";
 import { useRemoveBookingMutation } from "@api/useRemoveBookingMutation";
-dayjs.extend(relativeTime)
+import { AlertColor } from '@mui/material/Alert';
 
+
+dayjs.extend(relativeTime)
 
 export const Bookings = () => {
     const { userId } = useParams();
@@ -19,9 +21,10 @@ export const Bookings = () => {
     const [bookings, setBookings] = useState([] as Booking[]);
     const [snackbarState, setSnackbarState] = useState({
         openSnackbar: false,
-        snackbarMessage: ''
+        snackbarMessage: '',
+        snackbarAlertColor: undefined as AlertColor | undefined
     });
-    const { openSnackbar, snackbarMessage } = snackbarState;
+    const { openSnackbar, snackbarMessage, snackbarAlertColor } = snackbarState;
     const navigate = useNavigate();
     const removeBookingMutation = useRemoveBookingMutation();
 
@@ -62,12 +65,14 @@ export const Bookings = () => {
                 setSnackbarState({
                     snackbarMessage: 'Bookingen er nå fjernet',
                     openSnackbar: true,
+                    snackbarAlertColor: 'success'
                 });
             },
             onError() {
                 setSnackbarState({
                     snackbarMessage: 'Kunne ikke fjerne bookingen',
                     openSnackbar: true,
+                    snackbarAlertColor: 'error'
                 });
             },
         });
@@ -95,7 +100,7 @@ export const Bookings = () => {
             )}
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                <Alert onClose={handleClose} severity={snackbarAlertColor} sx={{ width: '100%' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
