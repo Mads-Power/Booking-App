@@ -1,9 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
+import { DeleteBooking } from '@type/booking';
 
-export type DeleteBooking = {
-  userId: number;
-  date: string;
-};
 
 const url = 'http://localhost:51249/api/Booking/Unbook';
 export const removeBooking = async ({ userId, date }: DeleteBooking) => {
