@@ -3,10 +3,11 @@ import { Box, Button, CircularProgress } from '@mui/material';
 import { SetStateAction, Dispatch, useEffect, useState, forwardRef } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
 import { Dayjs } from 'dayjs';
-import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
+import { useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
 import { User } from '@type/user';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { DeleteBooking } from '@type/booking';
 
 type TBookSeat = {
   seat: Seat;
