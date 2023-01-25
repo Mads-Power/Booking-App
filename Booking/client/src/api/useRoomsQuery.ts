@@ -11,11 +11,10 @@ export const getRooms = async () => {
       'Access-Control-Allow-Origin': '*',
     },
   });
-  console.log(res);
   return res.json();
 };
 
-export const useRooms = () => {
+export const useRoomsQuery = () => {
   return useQuery<Room[]>({
     queryKey: ['rooms'],
     queryFn: () => getRooms(),

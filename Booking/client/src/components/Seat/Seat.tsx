@@ -1,78 +1,71 @@
-import { useEffect, useState } from "react";
-import { useSeat } from "@api/getSeat";
-import { CircularProgress, Button, TextField } from "@mui/material";
-import { useParams, useNavigate } from "react-router-dom";
-import { Booking } from "@type/booking";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useEffect, useState } from 'react';
+import { useSeatQuery } from '@api/useSeatQuery';
+import { CircularProgress } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
-  LocalizationProvider,
-  PickersDay,
-  PickersDayProps,
-  StaticDatePicker,
   nbNO,
-} from "@mui/x-date-pickers";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import dayjs, { Dayjs } from "dayjs";
-import "dayjs/locale/nb";
-import { nbNO as coreNbNO } from "@mui/material/locale";
-import styles from "./Seat.module.css";
-import { BookSeat } from "./BookSeat";
-import {
-  DateContextType,
-  useDateContext,
-} from "@components/Provider/DateContextProvider";
+} from '@mui/x-date-pickers';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import dayjs from 'dayjs';
+import 'dayjs/locale/nb';
+import { nbNO as coreNbNO } from '@mui/material/locale';
+import { BookSeat } from './BookSeat';
+import { DateSeat } from './DateSeat';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { useAtom } from 'jotai';
+import { dateAtom } from '../../jotaiProvider';
+import { useUserQuery } from '@api/useUserQuery';
+import { ColorDescription } from '@components/ColorDescription/colorDescription';
+import { Divider } from '@mui/material'
 
 const theme = createTheme(
   {
-    palette: {
-      primary: { main: "#DF8B0D" },
-    },
   },
   nbNO, // x-date-pickers translations
   coreNbNO // core translations
 );
 
-const getOccupiedDays = (bookings: Booking[], date: Dayjs): number[] => {
-  let occupiedDaysInMonth: number[] = [];
-  bookings.forEach((b: Booking) => {
-    if (dayjs(b.date).month() == date.month() && dayjs(b.date).year() == date.year()) {
-      occupiedDaysInMonth.push(dayjs(b.date).date());
-    }
-  });
-  return occupiedDaysInMonth;
-};
-
-const handleInitialDate = (date: Date) => {
-  if (date) {
-    return dayjs(date);
-  } else {
-    return dayjs().startOf('d');
-  }
-};
-
 export const Seat = () => {
   const { seatId } = useParams();
-  const { isLoading, data, error } = useSeat(seatId!);
+  const { isLoading, data, error } = useSeatQuery(seatId!);
+  const { data: userData } = useUserQuery('5');
+  const [date] = useAtom(dateAtom);
+  const navigate = useNavigate();
 
-  // Two date states are needed to handle convertion between Date type and Dayjs type
-  const { selectedDate, setSelectedDate }: DateContextType = useDateContext();
-  const [date, setDate] = useState<Dayjs | null>(
-    handleInitialDate(selectedDate)
-  );
-  const [occupiedDays, setOccupiedDays] = useState<number[]>();
+  const initialSeatState = () => {
+    if(!userData) return "";
+    let state = "";
+    data?.bookings.some(booking => {
+      const dateIsoString = new Date(booking.date).toLocaleString();
+      if (dateIsoString === date.toLocaleString()) {
+        if (booking.userId === userData?.id) {
+          state = 'removeBookedSeat';
+          return true;
+        } else if (booking.userId !== userData?.id) {
+          state = 'bookedSeat';
+          return true;
+        }
+      }
+    });
+    if (!state.length) {
+      state = 'bookAvailableSeat';
+    }
+    return state;
+  }
 
-  let navigate = useNavigate();
+  const [seatInfo, setSeatInfo] = useState(initialSeatState);
 
   useEffect(() => {
-    if (data && date) {
-      setOccupiedDays(getOccupiedDays(data.bookings, date));
+    if (!initialSeatState.length) {
+      setSeatInfo(initialSeatState());
     }
-  }, [data, date]);
+
+  }, [data, userData]);
 
   if (isLoading) {
     return (
-      <div style={{ display: "flex" }}>
-        <CircularProgress size={100} style={{ margin: "10vh auto" }} />;
+      <div style={{ display: 'flex' }}>
+        <CircularProgress size={100} style={{ margin: '10vh auto' }} />
       </div>
     );
   }
@@ -81,83 +74,43 @@ export const Seat = () => {
     return <h4>Kan ikke hente setet.</h4>;
   }
 
-  const routeChange = () => {
-    let path = `/`;
-    navigate(path);
-  };
 
-  const renderOccupiedDays = (
-    day: Dayjs,
-    _date: Dayjs[],
-    DayComponentProps: PickersDayProps<Dayjs>
-  ) => {
-    const isOccupied =
-      !DayComponentProps.outsideCurrentMonth &&
-      occupiedDays?.find((d) => d == day.date());
-    return (
-      <PickersDay
-        sx={
-          isOccupied
-            ? {
-                border: "solid #DF8B0D",
-              }
-            : undefined
-        }
-        {...DayComponentProps}
-      />
-    );
-  };
-
-  const handleMonthChange = (date: Dayjs) => {
-    setOccupiedDays(getOccupiedDays(data!.bookings, date));
-  };
-
+  const dayDate = dayjs(date);
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button
-          onClick={routeChange}
-          variant="contained"
-          style={{ backgroundColor: "#DF8B0D" }}
-        >
-          Tilbake
-        </Button>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            margin: "10px",
-            minWidth: "80vw",
-          }}
-        >
-          <BookSeat
-            seat={data}
-            date={date}
-            booking={data?.bookings.find(
-              (b) =>
-                dayjs(b.date).format("YYYY-MM-DD") == date?.format("YYYY-MM-DD")
-            )}
-          />
+        <div className='flex flex-col gap-y-8 md:h-full'>
+          <div className='p-3 mb-4'>
+            <ArrowCircleLeftIcon
+              htmlColor='#DF8B0D'
+              onClick={() => navigate(`/`)}
+            />
+          </div>
+          <div className='flex flex-col gap-y-4 w-[90%] mx-auto md:flex-row md:h-[60%]'>
+            <div className='flex flex-col md:basis-3/4'>
+              <div className='m-3'>
+                <ColorDescription />
+              </div>
+              <div>
+                <DateSeat
+                  data={data!}
+                  userData={userData!}
+                  onSeatInfoChange={setSeatInfo}
+                />
+              </div>
+            </div>
+            <Divider className="mx-2 bg-black md:hidden" />
+            <div className='flex flex-col w-full'>
+              <BookSeat
+                seat={data!}
+                date={dayDate}
+                data={userData!}
+                seatInfo={seatInfo}
+                onSeatInfoChange={setSeatInfo}
+              />
+            </div>
+          </div>
         </div>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="nb">
-          <StaticDatePicker
-            value={date}
-            onChange={(newValue) => {
-              setDate(newValue);
-              if (newValue) {
-                setSelectedDate(new Date(newValue.toISOString()));
-              }
-            }}
-            onMonthChange={handleMonthChange}
-            renderInput={(params) => <TextField {...params} />}
-            renderDay={renderOccupiedDays}
-            closeOnSelect={false}
-            showToolbar={false}
-            disablePast={true}
-            displayStaticWrapperAs="desktop"
-          />
-        </LocalizationProvider>
       </ThemeProvider>
     </>
   );
