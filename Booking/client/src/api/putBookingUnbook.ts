@@ -6,7 +6,7 @@ export type DeleteBooking = {
   date: string;
 };
 
-const url = `${API_URL}/api/Booking/Unbook`;
+const url = `/api/Booking/Unbook`;
 export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',

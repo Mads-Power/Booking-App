@@ -18,7 +18,6 @@ import styles from './WeekViewDatePicker.module.css';
 import { nbNO } from "@mui/x-date-pickers";
 import { ThemeProvider, Button, Container, createTheme } from "@mui/material";
 import { DateContextType, useDateContext } from "@components/Provider/DateContextProvider";
-import { useLogin } from "@api/getLogin";
 
 const theme = createTheme(
   {
@@ -55,7 +54,7 @@ export const WeekViewDatePicker = () => {
     setSelectedDate(day);
   };
   const API_URL = import.meta.env.VITE_API_URL
-  const url = `${API_URL}/api/authenticate?returnUri=http://localhost:5173/`;
+  const url = `api/Account/Login`;
   const requestOptions = {
     method: "GET",
     headers: {
@@ -63,8 +62,9 @@ export const WeekViewDatePicker = () => {
       "Content-Type": "application/json",
     }};
  const getLogin = async () => {
-  const res = await fetch(url, requestOptions);
-  return res.json();
+  window.location.href = 'Account/Login';
+  // const res = await fetch(url, requestOptions);
+  // return res.json();
 };
 
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {

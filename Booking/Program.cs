@@ -1,19 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using BookingApp.Context;
-using BookingApp.Repositories;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Web;
-using System.Reflection;
 using BookingApp.Helpers;
-using Microsoft.Extensions.Configuration;
+using BookingApp.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -102,11 +96,12 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseCookiePolicy();
 app.UseCors("Client Origin");
+app.UseStaticFiles();
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStaticFiles();
-app.UseRouting();
 app.MapControllers();
 
 app.MapFallbackToFile("index.html"); ;

@@ -7,7 +7,7 @@ export type CreateBooking = {
   date: string;
 };
 
-const url = `${API_URL}/api/Booking/Book`;
+const url = `/api/Booking/Book`;
 export const putBookingBook = async ({ seatId, userId, date }: CreateBooking) => {
   const requestOptions = {
     method: 'PUT',

@@ -5,11 +5,13 @@ using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
 using BookingApp.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
