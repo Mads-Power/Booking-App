@@ -37,7 +37,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBooking) => {
 
 
     return (
-        <div className="shadow border flex flex-row w-[90%] mx-auto">
+        <div className="shadow border flex flex-row w-[90%] mx-auto lg:w-[75%]">
             <div className="flex flex-col grow p-2">
                 <p className="text-xl p-1">
                     {dayjs(booking.date).format("D[.] MMMM YYYY")}
