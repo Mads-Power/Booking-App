@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
@@ -159,12 +153,18 @@ namespace BookingApp.Controllers
             return NoContent();
         }
 
-        [HttpGet("me")]
-        public async Task<ActionResult<string>> GetMe()
+        [HttpGet("Me")]
+        public async Task<ActionResult<ADUserDTO>> GetMe()
         {
-            //if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
+            if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
 
-            return user;
+            return new ADUserDTO
+            {
+                Name = User?.FindFirst("name")?.Value,
+                GivenName = User?.FindFirst("given_name")?.Value,
+                FamilyName = User?.FindFirst("family_name")?.Value,
+                Email = User?.FindFirst("email")?.Value,
+            };
         }
 
         private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)

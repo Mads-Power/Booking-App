@@ -19,10 +19,8 @@ builder.Services
     {
         builder.Configuration.Bind("AzureAd", options);
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.SignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.ResponseType = OpenIdConnectResponseType.Code;
         options.GetClaimsFromUserInfoEndpoint = true;
-        options.SaveTokens = true;
     }, cookieOptions =>
     {
         cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -32,11 +30,11 @@ builder.Services
 
 // Instead of adding [Authorize] to every endpoint
 builder.Services.AddAuthorization(options =>
-    {
-        options.FallbackPolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
-            .RequireAuthenticatedUser()
-            .Build();
-    });
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddCors(options =>
 {
