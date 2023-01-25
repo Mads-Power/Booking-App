@@ -54,7 +54,7 @@ export const WeekViewDatePicker = () => {
     setSelectedDate(day);
   };
   const API_URL = import.meta.env.VITE_API_URL
-  const url = `api/Account/Login`;
+  const url = `/Account/Login`;
   const requestOptions = {
     method: "GET",
     headers: {
@@ -62,7 +62,7 @@ export const WeekViewDatePicker = () => {
       "Content-Type": "application/json",
     }};
  const getLogin = async () => {
-  window.location.href = 'Account/Login';
+  window.location.href = 'api/Account/Login';
   // const res = await fetch(url, requestOptions);
   // return res.json();
 };

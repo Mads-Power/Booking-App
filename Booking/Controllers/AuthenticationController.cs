@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookingApp.Controllers
 {
     [AllowAnonymous]
-    [Route("Account/Login")]
+    [Route("api/Account/Login")]
     [ApiController]
     public class AuthenticationController : Controller
 	{
