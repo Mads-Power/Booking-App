@@ -183,7 +183,7 @@ namespace BookingApp.Controllers
         ///     NoContent if booking was successful.
         /// </returns>
         [HttpPut("Book")]
-        public async Task<IActionResult> BookSeat(BookingBookDTO bookingDto)
+        public async Task<ActionResult<BookingReadDTO>> BookSeat(BookingBookDTO bookingDto)
         {
             var dateValidation = ValidationResult.ValidateDateString(bookingDto.Date);
 
@@ -209,16 +209,19 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
+            Booking domainBooking;
             try
             {
-                await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
+                domainBooking = await _bookingRepository.BookSeat(domainUser, domainSeat, dateTime);
             }
             catch (DbUpdateConcurrencyException)
             {
                 throw;
             }
-
-            return NoContent();
+            domainBooking.Date = domainBooking.Date.ToLocalTime();
+            return CreatedAtAction("GetBooking",
+                new { bookingId = domainBooking.Id },
+                _mapper.Map<BookingReadDTO>(domainBooking));
         }
 
         /// <summary>

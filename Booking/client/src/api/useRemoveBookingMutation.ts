@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-const API_URL = import.meta.env.VITE_API_URL
 
 export type DeleteBooking = {
   userId: number;
@@ -7,7 +6,7 @@ export type DeleteBooking = {
 };
 
 const url = `/api/Booking/Unbook`;
-export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
+export const removeBooking = async ({ userId, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -16,8 +15,8 @@ export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
     },
     body: JSON.stringify({
       userId,
-      date
-    })
+      date,
+    }),
   };
   const res = await fetch(url, requestOptions);
 
@@ -29,9 +28,9 @@ export const putBookingUnbook = async ({ userId, date }: DeleteBooking) => {
   }
 };
 
-export const useUnbook = () => {
+export const useRemoveBookingMutation = () => {
   return useMutation({
-    mutationFn: putBookingUnbook,
+    mutationFn: removeBooking,
     onError: error => {
       console.log(error);
     },

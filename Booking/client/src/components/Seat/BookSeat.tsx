@@ -1,211 +1,190 @@
-import { Seat } from "@type/seat";
-import Chair from "@assets/chair.png";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Modal,
-  Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { CreateBooking, useBook } from "@api/putBookingBook";
-import { Dayjs } from "dayjs";
-import { Booking } from "@type/booking";
-import { DeleteBooking, useUnbook } from "@api/putBookingUnbook";
-import { useUser } from "@api/getUser";
+import { Seat } from '@type/seat';
+import { Box, Button, CircularProgress } from '@mui/material';
+import { SetStateAction, Dispatch, useEffect, useState, forwardRef } from 'react';
+import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
+import { Dayjs } from 'dayjs';
+import { DeleteBooking, useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
+import { User } from '@type/user';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
-const modalStyle = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "60vw",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  borderRadius: 5,
-  boxShadow: 24,
-  p: 4,
+type TBookSeat = {
+  seat: Seat;
+  date: Dayjs;
+  data: User;
+  seatInfo: string;
+  onSeatInfoChange: Dispatch<SetStateAction<string>>;
 };
 
-const boxStyle = {
-  border: "solid",
-  borderRadius: "5px",
-  padding: "30px 20px",
-};
-
-export const BookSeat = ({
-  seat,
-  date,
-  booking,
-}: {
-  seat: Seat | undefined;
-  date: Dayjs | null;
-  booking: Booking | undefined;
-}) => {
-  const loggedInUserId = 5;
-  // TODO: fix loading av bruker
-  const [userId, setUserId] = useState("0");
-  const { isLoading, data, error } = useUser(userId);
-  const [open, setOpen] = useState(false);
-  const bookMutation = useBook();
-  const unbookMutation = useUnbook();
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBookSeat) => {
+  const [state, setState] = useState({
+    open: false,
+    message: ''
+  });
+  const [loading, setLoading] = useState(false)
+  const { open, message } = state;
+  const bookingMutation = useBookingMutation();
+  const removeBookingMutation = useRemoveBookingMutation();
 
   useEffect(() => {
-    if (booking) {
-      setUserId(booking?.userId.toString());
-      console.log("userId set as: " + userId);
-    }
-  }, [date, data, booking]);
-
-  if (isLoading) {
-    return (
-      <div style={{ display: "flex" }}>
-        <CircularProgress size={100} style={{ margin: "10vh auto" }} />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <h4>Kan ikke finne seteinformasjon.</h4>;
-  }
+  }, [data, loading]);
 
   const handleBook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true)
     const bookingData = {
       seatId: seat?.id,
-      userId: loggedInUserId,
+      userId: data?.id,
       date: date?.toISOString(), //"2023-01-06T12:00:00.000+01",
     } as CreateBooking;
-    bookMutation.mutate(bookingData);
 
-    // TODO: fiks så den bare kjører når respons har kode 204
-    // if (mutation.isSuccess) handleOpen();
-    handleOpen();
+    bookingMutation.mutate(bookingData, {
+      onSuccess: () => {
+        onSeatInfoChange('removeBookedSeat');
+        setLoading(false)
+        setState({
+          message: 'Bookingen er nå registrert',
+          open: true,
+        });
+      },
+      onError() {
+        setLoading(false)
+        setState({
+          message: 'Kunne ikke reservere bookingen',
+          open: true,
+        });
+      },
+    });
   };
 
   const handleUnbook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true)
     const unbookingData = {
-      userId: loggedInUserId,
+      userId: data?.id,
       date: date?.toISOString(), //"2023-01-06T12:00:00.000+01",
     } as DeleteBooking;
-    unbookMutation.mutate(unbookingData);
-
-    // TODO: fiks så den bare kjører når respons har kode 204
-    // if (mutation.isSuccess) handleOpen();
-    handleOpen();
+    removeBookingMutation.mutate(unbookingData, {
+      onSuccess() {
+        onSeatInfoChange('bookAvailableSeat');
+        setLoading(false)
+        setState({
+          message: 'Bookingen er nå fjernet',
+          open: true,
+        });
+      },
+      onError() {
+        setLoading(false)
+        setState({
+          message: 'Kunne ikke fjerne bookingen',
+          open: true,
+        });
+      },
+    });
   };
 
-  if (booking && booking.userId != loggedInUserId) {
-    return (
-      <>
-        <div style={{ margin: "10px", textAlign: "center" }}>
-          <Box style={boxStyle}>
-            <img
-              src={Chair}
-              height="120"
-              style={{ margin: "auto auto 20px" }}
-            />
-            <h3>Setenummer: {seat?.name}</h3>
-            <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
-            <h3>Booket av: </h3>
-            <div style={{ textAlign: "left" }}>
-              <h3>Bruker: {data?.name}</h3>
-              <h3>Telefon: {data?.phoneNumber}</h3>
-              <h3>Email: {data?.email}</h3>
-            </div>
-          </Box>
-        </div>
-      </>
-    );
+  const renderBookingButton = (label: string, onclickHandler: (e: React.MouseEvent<HTMLButtonElement>) => void) => {
+
+    // Green background + 0.5 backgorund opacity
+    const occupiedStyle = {
+      // Need !important in order to overwrite the styles applied by MUI to button elements
+      background: "rgba(97, 197, 119, 0.5) !important"
+    } as const
+
+    // Green background
+    const availableStyle = {
+      background: "rgb(97, 197, 119)",
+      '&:hover': {
+        background: "rgba(97, 197, 119, 0.50)"
+      }
+    } as const
+
+    // Red background
+    const unbookStyle = {
+      background: "rgb(223, 13, 13)",
+      '&:hover': {
+        background: "rgba(223, 13, 13, 0.50)"
+      }
+    } as const
+    return <Button
+      variant='contained'
+      onClick={onclickHandler}
+      className="w-full rounded-lg p-2"
+      disabled={seatInfo === "bookedSeat"}
+      sx={{
+        ...(seatInfo === "bookedSeat" && occupiedStyle),
+        ...(seatInfo === "bookAvailableSeat" && availableStyle),
+        ...(seatInfo === "removeBookedSeat" && unbookStyle)
+      }}>
+      {loading ? (
+        <CircularProgress size={25} />) :
+        (<></>)}
+      <p className='text-base m-2 text-white'>{label}</p>
+    </Button>
   }
-  if (booking && booking.userId == loggedInUserId) {
+
+  const SeatInfoOccupied = () => {
     return (
       <>
-        <div style={{ margin: "10px", textAlign: "center" }}>
-          <Box style={boxStyle}>
-            <img
-              src={Chair}
-              height="120"
-              style={{ margin: "auto auto 20px" }}
-            />
-            <h3>Setenummer: {seat?.name}</h3>
-            <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#DF8B0D" }}
-              onClick={handleUnbook}
-            >
-              Fjern booking
-            </Button>
-            {
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={modalStyle}>
-                  <Typography
-                    id="modal-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    Booking er fjernet!
-                  </Typography>
-                </Box>
-              </Modal>
-            }
-          </Box>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2 md:grow'>
+          <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
+          <p>{data?.name}</p>
         </div>
+        {renderBookingButton("Send booking", handleBook)}
       </>
     );
-  } else {
+  };
+
+  const SeatInfoUnbook = () => {
     return (
       <>
-        <div style={{ margin: "10px", textAlign: "center" }}>
-          <Box style={boxStyle}>
-            <img
-              src={Chair}
-              height="120"
-              style={{ margin: "auto auto 20px" }}
-            />
-            <h3>Setenummer: {seat?.name}</h3>
-            <h3>Romnummer: {seat?.roomId}</h3>
-            <h3>Dato: {date?.toDate().toLocaleDateString()}</h3>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#DF8B0D" }}
-              onClick={handleBook}
-            >
-              Book sete
-            </Button>
-            {
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box sx={modalStyle}>
-                  <Typography
-                    id="modal-modal-title"
-                    variant="h6"
-                    component="h2"
-                  >
-                    Setet er booket!
-                  </Typography>
-                </Box>
-              </Modal>
-            }
-          </Box>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
+          <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Du har allerede booket denne pulten</p>
         </div>
+        {renderBookingButton("Fjern booking", handleUnbook)}
       </>
     );
+  };
+
+  const SeatInfoAvailable = () => {
+    return (
+      <>
+        <div className='w-full bg-slate-400 bg-opacity-10 text-center md:grow'>
+          <p className='p-3 rounded-lg text-sm truncate md:text-lg'>Pulten er ledig</p>
+        </div>
+        {renderBookingButton("Send booking", handleBook)}
+      </>
+    );
+  };
+
+  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref,
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleClose = (event?: React.SyntheticEvent | Event) => {
+    setState({
+      ...state,
+      open: false,
+    });
   }
+
+  return (
+    <div className='w-full h-full'>
+      <Box className='p-2 flex flex-col w-full h-full'>
+        <div className='flex flex-col p-2 gap-y-4 w-[90%] mx-auto h-full'>
+          {seatInfo === 'bookAvailableSeat' && <SeatInfoAvailable />}
+          {seatInfo === 'removeBookedSeat' && <SeatInfoUnbook />}
+          {seatInfo === 'bookedSeat' && <SeatInfoOccupied />}
+        </div>
+      </Box>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
+    </div>
+  );
 };

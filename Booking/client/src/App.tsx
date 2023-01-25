@@ -1,13 +1,8 @@
-import { AppProvider } from "@components/Provider/app";
-import { DateProvider } from "@components/Provider/DateContextProvider";
-import Routers from "../src/routes/Routers";
+import { AppProvider } from '@components/Provider/app';
+import Routers from '../src/routes/Routers';
 
 function App() {
-  return (
-    <DateProvider>
-      <AppProvider children={<Routers />} />
-    </DateProvider>
-  );
+  return <AppProvider children={<Routers />} />;
 }
 
 export default App;
