@@ -1,6 +1,5 @@
 {
   "name": "client",
-  "proxy": "https://localhost:5001/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -36,6 +35,7 @@
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.2.0",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vite-plugin-mkcert": "^1.11.0"
   }
 }

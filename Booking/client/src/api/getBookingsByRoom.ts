@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 export const getBookingsByRoom = async (roomId: number, date: Date) => {
   const url =
-    `${API_URL}/api/Room/${roomId}/Bookings?date=` +
+    `/api/Room/${roomId}/Bookings?date=` +
     encodeURI(date.toISOString());
   const requestOptions = {
     method: "GET",

@@ -1,11 +1,13 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingApp.Controllers
 {
-    [Route("api/authenticate")]
+    [AllowAnonymous]
+    [Route("Account/Login")]
     [ApiController]
     public class AuthenticationController : Controller
 	{
@@ -17,7 +19,7 @@ namespace BookingApp.Controllers
         /// <param name="returnUri"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Authenticate(string? returnUri = "/")
+        public ActionResult Login(string? returnUri = "/")
         {
             return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme,
                     new AuthenticationProperties

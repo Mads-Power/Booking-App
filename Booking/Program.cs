@@ -1,19 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using BookingApp.Context;
-using BookingApp.Repositories;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Web;
-using System.Reflection;
 using BookingApp.Helpers;
-using Microsoft.Extensions.Configuration;
+using BookingApp.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -25,14 +19,23 @@ builder.Services
     {
         builder.Configuration.Bind("AzureAd", options);
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.SignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.ResponseType = OpenIdConnectResponseType.Code;
-
-
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.SaveTokens = true;
     }, cookieOptions =>
     {
         cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         cookieOptions.Cookie.SameSite = SameSiteMode.Strict; //SameSiteMode.Strict; May require frontend and backend to run on same port when running locally
         cookieOptions.Cookie.HttpOnly = true;
+    });
+
+// Instead of adding [Authorize] to every endpoint
+builder.Services.AddAuthorization(options =>
+    {
+        options.FallbackPolicy = new AuthorizationPolicyBuilder(CookieAuthenticationDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
     });
 
 builder.Services.AddCors(options =>
@@ -95,11 +98,12 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseCookiePolicy();
 app.UseCors("Client Origin");
+app.UseStaticFiles();
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStaticFiles();
-app.UseRouting();
 app.MapControllers();
 
 app.MapFallbackToFile("index.html"); ;

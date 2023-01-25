@@ -11,11 +11,13 @@ using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
 using BookingApp.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
@@ -160,9 +162,7 @@ namespace BookingApp.Controllers
         [HttpGet("me")]
         public async Task<ActionResult<string>> GetMe()
         {
-            var user = User?.Identity?.Name;
-
-            Console.Write(user);
+            //if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
 
             return user;
         }
