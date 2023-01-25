@@ -47,7 +47,14 @@ export const WeekViewDatePicker = () => {
   const onDateChange = (day: Date) => {
     setDate(day);
   };
+ const getLogin = async () => {
+  window.location.href = 'api/Account/Login';
+};
 
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    getLogin();
+  }
   const renderHeader = () => {
     const dateFormat = "MMMM";
     return (
@@ -158,18 +165,15 @@ export const WeekViewDatePicker = () => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <div className='overflow-hidden flex flex-col'>
-          {renderHeader()}
-          <div className="flex flex-row w-full">
-            {renderPrev()}
-            <div className="grow overflow-hidden">
-              {renderDays()}
-              {renderCells()}
-            </div>
-            <div className="flex-none">{renderNext()}</div>
-          </div>
+    <ThemeProvider theme={theme}>
+        <Button onClick={handleLogin}>LOGIN</Button>
+        <Container className={styles.weekViewDatePicker}>
+        {renderHeader()}
+        <div className={styles.dayCellWrapper}>
+        {renderDays()}
+        {renderCells()}
         </div>
+        </Container>
       </ThemeProvider>
     </>
   );

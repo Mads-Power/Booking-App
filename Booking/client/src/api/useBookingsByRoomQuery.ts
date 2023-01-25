@@ -3,7 +3,7 @@ import { Booking } from '@type/booking';
 
 export const getBookingsByRoom = async (roomId: number, date: Date) => {
   const url =
-    `http://localhost:51249/api/Room/${roomId}/Bookings?date=` +
+    `/api/Room/${roomId}/Bookings?date=` +
     encodeURI(date.toISOString());
   const requestOptions = {
     method: 'GET',

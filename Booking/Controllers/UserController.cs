@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BookingApp.Context;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
 using BookingApp.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IMapper _mapper;
@@ -155,6 +151,20 @@ namespace BookingApp.Controllers
             await _userRepository.DeleteAsync(userId);
 
             return NoContent();
+        }
+
+        [HttpGet("Me")]
+        public async Task<ActionResult<ADUserDTO>> GetMe()
+        {
+            if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
+
+            return new ADUserDTO
+            {
+                Name = User?.FindFirst("name")?.Value,
+                GivenName = User?.FindFirst("given_name")?.Value,
+                FamilyName = User?.FindFirst("family_name")?.Value,
+                Email = User?.FindFirst("email")?.Value,
+            };
         }
 
         private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)
