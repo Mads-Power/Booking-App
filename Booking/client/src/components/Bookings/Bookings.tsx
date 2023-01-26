@@ -96,7 +96,7 @@ export const Bookings = () => {
                             key={i}
                             booking={booking}
                             user={data}
-                            onUnbook={(bookingToRemove) => handleUnbookFromChild(bookingToRemove)}
+                            onUnbook={handleUnbookFromChild}
                         />
                     )}
                 </div>
