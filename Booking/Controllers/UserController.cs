@@ -154,7 +154,7 @@ namespace BookingApp.Controllers
         }
 
         [HttpGet("Me")]
-        public async Task<ActionResult<ADUserDTO>> GetMe()
+        public ActionResult<ADUserDTO> GetMe()
         {
             if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
 
