@@ -46,14 +46,14 @@ namespace BookingAppUnitTests.Controllers
             var booking1 = new Booking()
             {
                 Id = 1,
-                UserId = 1,
+                UserId = "1",
                 SeatId = 1,
                 Date = new DateTime(2022, 12, 12)
             };
             var booking2 = new Booking()
             {
                 Id = 2,
-                UserId = 2,
+                UserId = "2",
                 SeatId = 2,
                 Date = new DateTime(2021, 12, 12)
             };
@@ -124,7 +124,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PostBooking_WhenValidModel_ReturnsNewBooking()
         {
             // Arrange
-            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = 3, Date = new DateTime(2022, 12, 13) };
+            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = "3", Date = new DateTime(2022, 12, 13) };
             _mockUserRepository.Setup(repo => repo.UserExists(newBooking.UserId)).Returns(true);
             _mockSeatRepository.Setup(repo => repo.SeatExists(newBooking.SeatId)).Returns(true);
             _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndUser(newBooking.Date, newBooking.UserId));
@@ -144,7 +144,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PostBooking_WhenInvalidModel_ReturnsBadRequest()
         {
             // Arrange
-            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = 3, Date = new DateTime(2022, 12, 1) };
+            var newBooking = new BookingCreateDTO() { SeatId = 3, UserId = "3", Date = new DateTime(2022, 12, 1) };
 
             // Act
             var actionResult = await _controller.PostBooking(newBooking);
@@ -157,7 +157,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutBooking_WhenValidModel_ReturnsNoContent()
         {
             // Arrange
-            var updateBooking = new BookingEditDTO() {Id = 1, SeatId = 3, UserId = 3 };
+            var updateBooking = new BookingEditDTO() {Id = 1, SeatId = 3, UserId = "3" };
             _mockBookingRepository.Setup(repo => repo.GetBookingAsync(1)).ReturnsAsync(GetTestBookings()[0]);
 
             // Act
@@ -171,7 +171,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutBooking_WhenInvalidModel_ReturnsBadRequest()
         {
             // Arrange
-            var updateBooking = new BookingEditDTO() { Id = 1, SeatId = 1, UserId = 2, Date = new DateTime(2023, 01, 01) };
+            var updateBooking = new BookingEditDTO() { Id = 1, SeatId = 1, UserId = "2", Date = new DateTime(2023, 01, 01) };
             _mockBookingRepository.Setup(repo => repo.GetBookingAsync(1)).ReturnsAsync(GetTestBookings()[0]);
 
             // Act
@@ -185,7 +185,7 @@ namespace BookingAppUnitTests.Controllers
         public async void PutBooking_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var updateBooking = new BookingEditDTO() { Id = 10, SeatId = 10, UserId = 10, Date = new DateTime(2021, 01, 01) };
+            var updateBooking = new BookingEditDTO() { Id = 10, SeatId = 10, UserId = "10", Date = new DateTime(2021, 01, 01) };
             _mockBookingRepository.Setup(repo => repo.GetBookingAsync(1));
             _mockBookingRepository.Setup(repo => repo.BookingExists(updateBooking.Id)).Returns(true);
 
@@ -228,16 +228,16 @@ namespace BookingAppUnitTests.Controllers
         public async void BookSeat_WhenValidRequest_ReturnsNewBooking()
         {
             // Arrange
-            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = 1, Date = "2023-01-01T00:00:00Z" };
+            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = "1", Date = "2023-01-01T00:00:00Z" };
             var dateTime = DateTime.Parse(newBooking.Date);
             var user = new User()
             {
-                Id = 1,
+                Id = "1",
                 Name = "Test User 1",
                 Bookings = new List<Booking>()
             };
             var seat = new Seat() { Id = 1, Name = "01", RoomId = 1 };
-            var mockResultBooking = new Booking() { Id = 1, UserId = 1, SeatId = 1, Date = dateTime };
+            var mockResultBooking = new Booking() { Id = 1, UserId = "1", SeatId = 1, Date = dateTime };
 
             _mockUserRepository.Setup(repo => repo.GetUserAsync(newBooking.UserId)).ReturnsAsync(user);
             _mockSeatRepository.Setup(repo => repo.GetSeatAsync(newBooking.SeatId)).ReturnsAsync(seat);
@@ -257,7 +257,7 @@ namespace BookingAppUnitTests.Controllers
         public async void BookSeat_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = 1, Date = "2023-01-01T00:00:00Z" };
+            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = "1", Date = "2023-01-01T00:00:00Z" };
             _mockUserRepository.Setup(repo => repo.GetUserAsync(newBooking.UserId));
             _mockSeatRepository.Setup(repo => repo.GetSeatAsync(newBooking.SeatId));
 
@@ -272,7 +272,7 @@ namespace BookingAppUnitTests.Controllers
         public async void BookSeat_WhenInvalidRequest_ReturnsBadRequest()
         {
             // Arrange
-            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = 1, Date = "" };
+            var newBooking = new BookingBookDTO() { SeatId = 1, UserId = "1", Date = "" };
 
             // Act
             var actionResult = await _controller.BookSeat(newBooking);
@@ -285,17 +285,17 @@ namespace BookingAppUnitTests.Controllers
         public async void UnbookSeat_WhenValidRequest_ReturnsNoContent()
         {
             // Arrange
-            var newUnbooking = new BookingUnbookDTO() { UserId = 1, Date = "2022-01-01T00:00:00Z" };
+            var newUnbooking = new BookingUnbookDTO() { UserId = "1", Date = "2022-01-01T00:00:00Z" };
             var mockDate = new FixedDateTimeProvider().Parse(newUnbooking.Date);
 
             _mockUserRepository.Setup(repo => repo.GetUserAsync(newUnbooking.UserId)).ReturnsAsync(new User()
             {
-                Id = 1,
+                Id = "1",
                 Name = "Test User 1",
                 Bookings = new List<Booking>()
             });
             _mockBookingRepository.Setup(repo => repo.GetBookingByDateAndUser(mockDate, newUnbooking.UserId))
-                .Returns(new Booking() { Id = 1, Date = mockDate, UserId = 1, SeatId = 1 });
+                .Returns(new Booking() { Id = 1, Date = mockDate, UserId = "1", SeatId = 1 });
             // Struggeling to mock this bookingservice
 
             // Act
@@ -309,7 +309,7 @@ namespace BookingAppUnitTests.Controllers
         public async void UnbookSeat_WhenNexists_ReturnsBadRequest()
         {
             // Arrange
-            var newUnbooking = new BookingUnbookDTO() { UserId = 3, Date = "2022-01-01T00:00:00Z" };
+            var newUnbooking = new BookingUnbookDTO() { UserId = "3", Date = "2022-01-01T00:00:00Z" };
             var mockDate = new FixedDateTimeProvider().Parse(newUnbooking.Date);
 
             _mockUserRepository.Setup(repo => repo.GetUserAsync(newUnbooking.UserId));
@@ -326,7 +326,7 @@ namespace BookingAppUnitTests.Controllers
         public async void UnbookSeat_WhenInvalidRequest_ReturnsBadRequest()
         {
             // Arrange
-            var newUnbooking = new BookingUnbookDTO() { UserId = 1, Date = "" };
+            var newUnbooking = new BookingUnbookDTO() { UserId = "1", Date = "" };
 
             // Act
             var actionResult = await _controller.UnbookSeat(newUnbooking);

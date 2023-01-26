@@ -8,12 +8,12 @@ namespace BookingApp.Repositories
 {
 	public interface IUserRepository
 	{
-		public bool UserExists(int userId);
+		public bool UserExists(string userId);
         public Task<IEnumerable<User>> GetUsersAsync();
-        public Task<User?> GetUserAsync(int userId);
+        public Task<User?> GetUserAsync(string userId);
         public Task<User> AddAsync(User newUser);
         public Task UpdateAsync(User user);
-        public Task DeleteAsync(int userId);
+        public Task DeleteAsync(string userId);
     }
 }
 

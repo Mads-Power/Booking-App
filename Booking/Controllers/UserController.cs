@@ -49,7 +49,7 @@ namespace BookingApp.Controllers
         /// <param name="userId">The id of the user.</param>
         /// <returns>A user read DTO.</returns>
         [HttpGet("{userId}")]
-        public async Task<ActionResult<UserReadDTO>> GetUser(int userId)
+        public async Task<ActionResult<UserReadDTO>> GetUser(string userId)
         {
             var user = await _userRepository.GetUserAsync(userId);
 
@@ -100,7 +100,7 @@ namespace BookingApp.Controllers
         ///     NoContent if user was successfully updated. 
         /// </returns>
         [HttpPut("userId")]
-        public async Task<IActionResult> PutUser(int userId, UserEditDTO userDto)
+        public async Task<IActionResult> PutUser(string userId, UserEditDTO userDto)
         {
             var validation = ValidateUpdateUser(userDto, userId);
 
@@ -141,7 +141,7 @@ namespace BookingApp.Controllers
         ///     NoContent if delete was successful.
         /// </returns>
         [HttpDelete("userId")]
-        public async Task<IActionResult> DeleteUser(int userId)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
             if (!_userRepository.UserExists(userId))
             {
@@ -167,7 +167,7 @@ namespace BookingApp.Controllers
             };
         }
 
-        private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, int endpoint)
+        private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, string endpoint)
         {
             if (endpoint != userDto.Id)
             {

@@ -32,7 +32,7 @@ namespace BookingApp.Repositories
             return await _context.Bookings.FindAsync(bookingId);
         }
 
-        public Booking? GetBookingByDateAndUser(DateTime date, int userId)
+        public Booking? GetBookingByDateAndUser(DateTime date, string userId)
         {
             return _context.Bookings
                 .Where(booking => booking.UserId == userId && DateTime
