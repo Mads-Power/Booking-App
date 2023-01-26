@@ -7,7 +7,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import dayjs from 'dayjs';
 
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Booking } from "@type/booking";
+import { Booking, TUnbook } from "@type/booking";
 import { useRemoveBookingMutation } from "@api/useRemoveBookingMutation";
 import MuiAlert, { AlertColor } from '@mui/material/Alert';
 
@@ -57,7 +57,7 @@ export const Bookings = () => {
         });
     }
 
-    const handleUnbookFromChild = (bookingData: Booking) => {
+    const handleUnbookFromChild = (bookingData: TUnbook) => {
         removeBookingMutation.mutate(bookingData, {
             onSuccess() {
                 if (!data) return;
@@ -92,7 +92,12 @@ export const Bookings = () => {
             {data ? (
                 <div className="h-full w-full overflow-auto p-2 flex flex-col gap-y-6">
                     {bookings.map((booking, i) =>
-                        <BookingsListItem key={i} booking={booking} user={data} onUnbook={() => handleUnbookFromChild(booking)}></BookingsListItem>
+                        <BookingsListItem
+                            key={i}
+                            booking={booking}
+                            user={data}
+                            onUnbook={(bookingToRemove) => handleUnbookFromChild(bookingToRemove)}
+                        />
                     )}
                 </div>
             ) : (

@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 type TBookingListItem = {
     user: User;
     booking: Booking;
-    onUnbook: Dispatch<SetStateAction<DeleteBooking>>;
+    onUnbook: (booking: TUnbook) => void;
 };
 
 export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) => {
@@ -25,7 +25,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
     const handleUnbook = () => {
         setContextmenuAnchorState(null);
         const unbookingData = {
-            id:  booking.id,
+            id: booking.id,
             seatId: booking.seatId,
             userId: user.id,
             date: booking.date
