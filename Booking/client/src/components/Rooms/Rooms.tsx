@@ -82,7 +82,7 @@ export const Rooms = () => {
           selectedRoomFromParent={selectedRoom}
           user={loggedInUser}
           occupiedSeats={occupiedSeats}
-          setSelectedRoom={(roomId) => handleSelectRoomFromChild(roomId)}
+          setSelectedRoom={handleSelectRoomFromChild}
         />
       ) : (
         <></>
