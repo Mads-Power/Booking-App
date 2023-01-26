@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev-sec": "vite --https --port 5174"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -38,6 +39,7 @@
     "postcss": "^8.4.20",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "vite-plugin-mkcert": "^1.11.0"
   }
 }

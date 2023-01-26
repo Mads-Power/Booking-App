@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Seat } from '@type/seat';
 
-const url = 'http://localhost:51249/api/Seat/';
+const url = '/api/Seat/';
 export const getSeat = async (seatId: string) => {
   const requestOptions = {
     method: 'GET',

@@ -1,16 +1,53 @@
-using Microsoft.EntityFrameworkCore;
 using BookingApp.Context;
-using BookingApp.Repositories;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Routing;
-using System.Reflection;
 using BookingApp.Helpers;
+using BookingApp.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+
+// Authentication
+builder.Services
+    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
+        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.ResponseType = OpenIdConnectResponseType.Code;
+        options.GetClaimsFromUserInfoEndpoint = true;
+    }, cookieOptions =>
+    {
+        cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        cookieOptions.Cookie.SameSite = SameSiteMode.Strict; //SameSiteMode.Strict; May require frontend and backend to run on same port when running locally
+        cookieOptions.Cookie.HttpOnly = true;
+    });
+
+// Instead of adding [Authorize] to every endpoint
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+builder.Services.AddCors(options =>
+{
+
+    options.AddPolicy(name: "Client Origin",
+                      builder => builder
+                      .AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      //.AllowCredentials()
+                      //.WithOrigins("http://localhost:5173")
+    );
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -32,19 +69,6 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
-builder.Services.AddCors(options =>
-{
-
-   
-    options.AddPolicy(name: "Client Origin",
-                      builder => builder
-    //                .WithOrigins("http://localhost:5173")
-                      .AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      );
-});
-
 
 var app = builder.Build();
 
@@ -58,7 +82,7 @@ if (!app.Environment.IsDevelopment())
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseSwaggerUI();
 }
 
 app.UseSwaggerUI(options =>
@@ -67,15 +91,18 @@ app.UseSwaggerUI(options =>
     options.RoutePrefix = string.Empty;
 });
 
-////app.UseHttpsRedirection();
-//app.UseStaticFiles();
+
+
+app.UseHttpsRedirection();
+app.UseCookiePolicy();
+app.UseCors("Client Origin");
+app.UseStaticFiles();
 app.UseRouting();
 
-app.MapControllers();
-app.UseCors("Client Origin");
+app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.MapControllers();
 
 app.MapFallbackToFile("index.html"); ;
 

@@ -222,8 +222,6 @@ namespace BookingApp.Controllers
             return CreatedAtAction("GetBooking",
                 new { bookingId = domainBooking.Id },
                 _mapper.Map<BookingReadDTO>(domainBooking));
-
-            //return NoContent();
         }
 
         /// <summary>
