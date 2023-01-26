@@ -1,18 +1,16 @@
 import { Menu, MenuItem } from "@mui/material";
-import { Booking, DeleteBooking } from "@type/booking"
+import { Booking, DeleteBooking, TUnbook } from "@type/booking"
 import { User } from "@type/user";
 import * as dayjs from 'dayjs'
 import { Dispatch, SetStateAction, useState } from "react";
 
-type TBooking = {
+type TBookingListItem = {
     user: User;
     booking: Booking;
     onUnbook: Dispatch<SetStateAction<DeleteBooking>>;
 };
 
-export type TUnbook = DeleteBooking & Partial<Booking>
-
-export const BookingsListItem = ({ booking, user, onUnbook }: TBooking) => {
+export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) => {
     const room = (booking.seatId >= 10) ? "Storerommet" : "Lillerommet";
 
     const [contextmenuAnchor, setContextmenuAnchorState] = useState<null | HTMLElement>(null);
