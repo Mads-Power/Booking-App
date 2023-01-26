@@ -1,12 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Container, Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { useForm, SubmitHandler } from "react-hook-form";
-
-type Inputs = {
-  example: string;
-  exampleRequired: string;
-};
 
 export const LoginPage = () => {
   const login = async (event: React.FormEvent) => {
@@ -39,6 +32,7 @@ export const LoginPage = () => {
   );
 };
 
+// after log in
 export const LoggedIn = () => {
   return (
     <>
