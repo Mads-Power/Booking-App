@@ -2,7 +2,7 @@ import { Alert, AlertProps, CircularProgress, Snackbar } from "@mui/material";
 import { forwardRef, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUserQuery } from "../../api/useUserQuery";
-import { BookingsListItem } from "./components/BookingsListItem";
+import { BookingsListItem } from "./BookingsListItem";
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import dayjs from 'dayjs';
 

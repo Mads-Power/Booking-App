@@ -184,7 +184,7 @@ export const Rooms = () => {
                 ) : (<></>)}
               </div>
             </div>) : (
-            <div className="w-full lg:w-auto mx-auto bg-slate-400 bg-opacity-10">
+            <div className="w-full lg:w-auto mx-auto">
               {selectedRoom ? (
                 <div className="p-4 flex flex-col gap-y-4">
                   <div className="flex flex-row-reverse gap-x-6 justify-center">
