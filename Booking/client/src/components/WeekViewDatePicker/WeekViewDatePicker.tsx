@@ -47,14 +47,14 @@ export const WeekViewDatePicker = () => {
   const onDateChange = (day: Date) => {
     setDate(day);
   };
- const getLogin = async () => {
-  window.location.href = 'api/Account/Login';
-};
+  //  const getLogin = async () => {
+  //   window.location.href = 'api/Account/Login';
+  // };
 
-  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    getLogin();
-  }
+  //   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //     e.preventDefault();
+  //     getLogin();
+  //   }
   const renderHeader = () => {
     const dateFormat = "MMMM";
     return (
@@ -110,10 +110,10 @@ export const WeekViewDatePicker = () => {
             <div className="w-full justify-center flex min-w-0" key={day.getDate()}>
               <div
                 className={`${isSameDay(day, date)
-                    ? styles.selected + " " + styles.MuiButton
-                    : isSameDay(day, new Date())
-                      ? styles.today + " " + styles.MuiButton
-                      : styles.MuiButton
+                  ? styles.selected + " " + styles.MuiButton
+                  : isSameDay(day, new Date())
+                    ? styles.today + " " + styles.MuiButton
+                    : styles.MuiButton
                   }`}
                 onClick={() => {
                   onDateChange(cloneDay);
@@ -165,15 +165,18 @@ export const WeekViewDatePicker = () => {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-        <Button onClick={handleLogin}>LOGIN</Button>
-        <Container className={styles.weekViewDatePicker}>
-        {renderHeader()}
-        <div className={styles.dayCellWrapper}>
-        {renderDays()}
-        {renderCells()}
+      <ThemeProvider theme={theme}>
+        <div className='overflow-hidden flex flex-col'>
+          {renderHeader()}
+          <div className="flex flex-row w-full">
+            {renderPrev()}
+            <div className="grow overflow-hidden">
+              {renderDays()}
+              {renderCells()}
+            </div>
+            <div className="flex-none">{renderNext()}</div>
+          </div>
         </div>
-        </Container>
       </ThemeProvider>
     </>
   );
