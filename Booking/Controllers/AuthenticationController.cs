@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace BookingApp.Controllers
 {
-    [AllowAnonymous]
-    [Route("api/Account/Login")]
+    [Route("api/Account")]
     [ApiController]
     public class AuthenticationController : Controller
 	{
@@ -19,6 +19,8 @@ namespace BookingApp.Controllers
         /// <param name="returnUri"></param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
+        [Route("Login")]
         public ActionResult Login(string? returnUri = "/")
         {
             return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme,
@@ -27,6 +29,17 @@ namespace BookingApp.Controllers
                         IsPersistent = true,
                         RedirectUri = returnUri ?? "/"
                     });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("IsAuthenticated")]
+        public ActionResult IsAuthenticated()
+        {
+            if (User?.Identity?.IsAuthenticated is not null && User.Identity.IsAuthenticated)
+                return Ok();
+
+            return Unauthorized();
         }
     }
 }

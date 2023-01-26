@@ -13,6 +13,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Booking</AssemblyName>
+    <noWarn>1591</noWarn> <!-- Disable warnings for missing XML documentation-->
   </PropertyGroup>
 
   <ItemGroup>
