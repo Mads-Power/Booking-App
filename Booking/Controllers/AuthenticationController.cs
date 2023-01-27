@@ -33,7 +33,7 @@ namespace BookingApp.Controllers
             return new ChallengeResult(OpenIdConnectDefaults.AuthenticationScheme,
                     new AuthenticationProperties
                     {
-                        IsPersistent = true,            
+                        IsPersistent = true,
                         RedirectUri = returnUri ?? "/"
                     });
         }
@@ -58,7 +58,7 @@ namespace BookingApp.Controllers
         {
             var userId = User?.FindFirst(ClaimConstants.ObjectId)?.Value;
 
-            if (userId is null) throw new ArgumentNullException("Could not find userID");
+            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException("Could not find userID");
 
             if (_userRepository.UserExists(userId))            
                 return true;             
