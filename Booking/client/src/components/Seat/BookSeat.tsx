@@ -37,7 +37,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     setLoading(true)
     const bookingData = {
       seatId: seat?.id,
-      userId: data?.id,
+      email: data?.email,
       date: date?.toISOString(), //"2023-01-06T12:00:00.000+01",
     } as CreateBooking;
 
@@ -66,7 +66,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     e.preventDefault();
     setLoading(true)
     const unbookingData = {
-      userId: data?.id,
+      email: data?.email,
       date: date?.toISOString(), //"2023-01-06T12:00:00.000+01",
     } as DeleteBooking;
     removeBookingMutation.mutate(unbookingData, {

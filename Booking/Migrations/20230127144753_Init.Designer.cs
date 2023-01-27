@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookingApp.Migrations
 {
     [DbContext(typeof(OfficeDbContext))]
-    [Migration("20230126122738_init")]
-    partial class init
+    [Migration("20230127144753_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace BookingApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<int>("SeatId")
                         .HasColumnType("integer");
 
@@ -55,1540 +58,1760 @@ namespace BookingApp.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 3,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 4,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 5,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 6,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 7,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 8,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 9,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 10,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 11,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 12,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 13,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 14,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 15,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 16,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 17,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 18,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 19,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 20,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ted.mosby@himym.com",
                             SeatId = 11,
                             UserId = "1"
                         },
                         new
                         {
                             Id = 21,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 22,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 23,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 24,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 25,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 26,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 27,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 28,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 29,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 30,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 31,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 32,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 33,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 34,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 35,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 36,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 37,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 38,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 39,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 40,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "marshall.eriksen@himym.com",
                             SeatId = 12,
                             UserId = "2"
                         },
                         new
                         {
                             Id = 41,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 42,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 43,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 44,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 45,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 46,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 47,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 48,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 49,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 50,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 51,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 52,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 53,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 54,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 55,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 56,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 57,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 58,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 59,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 60,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "lily.aldrin@himym.com",
                             SeatId = 13,
                             UserId = "3"
                         },
                         new
                         {
                             Id = 61,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 62,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 63,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 64,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 65,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 66,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 67,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 68,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 69,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 70,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 71,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 72,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 73,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 74,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 75,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 76,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 77,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 78,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 79,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 80,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "barney.stinson@himym.com",
                             SeatId = 14,
                             UserId = "4"
                         },
                         new
                         {
                             Id = 81,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 82,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 83,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 84,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 85,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 86,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 87,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 88,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 89,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 90,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 91,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 92,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 93,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 94,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 95,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 96,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 97,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 98,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 99,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 100,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "robin.scherbatsky@himym.com",
                             SeatId = 15,
                             UserId = "5"
                         },
                         new
                         {
                             Id = 101,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 102,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 103,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 104,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 105,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 106,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 107,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 108,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 109,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 110,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 111,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 112,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 113,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 114,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 115,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 116,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 117,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 118,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 119,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 120,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "ross.geller@friends.com",
                             SeatId = 1,
                             UserId = "6"
                         },
                         new
                         {
                             Id = 121,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 122,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 123,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 124,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 125,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 126,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 127,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 128,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 129,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 130,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 131,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 132,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 133,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 134,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 135,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 136,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 137,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 138,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 139,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 140,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "monica.geller@friends.com",
                             SeatId = 2,
                             UserId = "7"
                         },
                         new
                         {
                             Id = 141,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 142,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 143,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 144,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 145,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 146,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 147,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 148,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 149,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 150,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 151,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 152,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 153,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 154,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 155,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 156,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 157,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 158,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 159,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 160,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "phoebe.buffay@friends.com",
                             SeatId = 3,
                             UserId = "8"
                         },
                         new
                         {
                             Id = 161,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 162,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 163,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 164,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 165,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 166,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 167,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 168,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 169,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 170,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 171,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 172,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 173,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 174,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 175,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 176,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 177,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 178,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 179,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 180,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "chandler.bing@friends.com",
                             SeatId = 4,
                             UserId = "9"
                         },
                         new
                         {
                             Id = 181,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 182,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 183,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 184,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 185,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 186,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 187,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 188,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 189,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 190,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 191,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 192,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 193,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 194,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 195,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 196,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 197,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 198,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 199,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 200,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "joey.tribiani@friends.com",
                             SeatId = 5,
                             UserId = "10"
                         },
                         new
                         {
                             Id = 201,
-                            Date = new DateTime(2023, 1, 25, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 202,
-                            Date = new DateTime(2023, 1, 26, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 203,
-                            Date = new DateTime(2023, 1, 27, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 204,
-                            Date = new DateTime(2023, 1, 28, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 205,
-                            Date = new DateTime(2023, 1, 29, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 206,
-                            Date = new DateTime(2023, 1, 30, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 207,
-                            Date = new DateTime(2023, 1, 31, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 208,
-                            Date = new DateTime(2023, 2, 1, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 209,
-                            Date = new DateTime(2023, 2, 2, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 210,
-                            Date = new DateTime(2023, 2, 3, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 211,
-                            Date = new DateTime(2023, 2, 4, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 212,
-                            Date = new DateTime(2023, 2, 5, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 213,
-                            Date = new DateTime(2023, 2, 6, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 214,
-                            Date = new DateTime(2023, 2, 7, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 215,
-                            Date = new DateTime(2023, 2, 8, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 216,
-                            Date = new DateTime(2023, 2, 9, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 217,
-                            Date = new DateTime(2023, 2, 10, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 218,
-                            Date = new DateTime(2023, 2, 11, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 219,
-                            Date = new DateTime(2023, 2, 12, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         },
                         new
                         {
                             Id = 220,
-                            Date = new DateTime(2023, 2, 13, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2023, 2, 14, 23, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "rachel.green@friends.com",
                             SeatId = 6,
                             UserId = "11"
                         });

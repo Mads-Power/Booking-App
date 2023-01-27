@@ -2,12 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export type CreateBooking = {
   seatId: number;
-  userId: number;
+  email: string;
   date: string;
 };
 
 const url = '/api/Booking/Book';
-export const addBooking = async ({ seatId, userId, date }: CreateBooking) => {
+export const addBooking = async ({ seatId, email, date }: CreateBooking) => {
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -16,7 +16,7 @@ export const addBooking = async ({ seatId, userId, date }: CreateBooking) => {
     },
     body: JSON.stringify({
       seatId,
-      userId,
+      email,
       date,
     }),
   };

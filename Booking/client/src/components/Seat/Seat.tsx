@@ -13,7 +13,7 @@ import { BookSeat } from './BookSeat';
 import { DateSeat } from './DateSeat';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom } from '../Provider/jotaiProvider';
 import { useUserQuery } from '@api/useUserQuery';
 import { ColorDescription } from '@components/ColorDescription/colorDescription';
 import { Divider } from '@mui/material'
@@ -28,7 +28,8 @@ const theme = createTheme(
 export const Seat = () => {
   const { seatId } = useParams();
   const { isLoading, data, error } = useSeatQuery(seatId!);
-  const { data: userData } = useUserQuery('5');
+  // const [user, setUser] = useAtom(userAtom);
+  const { data: userData } = useUserQuery('emil.onsoyen@itverket.no');
   const [date] = useAtom(dateAtom);
   const navigate = useNavigate();
 
@@ -38,10 +39,10 @@ export const Seat = () => {
     data?.bookings.some(booking => {
       const dateIsoString = new Date(booking.date).toLocaleString();
       if (dateIsoString === date.toLocaleString()) {
-        if (booking.userId === userData?.id) {
+        if (booking.email === userData?.email) {
           state = 'removeBookedSeat';
           return true;
-        } else if (booking.userId !== userData?.id) {
+        } else if (booking.email !== userData?.email) {
           state = 'bookedSeat';
           return true;
         }

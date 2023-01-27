@@ -6,6 +6,7 @@ using BookingApp.Models.DTOs;
 using BookingApp.Repositories;
 using BookingApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
 
 namespace BookingApp.Controllers
 {
@@ -46,12 +47,12 @@ namespace BookingApp.Controllers
         /// <summary>
         /// Fetch a specific user from the database.
         /// </summary>
-        /// <param name="userId">The id of the user.</param>
+        /// <param name="email">The email of the user.</param>
         /// <returns>A user read DTO.</returns>
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<UserReadDTO>> GetUser(string userId)
+        [HttpGet("{email}")]
+        public async Task<ActionResult<UserReadDTO>> GetUser(string email)
         {
-            var user = await _userRepository.GetUserAsync(userId);
+            var user = await _userRepository.GetUserAsync(email);
 
             if (user == null)
             {
@@ -85,31 +86,31 @@ namespace BookingApp.Controllers
             await _userRepository.AddAsync(domainUser);
 
             return CreatedAtAction("GetUser",
-                new { userId = domainUser.Id },
+                new { userEmail = domainUser.Email },
                 _mapper.Map<UserReadDTO>(domainUser));
         }
 
         /// <summary>
         ///     Edit an existing user in the database.
         /// </summary>
-        /// <param name="userId">The id of the user.</param>
+        /// <param name="userEmail">The id of the user.</param>
         /// <param name="userDto">The edit DTO for the user.</param>
         /// <returns>
         ///     BadRequest if body is invalid.
         ///     NotFound if id is invalid.
         ///     NoContent if user was successfully updated. 
         /// </returns>
-        [HttpPut("userId")]
-        public async Task<IActionResult> PutUser(string userId, UserEditDTO userDto)
+        [HttpPut("userEmail")]
+        public async Task<IActionResult> PutUser(string userEmail, UserEditDTO userDto)
         {
-            var validation = ValidateUpdateUser(userDto, userId);
+            var validation = ValidateUpdateUser(userDto, userEmail);
 
             if (!validation.Result)
             {
                 return BadRequest(validation.RejectionReason);
             }
 
-            var domainUser = await _userRepository.GetUserAsync(userId);
+            var domainUser = await _userRepository.GetUserAsync(userEmail);
 
             if (domainUser != null)
             {
@@ -135,20 +136,20 @@ namespace BookingApp.Controllers
         /// <summary>
         ///     Delete a user from the database.
         /// </summary>
-        /// <param name="userId">Id of the user.</param>
+        /// <param name="userEmail">Email of the user.</param>
         /// <returns>
         ///     NotFound if id does not match anything in db.
         ///     NoContent if delete was successful.
         /// </returns>
-        [HttpDelete("userId")]
-        public async Task<IActionResult> DeleteUser(string userId)
+        [HttpDelete("userEmail")]
+        public async Task<IActionResult> DeleteUser(string userEmail)
         {
-            if (!_userRepository.UserExists(userId))
+            if (!_userRepository.UserExists(userEmail))
             {
                 return NotFound();
             }
 
-            await _userRepository.DeleteAsync(userId);
+            await _userRepository.DeleteAsync(userEmail);
 
             return NoContent();
         }
@@ -167,11 +168,37 @@ namespace BookingApp.Controllers
             };
         }
 
+        [HttpGet("Me/Bookings")]
+        public async Task<ActionResult<List<BookingReadDTO>>> GetMyBookings()
+        {
+            if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
+
+            var userId = User?.FindFirst(ClaimConstants.ObjectId)?.Value;
+
+            if (userId == null)
+            {
+                return Forbid();
+            }
+
+            var user = await _userRepository.GetUserAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var bookings = user.Bookings;
+
+            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
+
+            return _mapper.Map<List<BookingReadDTO>>(bookings);
+        }
+
         private static ValidationResult ValidateUpdateUser(UserEditDTO userDto, string endpoint)
         {
-            if (endpoint != userDto.Id)
+            if (endpoint != userDto.Email)
             {
-                return new ValidationResult(false, "API endpoint and user id must match");
+                return new ValidationResult(false, "API endpoint and user email must match");
             }
 
             // more validation
@@ -181,9 +208,9 @@ namespace BookingApp.Controllers
 
         private ValidationResult ValidatePostUser(UserCreateDTO userDto)
         {
-            if (_userRepository.UserExists(userDto.Id))
+            if (_userRepository.UserExists(userDto.Email))
             {
-                return new ValidationResult(false, "User Id already exists");
+                return new ValidationResult(false, "User already exists");
             }
 
             if (userDto.Name == null)

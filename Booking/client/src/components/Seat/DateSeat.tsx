@@ -10,7 +10,7 @@ import {
 } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom } from '../Provider/jotaiProvider';
 import { Seat } from '@type/seat';
 import { Booking } from '@type/booking';
 import { User } from '@type/user';

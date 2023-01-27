@@ -19,6 +19,7 @@ namespace BookingApp.Models.Domain
 		public int SeatId { get; set; }
 		public string UserId { get; set; }
 
+		public string Email { get; set; }
 		public Seat Seat { get; set; }
 		public User User { get; set; }
 	}

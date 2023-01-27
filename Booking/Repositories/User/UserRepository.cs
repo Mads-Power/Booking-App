@@ -15,9 +15,9 @@ namespace BookingApp.Repositories
             _context = context;
         }
 
-        public bool UserExists(string userId)
+        public bool UserExists(string userEmail)
         {
-            return _context.Users.Find(userId) != null;
+            return _context.Users.Where(user => user.Email == userEmail).FirstOrDefaultAsync().Result != null;
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
@@ -26,9 +26,9 @@ namespace BookingApp.Repositories
         }
 
 
-        public async Task<User?> GetUserAsync(string userId)
+        public async Task<User?> GetUserAsync(string userEmail)
         {
-            return await _context.Users.Include(user => user.Bookings).Where(user => user.Id == userId).FirstOrDefaultAsync();
+            return await _context.Users.Include(user => user.Bookings).Where(user => user.Email == userEmail).FirstOrDefaultAsync();
         }
 
         public async Task<User> AddAsync(User newUser)
@@ -44,17 +44,15 @@ namespace BookingApp.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(string userId)
+        public async Task DeleteAsync(string userEmail)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _context.Users.Where(user => user.Email == userEmail).FirstOrDefaultAsync();
             if (user != null)
             {
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
         }
-
-        // get booked seat for the user
     }
 }
 

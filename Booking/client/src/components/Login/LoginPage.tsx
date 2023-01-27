@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 
 export const LoginPage = () => {
+  
+  // useeffect som kaller [Route("IsAuthenticated")] endepunktet?
+
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("logged in");
+    window.location.href = '/api/Account/Login';
   };
 
   return (

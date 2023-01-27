@@ -15,7 +15,7 @@ import styles from './WeekViewDatePicker.module.css';
 import { nbNO } from '@mui/x-date-pickers';
 import { ThemeProvider, Button, Container, createTheme } from '@mui/material';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom } from '../Provider/jotaiProvider';
 
 const theme = createTheme(
   {

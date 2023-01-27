@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { User } from '@type/user';
-const API_URL = import.meta.env.VITE_API_URL
+import { atom, useAtom } from 'jotai'
+import { atomsWithQuery } from 'jotai-tanstack-query'
 
 const url = `/api/User/`;
-export const getUser = async (id: string) => {
+export const getUser = async (email: string) => {
   const requestOptions = {
     method: 'GET',
     headers: {
@@ -11,24 +12,38 @@ export const getUser = async (id: string) => {
       'Content-Type': 'application/json',
     },
   };
-  const res = await fetch(url + id, requestOptions);
+  const res = await fetch(url + email, requestOptions);
   return res.json();
 };
 
 // Placeholder is used on initial load
 const placeholderUser: User = {
-  id: 0,
   name: '',
   email: '',
   phoneNumber: '',
   bookings: [],
 };
 
-export const useUserQuery = (id: string) => {
+export const useUserQuery = (email: string) => {
   return useQuery<User>({
-    queryKey: ['user', id],
-    queryFn: () => getUser(id),
-    enabled: !!id,
+    queryKey: ['user', email],
+    queryFn: () => getUser(email),
+    enabled: !!email,
     placeholderData: placeholderUser,
   });
 };
+
+
+// const idAtom = atom("1")
+// export const [userAtom] = atomsWithQuery((get) => ({
+//   queryKey: ['users', get(idAtom)],
+//   queryFn: async ({ queryKey: [, id] }) => {
+//     const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+//     return res.json()
+//   },
+// }))
+
+// const UserData = () => {
+//   const [data] = useAtom(userAtom)
+//   return <div>{JSON.stringify(data)}</div>
+// }

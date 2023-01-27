@@ -7,13 +7,13 @@ namespace BookingApp.Models.DTOs
     public class BookingBookDTO
     {
         public int SeatId { get; set; }
-        public string UserId { get; set; }
+        public string Email { get; set; }
         public string Date { get; set; } = "";
     }
 
     public class BookingUnbookDTO
     {
-        public string UserId { get; set; }
+        public string Email { get; set; }
         public string Date { get; set; } = "";
     }
 }

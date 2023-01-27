@@ -6,7 +6,7 @@ import './Rooms.module.css';
 import { useEffect, useState } from 'react';
 import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom } from '../Provider/jotaiProvider';
 import { useUserQuery } from '@api/useUserQuery';
 import { Room } from "@type/room";
 import { useNavigate } from 'react-router-dom';

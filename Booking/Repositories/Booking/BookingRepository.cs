@@ -32,10 +32,10 @@ namespace BookingApp.Repositories
             return await _context.Bookings.FindAsync(bookingId);
         }
 
-        public Booking? GetBookingByDateAndUser(DateTime date, string userId)
+        public Booking? GetBookingByDateAndUser(DateTime date, string userEmail)
         {
             return _context.Bookings
-                .Where(booking => booking.UserId == userId && DateTime
+                .Where(booking => booking.Email == userEmail && DateTime
                 .Compare(booking.Date.Date, date.Date) == 0).FirstOrDefault();
         }
 
@@ -71,7 +71,7 @@ namespace BookingApp.Repositories
 
         public async Task<Booking> BookSeat(User user, Seat seat, DateTime date)
         {
-            var booking = new Booking { Seat = seat, User = user, Date = date };
+            var booking = new Booking { Seat = seat, User = user, Date = date, Email = user.Email };
             _context.Add(booking);
 
             await _context.SaveChangesAsync();
@@ -80,7 +80,7 @@ namespace BookingApp.Repositories
 
         public async Task UnbookSeat(User user, DateTime date)
         {
-            var booking = GetBookingByDateAndUser(date, user.Id);
+            var booking = GetBookingByDateAndUser(date, user.Email);
             if (booking != null)
             {
                 _context.Bookings.Remove(booking);
