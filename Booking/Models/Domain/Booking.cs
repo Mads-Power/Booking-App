@@ -17,7 +17,7 @@ namespace BookingApp.Models.Domain
 
 		// Foreign Keys
 		public int SeatId { get; set; }
-		public int UserId { get; set; }
+		public string UserId { get; set; }
 
 		public Seat Seat { get; set; }
 		public User User { get; set; }

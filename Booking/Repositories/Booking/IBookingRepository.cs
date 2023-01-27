@@ -9,7 +9,7 @@ namespace BookingApp.Repositories
         public bool BookingExists(int bookingId);
         public Task<List<Booking>> GetBookingsAsync();
         public Task<Booking?> GetBookingAsync(int bookingId);
-        public Booking? GetBookingByDateAndUser(DateTime date, int userId);
+        public Booking? GetBookingByDateAndUser(DateTime date, string userId);
         public Booking? GetBookingByDateAndSeat(DateTime date, int seatId);
         public Task<Booking> AddAsync(Booking newBooking);
         public Task UpdateAsync(Booking updatedBooking);

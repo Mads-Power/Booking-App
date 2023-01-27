@@ -191,7 +191,7 @@ namespace BookingApp.Context
             // Add Users
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 1,
+                Id = "1",
                 Name = "Ted Mosby",
                 Email = "ted.mosby@himym.com",
                 PhoneNumber = "44112233"
@@ -199,7 +199,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 2,
+                Id = "2",
                 Name = "Marshall Eriksen",
                 Email = "marshall.eriksen@himym.com",
                 PhoneNumber = "44223344"
@@ -207,7 +207,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 3,
+                Id = "3",
                 Name = "Lily Aldrin",
                 Email = "lily.aldrin@himym.com",
                 PhoneNumber = "44334455"
@@ -215,7 +215,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 4,
+                Id = "4",
                 Name = "Barney Stinson",
                 Email = "barney.stinson@himym.com",
                 PhoneNumber = "44445566"
@@ -223,7 +223,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 5,
+                Id = "5",
                 Name = "Robin Scherbatsky",
                 Email = "robin.scherbatsky@himym.com",
                 PhoneNumber = "44556677"
@@ -231,7 +231,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 6,
+                Id = "6",
                 Name = "Ross Geller",
                 Email = "ross.geller@friends.com",
                 PhoneNumber = "99112233"
@@ -239,7 +239,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 7,
+                Id = "7",
                 Name = "Monica Geller",
                 Email = "monica.geller@friends.com",
                 PhoneNumber = "99223344"
@@ -247,7 +247,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 8,
+                Id = "8",
                 Name = "Phoebe Buffay",
                 Email = "phoebe.buffay@friends.com",
                 PhoneNumber = "99334455"
@@ -255,7 +255,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 9,
+                Id = "9",
                 Name = "Chandler Bing",
                 Email = "chandler.bing@friends.com",
                 PhoneNumber = "99445566"
@@ -263,7 +263,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 10,
+                Id = "10",
                 Name = "Joey Tribiani",
                 Email = "joey.tribiani@friends.com",
                 PhoneNumber = "99556677"
@@ -271,7 +271,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 11,
+                Id = "11",
                 Name = "Rachel Green",
                 Email = "rachel.green@friends.com",
                 PhoneNumber = "99667788"
@@ -279,7 +279,7 @@ namespace BookingApp.Context
 
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = 12,
+                Id = "12",
                 Name = "Test User",
                 Email = "test.user@testing.com",
                 PhoneNumber = "98765432"
@@ -311,7 +311,7 @@ namespace BookingApp.Context
                     {
                         Id = bookingId,
                         SeatId = seatId,
-                        UserId = userId,
+                        UserId = userId.ToString(),
                         Date = DateTime.Today.AddDays(dateOffset).ToUniversalTime()
                     }) ;
                 }

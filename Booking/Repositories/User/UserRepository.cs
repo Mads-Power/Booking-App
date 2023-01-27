@@ -15,7 +15,7 @@ namespace BookingApp.Repositories
             _context = context;
         }
 
-        public bool UserExists(int userId)
+        public bool UserExists(string userId)
         {
             return _context.Users.Find(userId) != null;
         }
@@ -26,7 +26,7 @@ namespace BookingApp.Repositories
         }
 
 
-        public async Task<User?> GetUserAsync(int userId)
+        public async Task<User?> GetUserAsync(string userId)
         {
             return await _context.Users.Include(user => user.Bookings).Where(user => user.Id == userId).FirstOrDefaultAsync();
         }
@@ -44,7 +44,7 @@ namespace BookingApp.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int userId)
+        public async Task DeleteAsync(string userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user != null)

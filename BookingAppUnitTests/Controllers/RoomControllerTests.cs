@@ -268,8 +268,8 @@ namespace BookingAppUnitTests.Controllers
             var mockDate = new FixedDateTimeProvider().Parse(date);
             _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>()
             {
-                new Booking() {Id = 1, UserId = 1, SeatId = 1},
-                new Booking() {Id = 2, UserId = 2, SeatId = 2}
+                new Booking() {Id = 1, UserId = "1", SeatId = 1},
+                new Booking() {Id = 2, UserId = "2", SeatId = 2}
             });
 
             // Act
