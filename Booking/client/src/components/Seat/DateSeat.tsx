@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch } from 'react';
+import { SetStateAction, Dispatch, useState } from 'react';
 import { TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -95,8 +95,14 @@ export const DateSeat = ({
   };
 
   const handleMonthChange = (date: Date) => {
-    const correctedDate = new Date(date.toISOString());
-    setDate(new Date(correctedDate));
+    const today =  new Date(new Date().setHours(0,0,0,0));
+    date = new Date(date.toISOString())
+    if (date.getMonth() === today.getMonth()) {
+      setDate(new Date(today.toISOString()));
+    }
+    else {
+      setDate(new Date(date));
+    }
   };
 
   const handleChange = (newValue: Date) => {

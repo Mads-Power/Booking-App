@@ -60,8 +60,7 @@ export const Seat = () => {
     if (!initialSeatState.length) {
       setSeatInfo(initialSeatState());
     }
-
-  }, [data, userData]);
+  }, [data, userData, date]);
 
   if (isLoading) {
     return (

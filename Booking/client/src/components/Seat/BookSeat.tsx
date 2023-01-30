@@ -139,7 +139,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
       <>
         <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2 md:grow'>
           <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
-          <p>{getUserOccupyingSeat()!.email}</p>
+          <p>{getUserOccupyingSeat()?.email}</p>
         </div>
         {renderBookingButton("Send booking", handleBook)}
       </>
