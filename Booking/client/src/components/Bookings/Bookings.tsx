@@ -16,7 +16,7 @@ dayjs.extend(relativeTime)
 
 export const Bookings = () => {
     const { userId } = useParams();
-    const { isLoading, data, error } = useUserQuery(userId!);
+    const { isLoading, data, error } = useUserQuery('emil.onsoyen@itverket.no');
     const [bookings, setBookings] = useState([] as Booking[]);
     const [snackbarState, setSnackbarState] = useState({
         openSnackbar: false,

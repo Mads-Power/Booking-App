@@ -27,7 +27,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
         const unbookingData = {
             id: booking.id,
             seatId: booking.seatId,
-            userId: user.id,
+            email: booking.email,
             date: booking.date
         } as TUnbook;
         onUnbook(unbookingData)
@@ -64,7 +64,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
                 <MenuItem
                     onClick={handleUnbook}
                     className="text-[#DF0D0D]"
-                >Remove booking</MenuItem>
+                >Fjern booking</MenuItem>
             </Menu>
         </div>
     )

@@ -35,7 +35,7 @@ const Routers = () => {
     <Route path="/login" element={<LoginPage />}></Route>
     <Route path="/office" element={<Office />}></Route>
     <Route path="/seat/:seatId" element={<Seat />}></Route>
-    <Route path="/bookings/:userId" element={<Bookings />}></Route>
+    <Route path="/bookings" element={<Bookings />}></Route>
     <Route path="/loggedIn" element={<LoggedIn />}></Route>
   </Routes>
   )

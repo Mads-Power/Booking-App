@@ -15,7 +15,7 @@ import { DeskContainer } from './DeskContainer';
 export const Rooms = () => {
   const { isLoading, data, error } = useRoomsQuery();
   const [date, setDate] = useAtom(dateAtom);
-  const { data: loggedInUser } = useUserQuery('5');
+  const { data: loggedInUser } = useUserQuery('emil.onsoyen@itverket.no');
   const [room, setRoom] = useState(1);
   const occupiedSeats = useBookingsByRoomQuery(room, date);
   const [selectedRoom, setSelectedRoom] = useState<Room>()

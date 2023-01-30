@@ -35,7 +35,7 @@ export const DateSeat = ({
         dayjs(booking.date).month() === dateDay.month() &&
         dayjs(booking.date).year() === dateDay.year()
       )
-        return { date: dayjs(booking.date).date(), userId: booking.userId };
+        return { date: dayjs(booking.date).date(), email: booking.email };
     });
 
     return occupiedDaysInMonth;
@@ -49,7 +49,7 @@ export const DateSeat = ({
   ) => {
     const dayDate = dayjs(day);
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
-    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.userId === userData.id);
+    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.email === userData.email);
 
     // Blue fill + border
     const deskBookedByOtherUserStyle = {
@@ -105,7 +105,7 @@ export const DateSeat = ({
     let occupied = false;
     occupiedDays?.find(day => {
       const selectedDateIsToday = day?.date === dayDate.date();
-      const selectedDateIsBookedByCurrentUser = day?.userId === userData.id
+      const selectedDateIsBookedByCurrentUser = day?.email === userData.email
 
       if (selectedDateIsToday && selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('removeBookedSeat');

@@ -173,16 +173,16 @@ namespace BookingApp.Controllers
         {
             if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
 
-            var userId = User?.FindFirst(ClaimConstants.ObjectId)?.Value;
+            var userEmail = User?.FindFirst("email")?.Value;
 
-            if (userId == null)
+            if (userEmail == null)
             {
                 return Forbid();
             }
 
-            var user = await _userRepository.GetUserAsync(userId);
+            var user = await _userRepository.GetUserAsync(userEmail);
 
-            if (user == null)
+            if (user == null )
             {
                 return NotFound();
             }

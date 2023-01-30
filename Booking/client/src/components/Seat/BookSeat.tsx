@@ -2,12 +2,12 @@ import { Seat } from '@type/seat';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { SetStateAction, Dispatch, useEffect, useState, forwardRef } from 'react';
 import { useBookingMutation, CreateBooking } from '@api/useBookingMutation';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useRemoveBookingMutation } from '@api/useRemoveBookingMutation';
 import { User } from '@type/user';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { DeleteBooking } from '@type/booking';
+import { Booking, DeleteBooking } from '@type/booking';
 import { AlertColor } from '@mui/material/Alert';
 
 type TBookSeat = {
@@ -130,12 +130,16 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     </Button>
   }
 
+  const getUserOccupyingSeat = () => {
+    return seat.bookings.find(b => dayjs(b.date).toISOString() == date.toISOString())
+  }
+
   const SeatInfoOccupied = () => {
     return (
       <>
         <div className='w-full bg-slate-400 bg-opacity-10 text-center flex flex-col p-2 md:grow'>
           <p className='p-3 rounded-lg text-sm truncate'>Denne pulten er allerede booket av:</p>
-          <p>{data?.name}</p>
+          <p>{getUserOccupyingSeat()!.email}</p>
         </div>
         {renderBookingButton("Send booking", handleBook)}
       </>
