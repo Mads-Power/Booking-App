@@ -1,18 +1,13 @@
-import { userAtom } from '@components/Provider/jotaiProvider';
 import { useQuery } from '@tanstack/react-query';
-import { Booking } from '@type/booking';
-import { User } from '@type/user';
-import { atom, useAtom } from 'jotai'
-import { atomsWithQuery } from 'jotai-tanstack-query'
 import { getMe } from './getMe';
-import { getMyBookings } from './getMyBookings';
+import { User } from '../types/user'
 
 
 const url = `/api/Account/IsAuthenticated`;
-export const getIsAuthenticated = async () => {
+export const getIsAuthenticated = async (): Promise<Partial<User> | undefined> => {
 
-  // const [user, setUser] = useAtom(userAtom);
-  let isSuccessful = false;
+  // Need to add undefined type here to avoid TS error
+  let isSuccessful: Partial<User> | undefined = undefined;
   const requestOptions = {
     method: 'GET',
     headers: {
@@ -20,20 +15,11 @@ export const getIsAuthenticated = async () => {
       'Content-Type': 'application/json',
     },
   };
-  const res = await fetch(url, requestOptions).then(async auth => {
-    if (auth.ok) {
-      await getMe().then(async me => {
-        if (me.ok) {
-          // let loggedInUser: Partial<User> = me.json() as Partial<User>;
-          console.log(me.json());
-          // getMyBookings().then(bookings => {
-          //   loggedInUser.bookings = bookings.json() as unknown as Booking[];
-          //   isSuccessful = true;
-          // });
-          // console.log(loggedInUser)
-        }
-      })
-    }
+  const isAuthenticated = await fetch(url, requestOptions);
+  const me = await getMe();
+
+  await Promise.all([isAuthenticated, me]).then(() => {
+    isSuccessful = (isAuthenticated.ok) ? me : undefined;
   });
   return isSuccessful;
 };
@@ -41,6 +27,6 @@ export const getIsAuthenticated = async () => {
 export const useIsAuthenticated = () => {
   return useQuery({
     queryKey: ['isAuthenticated'],
-    queryFn: () => getIsAuthenticated()
+    queryFn: async () => await getIsAuthenticated()
   });
 };
