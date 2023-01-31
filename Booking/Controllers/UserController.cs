@@ -155,16 +155,33 @@ namespace BookingApp.Controllers
         }
 
         [HttpGet("Me")]
-        public ActionResult<ADUserDTO> GetMe()
+        public async Task<ActionResult<ADUserDTO>> GetMe()
         {
             if (!User?.Identity?.IsAuthenticated ?? false) return Forbid();
+
+            var userEmail = User?.FindFirst("email")?.Value;
+
+            if (userEmail == null)
+            {
+                return Forbid();
+            }
+
+            var user = await _userRepository.GetUserAsync(userEmail);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var bookings = user.Bookings;
+
+            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
 
             return new ADUserDTO
             {
                 Name = User?.FindFirst("name")?.Value,
-                GivenName = User?.FindFirst("given_name")?.Value,
-                FamilyName = User?.FindFirst("family_name")?.Value,
                 Email = User?.FindFirst("email")?.Value,
+                Bookings = _mapper.Map<List<BookingReadDTO>>(bookings)
             };
         }
 
