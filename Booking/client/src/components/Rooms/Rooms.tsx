@@ -1,24 +1,24 @@
 import { useRoomsQuery } from '@api/useRoomsQuery';
-import { CircularProgress, Button, Container, SelectChangeEvent, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { CircularProgress, Container, SelectChangeEvent, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { WeekViewDatePicker } from '@components/WeekViewDatePicker';
 import { ColorDescription } from '@components/ColorDescription/colorDescription'
-import './Rooms.module.css';
 import { useEffect, useState } from 'react';
 import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';
 import { useAtom } from 'jotai';
 import { dateAtom, userAtom } from '../Provider/app';
-import { useUserQuery } from '@api/useUserQuery';
 import { Room } from "@type/room";
-import { useNavigate } from 'react-router-dom';
 import { DeskContainer } from './DeskContainer';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { useNavigate } from 'react-router-dom';
 
 export const Rooms = () => {
   const { isLoading, data, error } = useRoomsQuery();
   const [date, setDate] = useAtom(dateAtom);
-  const [ user, setUser ] = useAtom(userAtom)
+  const [user, setUser] = useAtom(userAtom)
   const [room, setRoom] = useState(1);
   const occupiedSeats = useBookingsByRoomQuery(room, date);
-  const [selectedRoom, setSelectedRoom] = useState<Room>()
+  const [selectedRoom, setSelectedRoom] = useState<Room>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -53,6 +53,12 @@ export const Rooms = () => {
 
   return (
     <div className="h-full w-[85%] overflow-hidden flex flex-col gap-4 my-10 mx-auto">
+      <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/home`)}>
+        <ArrowCircleLeftIcon
+          htmlColor='#DF8B0D'
+        />
+        <p>Tilbake</p>
+      </div>
       <Container className='overflow-hidden'>
         <WeekViewDatePicker />
       </Container>
