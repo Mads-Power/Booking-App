@@ -1,7 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { atom, useAtom } from 'jotai'
-import { atomsWithQuery } from 'jotai-tanstack-query'
-
 const url = `/api/User/Me`;
 export const getMe = async () => {
   const requestOptions = {
@@ -11,5 +7,7 @@ export const getMe = async () => {
       'Content-Type': 'application/json',
     },
   };
-  return await fetch(url, requestOptions);
+  return await fetch(url, requestOptions).then(res => {
+    return res.json();
+  });
 };
