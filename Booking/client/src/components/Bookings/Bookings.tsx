@@ -73,7 +73,7 @@ export const Bookings = () => {
 
     return (
         <div className="w-full h-full flex flex-col overflow-hidden">
-            <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/`)}>
+            <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/home`)}>
                 <ArrowCircleLeftIcon
                     htmlColor='#DF8B0D'
                 />
