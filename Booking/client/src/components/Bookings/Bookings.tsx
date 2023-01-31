@@ -10,13 +10,14 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Booking, TUnbook } from "@type/booking";
 import { useRemoveBookingMutation } from "@api/useRemoveBookingMutation";
 import MuiAlert, { AlertColor } from '@mui/material/Alert';
+import { useAtom } from "jotai";
+import { userAtom } from "@components/Provider/app";
 
 
 dayjs.extend(relativeTime)
 
 export const Bookings = () => {
-    const { userId } = useParams();
-    const { isLoading, data, error } = useUserQuery('emil.onsoyen@itverket.no');
+    const [ user, setUser ] = useAtom(userAtom)
     const [bookings, setBookings] = useState([] as Booking[]);
     const [snackbarState, setSnackbarState] = useState({
         openSnackbar: false,
@@ -28,20 +29,12 @@ export const Bookings = () => {
     const removeBookingMutation = useRemoveBookingMutation();
 
     useEffect(() => {
-        if (!data) return;
+        if (!user) return;
         // Remove all previous bookings
         // Need to subtract one day in order to get the current day included in the array
         const now = dayjs().subtract(1, 'day');
-        setBookings(data.bookings.filter(booking => now.diff(booking.date) < 0));
-    }, [data]);
-
-    if (isLoading) {
-        return <CircularProgress size={100} />;
-    }
-
-    if (error) {
-        return <h1>Kunne ikke hente bruker</h1>;
-    }
+        setBookings(user.bookings.filter(booking => now.diff(booking.date) < 0));
+    }, [user]);
 
     const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
@@ -60,7 +53,7 @@ export const Bookings = () => {
     const handleUnbookFromChild = (bookingData: TUnbook) => {
         removeBookingMutation.mutate(bookingData, {
             onSuccess() {
-                if (!data) return;
+                if (!user) return;
                 setBookings(bookings.filter(booking => booking.id !== bookingData.id));
                 setSnackbarState({
                     snackbarMessage: 'Bookingen er nå fjernet',
@@ -89,13 +82,13 @@ export const Bookings = () => {
             <div className="flex align-baseline justify-center p-2">
                 <h1 className="text-2xl">Bookingoversikt</h1>
             </div>
-            {data ? (
+            {user ? (
                 <div className="h-full w-full overflow-auto p-2 flex flex-col gap-y-6">
                     {bookings.map((booking, i) =>
                         <BookingsListItem
                             key={i}
                             booking={booking}
-                            user={data}
+                            user={user}
                             onUnbook={handleUnbookFromChild}
                         />
                     )}
