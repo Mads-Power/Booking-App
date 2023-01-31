@@ -6,7 +6,7 @@ import './Rooms.module.css';
 import { useEffect, useState } from 'react';
 import { useBookingsByRoomQuery } from '@api/useBookingsByRoomQuery';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../Provider/jotaiProvider';
+import { dateAtom, userAtom } from '../Provider/app';
 import { useUserQuery } from '@api/useUserQuery';
 import { Room } from "@type/room";
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ import { DeskContainer } from './DeskContainer';
 export const Rooms = () => {
   const { isLoading, data, error } = useRoomsQuery();
   const [date, setDate] = useAtom(dateAtom);
-  const { data: loggedInUser } = useUserQuery('emil.onsoyen@itverket.no');
+  const [ user, setUser ] = useAtom(userAtom)
   const [room, setRoom] = useState(1);
   const occupiedSeats = useBookingsByRoomQuery(room, date);
   const [selectedRoom, setSelectedRoom] = useState<Room>()
@@ -76,11 +76,11 @@ export const Rooms = () => {
       {/* Color description */}
       <ColorDescription />
 
-      {loggedInUser && data && selectedRoom ? (
+      {user && data && selectedRoom ? (
         <DeskContainer
           data={data}
           selectedRoomFromParent={selectedRoom}
-          user={loggedInUser}
+          user={user}
           occupiedSeats={occupiedSeats}
           setSelectedRoom={handleSelectRoomFromChild}
         />
