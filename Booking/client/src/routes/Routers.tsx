@@ -5,6 +5,7 @@ import { Seat } from "@components/Seat";
 import { Bookings } from "@components/Bookings/Bookings";
 import { LoginPage, LoggedIn } from "@components/Login/LoginPage";
 import { useAtom } from "jotai";
+import { IsAuthenticated } from "@components/Login/IsAuthenticated";
 // import { isAuthenticatedAtom } from "@components/Provider/jotaiProvider";
 
 const Routers = () => {
@@ -31,12 +32,14 @@ const Routers = () => {
 
   return (
   <Routes>
-    <Route path="/" element={<Rooms />}></Route>
+    <Route path="/" element={<IsAuthenticated />}></Route>
+    <Route path="/rooms" element={<Rooms />}></Route>
     <Route path="/login" element={<LoginPage />}></Route>
     <Route path="/office" element={<Office />}></Route>
     <Route path="/seat/:seatId" element={<Seat />}></Route>
     <Route path="/bookings" element={<Bookings />}></Route>
     <Route path="/loggedIn" element={<LoggedIn />}></Route>
+    {/* <Route path="/isAuthenticated" element={<IsAuthenticated />}></Route> */}
   </Routes>
   )
 };

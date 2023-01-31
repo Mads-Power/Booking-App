@@ -13,7 +13,7 @@ import { BookSeat } from './BookSeat';
 import { DateSeat } from './DateSeat';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../Provider/jotaiProvider';
+import { dateAtom, userAtom } from '../Provider/jotaiProvider';
 import { useUserQuery } from '@api/useUserQuery';
 import { ColorDescription } from '@components/ColorDescription/colorDescription';
 import { Divider } from '@mui/material'
@@ -28,7 +28,7 @@ const theme = createTheme(
 export const Seat = () => {
   const { seatId } = useParams();
   const { isLoading, data, error } = useSeatQuery(seatId!);
-  // const [user, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const { data: userData } = useUserQuery('emil.onsoyen@itverket.no');
   const [date] = useAtom(dateAtom);
   const navigate = useNavigate();
