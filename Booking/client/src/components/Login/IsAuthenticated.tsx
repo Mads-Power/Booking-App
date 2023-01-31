@@ -16,7 +16,7 @@ export const IsAuthenticated = () => {
       if(isSuccess) {
         setUser(data as User);
         window.sessionStorage.setItem('user', JSON.stringify(data));
-        navigate('/rooms')
+        navigate('/home')
       }
     }
   }, [data]);
