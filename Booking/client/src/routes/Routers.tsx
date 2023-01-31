@@ -4,42 +4,24 @@ import { Office } from "@components/Office";
 import { Seat } from "@components/Seat";
 import { Bookings } from "@components/Bookings/Bookings";
 import { LoginPage, LoggedIn } from "@components/Login/LoginPage";
-import { useAtom } from "jotai";
 import { IsAuthenticated } from "@components/Login/IsAuthenticated";
-// import { isAuthenticatedAtom } from "@components/Provider/jotaiProvider";
+import { useAtom } from "jotai";
+import { userAtom } from "@components/Provider/app";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const Routers = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
-  // if (isAuthenticated) {
-  //   return (
-  //     <Routes>
-  //       <Route path="/" element={<Rooms />}></Route>
-  //       <Route path="/office" element={<Office />}></Route>
-  //       <Route path="/seat/:seatId" element={<Seat />}></Route>
-  //       <Route path="/bookings/:userId" element={<Bookings />}></Route>
-  //       <Route path="/loggedIn" element={<LoggedIn />}></Route>
-  //     </Routes>
-  //   );
-  // } else {
-  //   return (
-  //     <Routes>
-  //       <Route path="/" element={<LoginPage />}></Route>
-  //       <Route path="/login" element={<LoginPage />}></Route>
-  //     </Routes>
-  //   );
-  // }
-
+  const [ user, setUser ] = useAtom(userAtom)
   return (
   <Routes>
     <Route path="/" element={<IsAuthenticated />}></Route>
-    <Route path="/rooms" element={<Rooms />}></Route>
     <Route path="/login" element={<LoginPage />}></Route>
-    <Route path="/office" element={<Office />}></Route>
-    <Route path="/seat/:seatId" element={<Seat />}></Route>
-    <Route path="/bookings" element={<Bookings />}></Route>
     <Route path="/loggedIn" element={<LoggedIn />}></Route>
-    {/* <Route path="/isAuthenticated" element={<IsAuthenticated />}></Route> */}
+
+    <Route path="/rooms" element={<ProtectedRoute user={user} outlet={<Rooms />} />} />
+    <Route path="/office" element={<ProtectedRoute user={user} outlet={<Office />} />} />
+    <Route path="/seat/:seatId" element={<ProtectedRoute user={user} outlet={<Seat />} />} />
+    <Route path="/bookings" element={<ProtectedRoute user={user} outlet={<Bookings />} />} />
   </Routes>
   )
 };
