@@ -52,7 +52,7 @@ export const Rooms = () => {
   }
 
   return (
-    <div className="h-full w-[85%] overflow-hidden flex flex-col gap-4 my-10 mx-auto">
+    <div className="h-full w-[95%] overflow-hidden flex flex-col gap-4 my-10 mx-auto">
       <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/home`)}>
         <ArrowCircleLeftIcon
           htmlColor='#DF8B0D'
