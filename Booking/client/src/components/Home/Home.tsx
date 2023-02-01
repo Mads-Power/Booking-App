@@ -1,18 +1,21 @@
 import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
-
-
+import { useAtom } from "jotai";
+import { userAtom } from "@components/Provider/app";
 
 export const Home = () => {
+
+  const [ user, setUser ] = useAtom(userAtom)
+
+
     return (
         <>
           <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8">
               <div className="text-center">
                 <h1 className="text-2xl">Velkommen</h1>
-                <p>Vennligst logg inn for å kunne booke pulter</p>
+                <p>{user?.name}</p>
               </div>
-    
               <div>
                 <Link to="/bookings" style={{ textDecoration: "none" }}>
                   <Stack direction="row" spacing={2}>
