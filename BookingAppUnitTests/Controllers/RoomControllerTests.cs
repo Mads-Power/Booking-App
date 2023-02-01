@@ -264,7 +264,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var roomId = 1;
-            var date = "2022-01-01T00:00:00Z";
+            var date = "2022-01-01T23:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
             _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>()
             {
@@ -286,7 +286,7 @@ namespace BookingAppUnitTests.Controllers
         {
             // Arrange
             var roomId = 1;
-            var date = "2022-01-01T00:00:00Z";
+            var date = "2022-01-01T23:00:00Z";
             var mockDate = new FixedDateTimeProvider().Parse(date);
             _mockRoomRepository.Setup(repo => repo.GetBookingsInRoomByDate(roomId, mockDate)).ReturnsAsync(new List<Booking>());
 
