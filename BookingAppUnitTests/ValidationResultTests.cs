@@ -44,7 +44,7 @@ namespace BookingAppUnitTests
         public void ValidateDateString_WhenValid_ReturnTrue()
         {
             // Arrange
-            var dateString = "2020-01-01T13:45:30Z";
+            var dateString = "2020-01-01T23:00:00Z";
 
             // Act
             var validation = ValidationResult.ValidateDateString(dateString);
