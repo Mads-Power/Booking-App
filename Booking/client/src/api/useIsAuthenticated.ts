@@ -15,18 +15,21 @@ export const getIsAuthenticated = async (): Promise<Partial<User> | undefined> =
       'Content-Type': 'application/json',
     },
   };
-  const isAuthenticated = await fetch(url, requestOptions);
-  const me = await getMe();
 
-  await Promise.all([isAuthenticated, me]).then(() => {
-    isSuccessful = (isAuthenticated.ok) ? me : undefined;
-  });
-  return isSuccessful;
+  const isAuthenticated = await fetch(url, requestOptions);
+
+  if(isAuthenticated.ok || isAuthenticated.status == 200) {    
+      const me = await getMe();
+      return me;
+  }
+
+  return Promise.reject(new Error('Could not authenticate user'));
 };
 
 export const useIsAuthenticated = () => {
   return useQuery({
     queryKey: ['isAuthenticated'],
-    queryFn: async () => await getIsAuthenticated()
+    queryFn: async () => await getIsAuthenticated(),
+    retry: false
   });
 };

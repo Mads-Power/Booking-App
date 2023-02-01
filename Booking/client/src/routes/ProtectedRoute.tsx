@@ -1,6 +1,7 @@
 import { userAtom } from "@components/Provider/app";
 import { User } from "@type/user";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 type IProtectedRoute = {
@@ -10,7 +11,9 @@ type IProtectedRoute = {
 
 export const ProtectedRoute = ({ user, outlet }: IProtectedRoute) => {
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        if(!user) return;
+    }, [])
 
     const [loggedInUser, setLoggedInUser] = useAtom(userAtom)
 
@@ -19,15 +22,16 @@ export const ProtectedRoute = ({ user, outlet }: IProtectedRoute) => {
         return <Navigate to={page} replace />;
     }
     const userSessionObjectValue = window.sessionStorage.getItem('user');
+    
     if (!user) {
-        if(!userSessionObjectValue) return navigateToPage('login');
+            if(!userSessionObjectValue) return navigateToPage('login');
 
-        const path = window.location.href.split('/').slice(3);
-        if(path.length < 2 && path[0] === '') return navigateToPage('rooms');
-        const newPath = (path.length > 1) ? path.join('/')  : path.join();
-        setLoggedInUser(JSON.parse(userSessionObjectValue));
-        return navigateToPage(newPath);
-    } else {
-        return outlet
-    }
+            const path = window.location.href.split('/').slice(3);
+            if(path.length < 2 && path[0] === '') return navigateToPage('rooms');
+            const newPath = (path.length > 1) ? path.join('/')  : path.join();
+            setLoggedInUser(JSON.parse(userSessionObjectValue));
+            return navigateToPage(newPath);
+        } else {
+            return outlet
+        }
   };
