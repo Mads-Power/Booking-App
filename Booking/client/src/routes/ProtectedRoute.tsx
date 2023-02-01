@@ -10,10 +10,9 @@ type IProtectedRoute = {
 }
 
 export const ProtectedRoute = ({ user, outlet }: IProtectedRoute) => {
-
     useEffect(() => {
         if(!user) return;
-    }, [])
+    })
 
     const [loggedInUser, setLoggedInUser] = useAtom(userAtom)
 
