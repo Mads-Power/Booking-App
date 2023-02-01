@@ -47,14 +47,7 @@ export const WeekViewDatePicker = () => {
   const onDateChange = (day: Date) => {
     setDate(day);
   };
-  //  const getLogin = async () => {
-  //   window.location.href = 'api/Account/Login';
-  // };
 
-  //   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //     e.preventDefault();
-  //     getLogin();
-  //   }
   const renderHeader = () => {
     const dateFormat = "MMMM";
     return (
