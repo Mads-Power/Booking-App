@@ -51,13 +51,13 @@ export const WeekViewDatePicker = () => {
   const renderHeader = () => {
     const dateFormat = "MMMM";
     return (
-      <Container className="text-center">
+      <div className="text-center">
         <span>{format(selectedMonth, dateFormat, { locale: nor })}</span>
         <span className="mx-2">-</span>
         <span>
           uke {selectedWeek < 10 ? "0" + selectedWeek : selectedWeek}
         </span>
-      </Container>
+      </div>
     );
   };
 
