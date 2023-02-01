@@ -12,6 +12,8 @@ import { useRemoveBookingMutation } from "@api/useRemoveBookingMutation";
 import MuiAlert, { AlertColor } from '@mui/material/Alert';
 import { useAtom } from "jotai";
 import { userAtom } from "@components/Provider/app";
+import { getMe } from "@api/getMe";
+import { User } from "@type/user";
 
 
 dayjs.extend(relativeTime)
@@ -30,10 +32,11 @@ export const Bookings = () => {
 
     useEffect(() => {
         if (!user) return;
-        // Remove all previous bookings
+        // Remove all previous bookings and sort it as well
         // Need to subtract one day in order to get the current day included in the array
         const now = dayjs().subtract(1, 'day');
-        setBookings(user.bookings.filter(booking => now.diff(booking.date) < 0));
+        setBookings(user.bookings.filter(booking => now.diff(booking.date) < 0)
+        .sort((a,b) => new Date(a.date).getDate() - new Date(b.date).getDate()));
     }, [user]);
 
     const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -55,6 +58,10 @@ export const Bookings = () => {
             onSuccess() {
                 if (!user) return;
                 setBookings(bookings.filter(booking => booking.id !== bookingData.id));
+                getMe().then(res => {
+                    setUser(res as User);
+                    window.sessionStorage.setItem('user', JSON.stringify(res));
+                });
                 setSnackbarState({
                     snackbarMessage: 'Bookingen er nå fjernet',
                     openSnackbar: true,
