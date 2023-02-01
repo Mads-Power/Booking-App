@@ -11,17 +11,23 @@ export const IsAuthenticated = () => {
   const { data, isSuccess, isFetched } = useIsAuthenticated();
   const navigate = useNavigate();
 
+  // First, we get the (possibly) authenticated user
+  // If they're not authenticated, redirect them back to the login screen
+  // If they're authenticated, redirect them to the home screen
   useEffect(() => {
-    if(isFetched) {
-      if(isSuccess) {
+    if (isFetched) {
+      if (isSuccess) {
         setUser(data as User);
         window.sessionStorage.setItem('user', JSON.stringify(data));
         navigate('/home')
+      } else {
+        console.error('Kunne ikke autentisere brukeren')
+        navigate('/login')
       }
     }
   }, [data]);
-  
-  return(
+
+  return (
     <>
     </>
   )

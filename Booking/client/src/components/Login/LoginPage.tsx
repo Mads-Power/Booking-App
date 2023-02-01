@@ -1,5 +1,8 @@
 export const LoginPage = () => {
   
+  // Since we're using Azure AD for authentication, we need to redirect the user to a specific route.
+  // On the callbakc the user will get redirected to one of our custom routes
+  // Currently we're using the / (root) route for this and then we need some logic to determine where to navigate the user next
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
     window.location.href = '/api/Account/Login';
