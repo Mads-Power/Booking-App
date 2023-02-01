@@ -34,7 +34,7 @@ export const DeskRender = ({ selectedRoomId, occupiedSeats, user }: TDeskRender)
         if (occupied) {
             // If the seat is booked by the current logged in user, set the `fillHex` to be green, if not, set the color to be blue
             occupiedSeats.data?.some(seat => {
-                if (seat.userId === user?.id && seat.seatId === seatId) {
+                if (seat.email === user?.email && seat.seatId === seatId) {
                     fillHex = "#68B984";
                     return true;
                 }

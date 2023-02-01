@@ -1,10 +1,11 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Button } from '@mui/material';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'jotai';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { atom, Provider, useAtom } from 'jotai';
+import { User } from '@type/user';
 
 const ErrorFallback = () => {
   return (
@@ -19,6 +20,11 @@ const ErrorFallback = () => {
 };
 
 const queryClient = new QueryClient();
+
+export const dateAtom = atom<Date>(new Date(new Date().setHours(0,0,0,0)));
+
+export const userAtom = atom<User | undefined>(undefined);
+
 
 type AppProviderProps = {
   children: React.ReactNode;

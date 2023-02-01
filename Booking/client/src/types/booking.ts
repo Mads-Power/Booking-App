@@ -1,12 +1,12 @@
 export type Booking = {
   id: number;
   seatId: number;
-  userId: number;
+  email: string;
   date: string;
 };
 
 export type DeleteBooking = {
-  userId: number;
+  email: string;
   date: string;
 };
 

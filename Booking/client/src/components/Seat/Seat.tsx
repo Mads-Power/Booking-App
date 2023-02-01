@@ -13,7 +13,7 @@ import { BookSeat } from './BookSeat';
 import { DateSeat } from './DateSeat';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom, userAtom } from '../Provider/app';
 import { useUserQuery } from '@api/useUserQuery';
 import { ColorDescription } from '@components/ColorDescription/colorDescription';
 import { Divider } from '@mui/material'
@@ -28,20 +28,20 @@ const theme = createTheme(
 export const Seat = () => {
   const { seatId } = useParams();
   const { isLoading, data, error } = useSeatQuery(seatId!);
-  const { data: userData } = useUserQuery('5');
+  const [user, setUser] = useAtom(userAtom);
   const [date] = useAtom(dateAtom);
   const navigate = useNavigate();
 
   const initialSeatState = () => {
-    if (!userData) return "";
+    if (!user) return "";
     let state = "";
     data?.bookings.some(booking => {
       const dateIsoString = new Date(booking.date).toLocaleString();
       if (dateIsoString === date.toLocaleString()) {
-        if (booking.userId === userData?.id) {
+        if (booking.email === user?.email) {
           state = 'removeBookedSeat';
           return true;
-        } else if (booking.userId !== userData?.id) {
+        } else if (booking.email !== user?.email) {
           state = 'bookedSeat';
           return true;
         }
@@ -59,8 +59,7 @@ export const Seat = () => {
     if (!initialSeatState.length) {
       setSeatInfo(initialSeatState());
     }
-
-  }, [data, userData]);
+  }, [data, user, date]);
 
   if (isLoading) {
     return (
@@ -80,7 +79,7 @@ export const Seat = () => {
     <>
       <ThemeProvider theme={theme}>
         <div className='flex flex-col gap-y-8 md:h-full'>
-          <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/`)}>
+          <div className="p-2 flex flex-row align-baseline hover:cursor-pointer" onClick={() => navigate(`/rooms`)}>
             <ArrowCircleLeftIcon
               htmlColor='#DF8B0D'
             />
@@ -94,7 +93,7 @@ export const Seat = () => {
               <div>
                 <DateSeat
                   data={data!}
-                  userData={userData!}
+                  userData={user!}
                   onSeatInfoChange={setSeatInfo}
                 />
               </div>
@@ -104,7 +103,7 @@ export const Seat = () => {
               <BookSeat
                 seat={data!}
                 date={dayDate}
-                data={userData!}
+                data={user!}
                 seatInfo={seatInfo}
                 onSeatInfoChange={setSeatInfo}
               />

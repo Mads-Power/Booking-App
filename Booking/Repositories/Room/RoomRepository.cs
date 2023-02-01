@@ -71,7 +71,7 @@ namespace BookingApp.Repositories
                             join booking in _context.Bookings
                             on seat.Id equals booking.SeatId
                             join user in _context.Users
-                            on booking.UserId equals user.Id
+                            on booking.Email equals user.Email
                             where room.Id == roomId where
                             booking.Date.ToLocalTime().Date == date.ToLocalTime().Date
                             select booking).ToListAsync();

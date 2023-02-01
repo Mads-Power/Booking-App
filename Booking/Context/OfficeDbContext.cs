@@ -188,6 +188,7 @@ namespace BookingApp.Context
                 RoomId = 2
             });
 
+            var userIdToEmail = new Dictionary<string, string>();
             // Add Users
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -196,6 +197,7 @@ namespace BookingApp.Context
                 Email = "ted.mosby@himym.com",
                 PhoneNumber = "44112233"
             });
+            userIdToEmail.Add("1", "ted.mosby@himym.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -204,6 +206,7 @@ namespace BookingApp.Context
                 Email = "marshall.eriksen@himym.com",
                 PhoneNumber = "44223344"
             });
+            userIdToEmail.Add("2", "marshall.eriksen@himym.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -212,6 +215,7 @@ namespace BookingApp.Context
                 Email = "lily.aldrin@himym.com",
                 PhoneNumber = "44334455"
             });
+            userIdToEmail.Add("3", "lily.aldrin@himym.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -220,6 +224,7 @@ namespace BookingApp.Context
                 Email = "barney.stinson@himym.com",
                 PhoneNumber = "44445566"
             });
+            userIdToEmail.Add("4", "barney.stinson@himym.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -228,6 +233,7 @@ namespace BookingApp.Context
                 Email = "robin.scherbatsky@himym.com",
                 PhoneNumber = "44556677"
             });
+            userIdToEmail.Add("5", "robin.scherbatsky@himym.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -236,6 +242,7 @@ namespace BookingApp.Context
                 Email = "ross.geller@friends.com",
                 PhoneNumber = "99112233"
             });
+            userIdToEmail.Add("6", "ross.geller@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -244,6 +251,7 @@ namespace BookingApp.Context
                 Email = "monica.geller@friends.com",
                 PhoneNumber = "99223344"
             });
+            userIdToEmail.Add("7", "monica.geller@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -252,6 +260,7 @@ namespace BookingApp.Context
                 Email = "phoebe.buffay@friends.com",
                 PhoneNumber = "99334455"
             });
+            userIdToEmail.Add("8", "phoebe.buffay@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -260,6 +269,7 @@ namespace BookingApp.Context
                 Email = "chandler.bing@friends.com",
                 PhoneNumber = "99445566"
             });
+            userIdToEmail.Add("9", "chandler.bing@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -268,6 +278,7 @@ namespace BookingApp.Context
                 Email = "joey.tribiani@friends.com",
                 PhoneNumber = "99556677"
             });
+            userIdToEmail.Add("10", "joey.tribiani@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -276,6 +287,7 @@ namespace BookingApp.Context
                 Email = "rachel.green@friends.com",
                 PhoneNumber = "99667788"
             });
+            userIdToEmail.Add("11", "rachel.green@friends.com");
 
             modelBuilder.Entity<User>().HasData(new User
             {
@@ -284,12 +296,13 @@ namespace BookingApp.Context
                 Email = "test.user@testing.com",
                 PhoneNumber = "98765432"
             });
+            userIdToEmail.Add("12", "test.user@testing.com");
 
             // Add Bookings
-            createBookings(modelBuilder);
+            createBookings(modelBuilder, userIdToEmail);
         }
 
-        private static void createBookings(ModelBuilder modelBuilder)
+        private static void createBookings(ModelBuilder modelBuilder, Dictionary<string, string> keyValuePairs)
         {
             for (int i = 1; i <= 11; i++)
             {
@@ -307,11 +320,15 @@ namespace BookingApp.Context
                 {
                     var bookingId = ((i-1)*20) + j ;
                     var dateOffset = j-1;
+
+                    var email = keyValuePairs[userId.ToString()];
+
                     modelBuilder.Entity<Booking>().HasData(new Booking
                     {
                         Id = bookingId,
                         SeatId = seatId,
                         UserId = userId.ToString(),
+                        Email = email,
                         Date = DateTime.Today.AddDays(dateOffset).ToUniversalTime()
                     }) ;
                 }

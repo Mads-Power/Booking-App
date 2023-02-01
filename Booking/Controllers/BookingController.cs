@@ -177,9 +177,9 @@ namespace BookingApp.Controllers
         /// <summary>
         ///     Book a seat for the user.
         /// </summary>
-        /// <param name="bookingDto">The DTO of a booking with seatId, userId and date. Example date format: 2022-12-16T00:00:00.0+01 </param>
+        /// <param name="bookingDto">The DTO of a booking with seatId, userEmail and date. Example date format: 2022-12-16T00:00:00.0+01 </param>
         /// <returns>
-        ///     NotFound if the ids don't match.
+        ///     NotFound if the email or seat id don't match.
         ///     NoContent if booking was successful.
         /// </returns>
         [HttpPut("Book")]
@@ -201,7 +201,7 @@ namespace BookingApp.Controllers
 
             var dateTime = _dateTimeProvider.Parse(bookingDto.Date);
 
-            var domainUser = await _userRepository.GetUserAsync(bookingDto.UserId);
+            var domainUser = await _userRepository.GetUserAsync(bookingDto.Email);
             var domainSeat = await _seatRepository.GetSeatAsync(bookingDto.SeatId);
 
             if (domainUser == null || domainSeat == null)
@@ -227,8 +227,7 @@ namespace BookingApp.Controllers
         /// <summary>
         ///     Unbook a seat for the user.
         /// </summary>
-        /// <param name="userId">Id of the user.</param>
-        /// <param name="date">Date of the booking.</param>
+        /// <param name="bookingDto">The DTO of a seat unbooking with seatId, userEmail and date.</param>
         /// <returns>
         ///     NotFound if the ids don't match.
         ///     NoContent if seat was successfully unbooked.
@@ -252,7 +251,7 @@ namespace BookingApp.Controllers
 
             var dateTime = _dateTimeProvider.Parse(bookingDto.Date);
 
-            var domainUser = await _userRepository.GetUserAsync(bookingDto.UserId);
+            var domainUser = await _userRepository.GetUserAsync(bookingDto.Email);
 
             if (domainUser == null)
             {
@@ -299,7 +298,7 @@ namespace BookingApp.Controllers
             }
 
             // validate if user already booked a seat that day
-            if (_bookingRepository.GetBookingByDateAndUser(dateTime, bookingDto.UserId) != null)
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, bookingDto.Email) != null)
             {
                 return new ValidationResult(false, "User already booked that day");
             }
@@ -323,7 +322,7 @@ namespace BookingApp.Controllers
             }
 
             // validate booking exists
-            if (_bookingRepository.GetBookingByDateAndUser(dateTime, bookingDto.UserId) == null)
+            if (_bookingRepository.GetBookingByDateAndUser(dateTime, bookingDto.Email) == null)
             {
                 return new ValidationResult(false, "No booking found for the user on that day");
             }
@@ -343,7 +342,7 @@ namespace BookingApp.Controllers
 
         private ValidationResult ValidatePostBooking(BookingCreateDTO bookingDto)
         {
-            if (!_userRepository.UserExists(bookingDto.UserId))
+            if (!_userRepository.UserExists(bookingDto.Email))
             {
                 return new ValidationResult(false, "Cannot match user");
             }
@@ -353,7 +352,7 @@ namespace BookingApp.Controllers
                 return new ValidationResult(false, "Cannot match seat");
             }
 
-            if (_bookingRepository.GetBookingByDateAndUser(bookingDto.Date,bookingDto.UserId) != null)
+            if (_bookingRepository.GetBookingByDateAndUser(bookingDto.Date,bookingDto.Email) != null)
             {
                 return new ValidationResult(false, "Booking already exists for the user that day");
             }

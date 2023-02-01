@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch } from 'react';
+import { SetStateAction, Dispatch, useState } from 'react';
 import { TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
-import { dateAtom } from '../../jotaiProvider';
+import { dateAtom } from '../Provider/app';
 import { Seat } from '@type/seat';
 import { Booking } from '@type/booking';
 import { User } from '@type/user';
@@ -35,7 +35,7 @@ export const DateSeat = ({
         dayjs(booking.date).month() === dateDay.month() &&
         dayjs(booking.date).year() === dateDay.year()
       )
-        return { date: dayjs(booking.date).date(), userId: booking.userId };
+        return { date: dayjs(booking.date).date(), email: booking.email };
     });
 
     return occupiedDaysInMonth;
@@ -49,7 +49,7 @@ export const DateSeat = ({
   ) => {
     const dayDate = dayjs(day);
     const isOccupied = occupiedDays?.find(day => day?.date === dayDate.date());
-    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.userId === userData.id);
+    const isOccupiedByCurrentUser = occupiedDays?.find(day => day?.date === dayDate.date() && day.email === userData.email);
 
     // Blue fill + border
     const deskBookedByOtherUserStyle = {
@@ -95,8 +95,14 @@ export const DateSeat = ({
   };
 
   const handleMonthChange = (date: Date) => {
-    const correctedDate = new Date(date.toISOString());
-    setDate(new Date(correctedDate));
+    const today =  new Date(new Date().setHours(0,0,0,0));
+    date = new Date(date.toISOString())
+    if (date.getMonth() === today.getMonth()) {
+      setDate(new Date(today.toISOString()));
+    }
+    else {
+      setDate(new Date(date));
+    }
   };
 
   const handleChange = (newValue: Date) => {
@@ -105,7 +111,7 @@ export const DateSeat = ({
     let occupied = false;
     occupiedDays?.find(day => {
       const selectedDateIsToday = day?.date === dayDate.date();
-      const selectedDateIsBookedByCurrentUser = day?.userId === userData.id
+      const selectedDateIsBookedByCurrentUser = day?.email === userData.email
 
       if (selectedDateIsToday && selectedDateIsBookedByCurrentUser) {
         onSeatInfoChange('removeBookedSeat');

@@ -27,7 +27,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
         const unbookingData = {
             id: booking.id,
             seatId: booking.seatId,
-            userId: user.id,
+            email: booking.email,
             date: booking.date
         } as TUnbook;
         onUnbook(unbookingData)
@@ -35,12 +35,15 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
 
 
     return (
-        <div className="shadow border flex flex-row w-[90%] mx-auto lg:w-[75%]">
+        <div className="shadow border flex flex-row w-[90%] mx-auto lg:w-[75%] items-baseline">
             <div className="flex flex-col grow p-2">
                 <p className="text-xl p-1">
                     {dayjs(booking.date).format("D[.] MMMM YYYY")}
                 </p>
-                <p className="text-lg">{room}</p>
+                <div className="flex flex-row p-1 child:text-lg gap-x-12">
+                    <p>{room}</p>
+                    <p>Sete nr: {booking.seatId}</p>
+                </div>
             </div>
             <div className="flex-none flex">
                 <p
@@ -64,7 +67,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
                 <MenuItem
                     onClick={handleUnbook}
                     className="text-[#DF0D0D]"
-                >Remove booking</MenuItem>
+                >Fjern booking</MenuItem>
             </Menu>
         </div>
     )

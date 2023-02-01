@@ -57,10 +57,12 @@ namespace BookingApp.Controllers
         private async Task<bool> IsUserFoundOrCreated()
         {
             var userId = User?.FindFirst(ClaimConstants.ObjectId)?.Value;
+            var userEmail = User?.FindFirst("email")?.Value;
 
             if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException("Could not find userID");
+            if (string.IsNullOrWhiteSpace(userEmail)) throw new ArgumentNullException("Could not find user email");
 
-            if (_userRepository.UserExists(userId))            
+            if (_userRepository.UserExists(userEmail))            
                 return true;             
 
             await _userRepository.AddAsync(new User
@@ -70,7 +72,7 @@ namespace BookingApp.Controllers
                 Email = User?.FindFirst("email")?.Value ?? "NoEmail"
             });
 
-            if (_userRepository.UserExists(userId)) 
+            if (_userRepository.UserExists(userEmail)) 
                 return true;
 
 

@@ -3,7 +3,7 @@ import { DeleteBooking } from '@type/booking';
 
 
 const url = `/api/Booking/Unbook`;
-export const removeBooking = async ({ userId, date }: DeleteBooking) => {
+export const removeBooking = async ({ email, date }: DeleteBooking) => {
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -11,7 +11,7 @@ export const removeBooking = async ({ userId, date }: DeleteBooking) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      userId,
+      email,
       date,
     }),
   };
@@ -29,10 +29,8 @@ export const useRemoveBookingMutation = () => {
     onError: error => {
     },
     onMutate: m => {
-      console.log(m);
     },
     onSuccess: s => {
-      console.log(s);
     },
   });
 };
