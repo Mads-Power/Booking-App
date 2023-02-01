@@ -9,6 +9,9 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { Booking, DeleteBooking } from '@type/booking';
 import { AlertColor } from '@mui/material/Alert';
+import { getMe } from '@api/getMe';
+import { useAtom } from 'jotai';
+import { userAtom } from '@components/Provider/app';
 
 type TBookSeat = {
   seat: Seat;
@@ -25,6 +28,7 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     severity: undefined as AlertColor | undefined
   });
   const [loading, setLoading] = useState(false)
+  const [user, setUser] = useAtom(userAtom)
   const { open, message, severity } = state;
   const bookingMutation = useBookingMutation();
   const removeBookingMutation = useRemoveBookingMutation();
@@ -44,6 +48,10 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     bookingMutation.mutate(bookingData, {
       onSuccess: () => {
         onSeatInfoChange('removeBookedSeat');
+        getMe().then(res => {
+          setUser(res as User);
+          window.sessionStorage.setItem('user', JSON.stringify(res));
+        });
         setLoading(false)
         setState({
           message: 'Bookingen er nå registrert',
@@ -72,6 +80,10 @@ export const BookSeat = ({ seat, date, data, seatInfo, onSeatInfoChange }: TBook
     removeBookingMutation.mutate(unbookingData, {
       onSuccess() {
         onSeatInfoChange('bookAvailableSeat');
+        getMe().then(res => {
+          setUser(res as User);
+          window.sessionStorage.setItem('user', JSON.stringify(res));
+        });
         setLoading(false)
         setState({
           message: 'Bookingen er nå fjernet',
