@@ -6,21 +6,21 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const IsAuthenticated = () => {
+export const IsAuthenticated = ()=> {
 
   const [user, setUser] = useAtom(userAtom)
-  const { data, isSuccess, isFetched, error } = useIsAuthenticated();
   const navigate = useNavigate();
 
-  // First, we get the (possibly) authenticated user
-  // If they're not authenticated, redirect them back to the login screen
-  // If they're authenticated, redirect them to the home screen
+  const { data, isSuccess, isFetched, error, isError } = useIsAuthenticated();
+
   useEffect(() => {
-    if(error) {
-      console.error('Kunne ikke autentisere brukeren')
+    
+    // First, we get the (possibly) authenticated user
+    // If they're not authenticated, redirect them back to the login screen
+    // If they're authenticated, redirect them to the home screen
+    if(isError) {
       navigate('/login')
     }
-
 
     if (isFetched) {
       if (isSuccess) {
@@ -32,7 +32,8 @@ export const IsAuthenticated = () => {
         navigate('/login')
       }
     }
-  }, [data]);
+
+   });
 
   return (
     <div className="flex flex-col">

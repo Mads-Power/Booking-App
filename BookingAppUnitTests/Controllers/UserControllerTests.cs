@@ -49,12 +49,14 @@ namespace BookingAppUnitTests.Controllers
             {
                 Id = "1",
                 Name = "Test User 1",
+                Email = "one@test.com",
                 Bookings = new List<Booking>()
             };
             var user2 = new User()
             {
                 Id = "2",
                 Name = "Test User 2",
+                Email = "two@test.com",
                 Bookings = new List<Booking>()
             };
             return new List<User>() { user1, user2 };
@@ -94,16 +96,16 @@ namespace BookingAppUnitTests.Controllers
         public async void GetUser_WhenExists_ReturnsUser()
         {
             // Arrange
-            var userId = "1";
-            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)).ReturnsAsync(GetTestUsers()[0]);
+            var userEmail = "one@test.com";
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userEmail)).ReturnsAsync(GetTestUsers()[0]);
 
             // Act
-            var actionResult = await _controller.GetUser(userId);
+            var actionResult = await _controller.GetUser(userEmail);
 
             // Assert
             var result = actionResult.Value;
             Assert.NotNull(result);
-            Assert.Equal(userId, result.Id);
+            Assert.Equal(userEmail, result.Email);
             Assert.Equal("Test User 1", result.Name);
         }
 
@@ -111,11 +113,11 @@ namespace BookingAppUnitTests.Controllers
         public async void GetUser_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var userId = "3";
-            _mockUserRepository.Setup(repo => repo.GetUserAsync(userId)); // returns null by default
+            var userEmail = "three@test.com";
+            _mockUserRepository.Setup(repo => repo.GetUserAsync(userEmail)); // returns null by default
 
             // Act
-            var actionResult = await _controller.GetUser(userId);
+            var actionResult = await _controller.GetUser(userEmail);
 
             // Assert
             Assert.IsType<NotFoundResult>(actionResult.Result);
@@ -125,8 +127,8 @@ namespace BookingAppUnitTests.Controllers
         public async void PostUser_WhenValidModel_ReturnsNewUser()
         {
             // Arrange
-            var newUser = new UserCreateDTO() { Id = "3", Name = "Test User 3" };
-            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Id)).Returns(false);
+            var newUser = new UserCreateDTO() { Email = "three@test.com", Name = "Test User 3" };
+            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Email)).Returns(false);
 
             // Act
             var actionResult = await _controller.PostUser(newUser);
@@ -135,7 +137,7 @@ namespace BookingAppUnitTests.Controllers
             Assert.IsType<CreatedAtActionResult>(actionResult.Result);
             var result = (actionResult.Result as CreatedAtActionResult)?.Value as UserReadDTO;
             Assert.NotNull(result);
-            Assert.Equal(newUser.Id, result.Id);
+            Assert.Equal(newUser.Email, result.Email);
             Assert.Equal(newUser.Name, result.Name);
         }
 
@@ -143,8 +145,8 @@ namespace BookingAppUnitTests.Controllers
         public async void PostUser_WhenInvalidModel_ReturnsBadRequest()
         {
             // Arrange
-            var newUser = new UserCreateDTO() { Id = "3"};
-            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Id)).Returns(false);
+            var newUser = new UserCreateDTO() { Email = "three@test.com" };
+            _mockUserRepository.Setup(repo => repo.UserExists(newUser.Email)).Returns(false);
 
             // Act
             var actionResult = await _controller.PostUser(newUser);
@@ -157,11 +159,11 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenValidModel_ReturnsNoContent()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = "1", Name = "Updated User 1" };
-            _mockUserRepository.Setup(repo => repo.GetUserAsync("1")).ReturnsAsync(GetTestUsers()[0]);
+            var updateUser = new UserEditDTO() { Email = "one@test.com", Name = "Updated User 1" };
+            _mockUserRepository.Setup(repo => repo.GetUserAsync("one@test.com")).ReturnsAsync(GetTestUsers()[0]);
 
             // Act
-            var actionResult = await _controller.PutUser("1", updateUser);
+            var actionResult = await _controller.PutUser("one@test.com", updateUser);
 
             // Assert
             Assert.IsType<NoContentResult>(actionResult);
@@ -171,11 +173,11 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenInvalidModel_ReturnsBadRequest()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = "1", Name = "Updated User 1" };
-            _mockUserRepository.Setup(repo => repo.GetUserAsync("1")).ReturnsAsync(GetTestUsers()[0]);
+            var updateUser = new UserEditDTO() { Email = "one@test.com", Name = "Updated User 1" };
+            _mockUserRepository.Setup(repo => repo.GetUserAsync("one@test.com")).ReturnsAsync(GetTestUsers()[0]);
 
             // Act
-            var actionResult = await _controller.PutUser("2", updateUser);
+            var actionResult = await _controller.PutUser("two@test.com", updateUser);
 
             // Assert
             Assert.IsType<BadRequestObjectResult>(actionResult);
@@ -185,11 +187,11 @@ namespace BookingAppUnitTests.Controllers
         public async void PutUser_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var updateUser = new UserEditDTO() { Id = "10", Name = "Not Found User"};
-            _mockUserRepository.Setup(repo => repo.GetUserAsync("1"));
+            var updateUser = new UserEditDTO() { Email = "ten@test.com", Name = "Not Found User"};
+            _mockUserRepository.Setup(repo => repo.GetUserAsync("one@test.com"));
 
             // Act
-            var actionResult = await _controller.PutUser("10", updateUser);
+            var actionResult = await _controller.PutUser("ten@test.com", updateUser);
 
             // Assert
             Assert.IsType<NotFoundResult>(actionResult);
@@ -199,11 +201,11 @@ namespace BookingAppUnitTests.Controllers
         public async void DeleteUser_WhenExists_ReturnsNoContent()
         {
             // Arrange
-            var userId = "2";
-            _mockUserRepository.Setup(repo => repo.UserExists(userId)).Returns(true);
+            var userEmail = "two@test.com";
+            _mockUserRepository.Setup(repo => repo.UserExists(userEmail)).Returns(true);
 
             // Act
-            var actionResult = await _controller.DeleteUser(userId);
+            var actionResult = await _controller.DeleteUser(userEmail);
 
             // Assert
             Assert.IsType<NoContentResult>(actionResult);
@@ -213,11 +215,11 @@ namespace BookingAppUnitTests.Controllers
         public async void DeleteUser_WhenNexists_ReturnsNotFound()
         {
             // Arrange
-            var userId = "3";
-            _mockUserRepository.Setup(repo => repo.UserExists(userId)).Returns(false);
+            var userEmail = "three@test.com";
+            _mockUserRepository.Setup(repo => repo.UserExists(userEmail)).Returns(false);
 
             // Act
-            var actionResult = await _controller.DeleteUser(userId);
+            var actionResult = await _controller.DeleteUser(userEmail);
 
             // Assert
             Assert.IsType<NotFoundResult>(actionResult);
