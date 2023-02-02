@@ -1,18 +1,15 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using BookingApp.Controllers;
-using BookingApp.Helpers;
 using BookingApp.Models.Domain;
 using BookingApp.Models.DTOs;
 using BookingApp.Profiles;
 using BookingApp.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookingAppUnitTests.Controllers
 {
-	public class BookingControllerTests
+    public class BookingControllerTests
 	{
         private readonly Mock<IBookingRepository> _mockBookingRepository;
         private readonly Mock<IUserRepository> _mockUserRepository;
