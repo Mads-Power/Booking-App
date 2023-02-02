@@ -18,7 +18,6 @@
     "@tanstack/query-core": "^4.22.4",
     "@tanstack/react-query": "^4.16.1",
     "bootstrap": "^5.2.2",
-    "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "jotai": "^1.12.1",
     "jotai-tanstack-query": "^0.4.0",
