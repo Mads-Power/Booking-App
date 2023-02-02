@@ -50,7 +50,7 @@ namespace BookingApp.Controllers
             return new SignOutResult(schemes, new AuthenticationProperties
             {
                 IsPersistent = true,
-                RedirectUri = "/login"
+                RedirectUri = "/"
             });
         }
 
