@@ -41,11 +41,9 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy(name: "Client Origin",
                       builder => builder
-                      .AllowAnyOrigin()
+                      .WithOrigins("https://app-prod-itv-officebooking.azurewebsites.net", "http://localhost:5002")
                       .AllowAnyHeader()
                       .AllowAnyMethod()
-                      //.AllowCredentials()
-                      //.WithOrigins("http://localhost:5173")
     );
 });
 
@@ -90,9 +88,6 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
 }
-
-
-
 
 app.UseHttpsRedirection();
 app.UseCookiePolicy();
