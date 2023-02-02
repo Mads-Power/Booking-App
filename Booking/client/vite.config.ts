@@ -23,7 +23,7 @@ export default defineConfig({
         strictPort: true,
         proxy: {
             '/api': {
-                target: 'https://localhost:5001',
+                target: 'https://app-prod-itv-officebooking.azurewebsites.net',
                 changeOrigin: true,
                 secure: false,
                 agent: new https.Agent(),
