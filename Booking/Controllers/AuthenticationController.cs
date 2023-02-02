@@ -1,6 +1,7 @@
 ﻿using BookingApp.Models.Domain;
 using BookingApp.Repositories;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,21 @@ namespace BookingApp.Controllers
                         IsPersistent = true,
                         RedirectUri = returnUri ?? "/"
                     });
+        }
+
+        [HttpGet]
+        [Route("Logout")]
+        public async Task<ActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+
+            List<string> schemes = new () { OpenIdConnectDefaults.AuthenticationScheme, CookieAuthenticationDefaults.AuthenticationScheme };
+
+            return new SignOutResult(schemes, new AuthenticationProperties
+            {
+                IsPersistent = true,
+                RedirectUri = "/login"
+            });
         }
 
         [HttpGet]

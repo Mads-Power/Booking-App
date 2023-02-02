@@ -24,7 +24,7 @@ builder.Services
     }, cookieOptions =>
     {
         cookieOptions.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        cookieOptions.Cookie.SameSite = SameSiteMode.Strict; //SameSiteMode.Strict; May require frontend and backend to run on same port when running locally
+        cookieOptions.Cookie.SameSite = SameSiteMode.Strict;
         cookieOptions.Cookie.HttpOnly = true;
     });
 
