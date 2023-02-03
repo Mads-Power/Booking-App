@@ -204,8 +204,6 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
-            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
-
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
 

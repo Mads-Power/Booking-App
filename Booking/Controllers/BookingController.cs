@@ -45,8 +45,6 @@ namespace BookingApp.Controllers
         {
             var bookings = await _bookingRepository.GetBookingsAsync();
 
-            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
-
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }
 
@@ -67,8 +65,6 @@ namespace BookingApp.Controllers
             {
                 return NotFound();
             }
-
-            booking.Date = booking.Date.ToLocalTime();
 
             return _mapper.Map<BookingReadDTO>(booking);
         }
@@ -218,7 +214,7 @@ namespace BookingApp.Controllers
             {
                 throw;
             }
-            domainBooking.Date = domainBooking.Date.ToLocalTime();
+
             return CreatedAtAction("GetBooking",
                 new { bookingId = domainBooking.Id },
                 _mapper.Map<BookingReadDTO>(domainBooking));

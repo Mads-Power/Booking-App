@@ -59,8 +59,6 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
-            user.Bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
-
             return _mapper.Map<UserReadDTO>(user);
         }
 
@@ -175,8 +173,6 @@ namespace BookingApp.Controllers
 
             var bookings = user.Bookings;
 
-            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
-
             return new ADUserDTO
             {
                 Name = User?.FindFirst("name")?.Value,
@@ -205,8 +201,6 @@ namespace BookingApp.Controllers
             }
 
             var bookings = user.Bookings;
-
-            bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
 
             return _mapper.Map<List<BookingReadDTO>>(bookings);
         }

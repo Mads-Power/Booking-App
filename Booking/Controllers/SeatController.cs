@@ -60,8 +60,6 @@ namespace BookingApp.Controllers
                 return NotFound();
             }
 
-            seat.Bookings.ForEach(b => b.Date = b.Date.ToLocalTime());
-
             return _mapper.Map<SeatReadDTO>(seat);
         }
 
