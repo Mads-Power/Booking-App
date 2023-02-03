@@ -1,7 +1,7 @@
 import { Menu, MenuItem } from "@mui/material";
 import { Booking, DeleteBooking, TUnbook } from "@type/booking"
 import { User } from "@type/user";
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { Dispatch, SetStateAction, useState } from "react";
 
 type TBookingListItem = {
@@ -15,6 +15,11 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
 
     const [contextmenuAnchor, setContextmenuAnchorState] = useState<null | HTMLElement>(null);
     const openContextmenu = Boolean(contextmenuAnchor);
+    const renderdate = () => {
+        return <p className="text-xl p-1">
+        {dayjs(booking.date).format("D[.] MMMM YYYY")}
+    </p>
+    }
     const handleOpenContextmenu = (event: React.MouseEvent<HTMLParagraphElement>) => {
         setContextmenuAnchorState(event.currentTarget);
     };
@@ -37,9 +42,7 @@ export const BookingsListItem = ({ booking, user, onUnbook }: TBookingListItem) 
     return (
         <div className="shadow border flex flex-row w-[90%] mx-auto lg:w-[75%] items-baseline">
             <div className="flex flex-col grow p-2">
-                <p className="text-xl p-1">
-                    {dayjs(booking.date).format("D[.] MMMM YYYY")}
-                </p>
+                {renderdate()}
                 <div className="flex flex-row p-1 child:text-lg gap-x-12">
                     <p>{room}</p>
                     <p>Sete nr: {booking.seatId}</p>
