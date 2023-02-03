@@ -73,7 +73,7 @@ namespace BookingApp.Repositories
                             join user in _context.Users
                             on booking.Email equals user.Email
                             where room.Id == roomId where
-                            booking.Date.Date == date.Date
+                            booking.Date.ToUniversalTime().Date == date.ToUniversalTime().Date
                             select booking).ToListAsync();
 
             return await bookings;
